@@ -264,12 +264,12 @@ def get_axis_values(axis: str) -> list[str]:
 # ============================================================================
 
 __all__ = [
-    "CONDITION_AXES",
     "AXIS_POLICY",
-    "WEIGHTS",
+    "CONDITION_AXES",
     "EXCLUSIONS",
-    "generate_condition",
+    "WEIGHTS",
     "condition_to_prompt",
+    "generate_condition",
     "get_available_axes",
     "get_axis_values",
 ]

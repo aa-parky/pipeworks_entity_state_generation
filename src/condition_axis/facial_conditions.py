@@ -284,11 +284,11 @@ def get_facial_axis_values(axis: str) -> list[str]:
 
 __all__ = [
     "FACIAL_AXES",
+    "FACIAL_EXCLUSIONS",
     "FACIAL_POLICY",
     "FACIAL_WEIGHTS",
-    "FACIAL_EXCLUSIONS",
-    "generate_facial_condition",
     "facial_condition_to_prompt",
+    "generate_facial_condition",
     "get_available_facial_axes",
     "get_facial_axis_values",
 ]
