@@ -1,8 +1,3 @@
----
-next_review_date: 2026-12-25
-modified: 2025-12-26T15:05:32+00:00
----
-
 # 1 Part 1 — Baseline Occupation Axis Bundle (Template)
 
 This is the **minimum viable bundle** that:

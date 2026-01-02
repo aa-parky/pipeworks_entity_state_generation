@@ -1,8 +1,3 @@
----
-next_review_date: 2026-12-25
-modified: 2025-12-25T13:35:29+00:00
----
-
 # 1 Character Conditions System
 
 The Character Conditions system provides structured, rule-based character state generation for procedural content. Unlike simple text file lookups, it uses weighted probability distributions, semantic exclusion rules, and mandatory/optional axis policies to generate coherent character descriptions.

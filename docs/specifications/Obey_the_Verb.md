@@ -1,7 +1,3 @@
----
-next_review_date: 2026-12-27
----
-
 # 1 **The Model Obeys Verbs and Conditions, Not Nouns**
 
 _Notes on Job Titles, Occupation Design, and Prompt Nudging_
