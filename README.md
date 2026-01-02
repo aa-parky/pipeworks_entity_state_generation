@@ -192,6 +192,11 @@ pipeworks_entity_state_generation/
 │
 ├── docs/                       # Documentation & guides
 │   ├── README.md               # Documentation overview
+│   ├── api/                    # API reference documentation
+│   │   ├── _base.md
+│   │   ├── character_conditions.md
+│   │   ├── facial_conditions.md
+│   │   └── occupation_axis.md
 │   ├── design/                 # Philosophy & architecture
 │   │   ├── 00_goblin_laws.md
 │   │   ├── 01_character_state_model.md
@@ -440,6 +445,12 @@ This repository is part of the broader Pipeworks project.
 - [CLAUDE.md](./CLAUDE.md) - Development guide for AI assistants and contributors
 - [Project TODO List](./Project_TODO_List.md) - Development roadmap and progress tracking
 - [docs/README.md](./docs/README.md) - Complete documentation index with reading paths
+
+### API Reference
+- [Base Utilities](./docs/api/_base.md) - Core utilities (weighted_choice, apply_exclusion_rules, values_to_prompt)
+- [Character Conditions](./docs/api/character_conditions.md) - Physical & social character state generation
+- [Facial Conditions](./docs/api/facial_conditions.md) - Facial perception modifiers
+- [Occupation Axis](./docs/api/occupation_axis.md) - Occupation characteristics generation
 
 ### Design & Philosophy
 - [Goblin Laws](./docs/design/00_goblin_laws.md) - Architectural principles and design philosophy
