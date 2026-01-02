@@ -190,10 +190,25 @@ pipeworks_entity_state_generation/
 │   ├── test_facial_conditions_axis.py
 │   └── test_occupation_axis_axis.py
 │
-├── examples/                   # Documentation & guides
-│   ├── condition_axis.md       # Axis philosophy & examples
-│   ├── occupation_axis.md      # Occupation system deep dive
-│   └── 00_goblin_laws.md       # Architectural principles
+├── docs/                       # Documentation & guides
+│   ├── README.md               # Documentation overview
+│   ├── design/                 # Philosophy & architecture
+│   │   ├── 00_goblin_laws.md
+│   │   ├── 01_character_state_model.md
+│   │   ├── 02_pipeworks_system_architecture.md
+│   │   ├── 03_pipeworks_components.md
+│   │   └── 04_characters_first_narrow_door.md
+│   ├── specifications/         # Technical specifications
+│   │   ├── condition_axis.md
+│   │   ├── occupation_axis.md
+│   │   └── Obey_the_Verb.md
+│   ├── guides/                 # Setup & process guides
+│   │   ├── GitHub Actions CI Setup Guide.md
+│   │   └── Pre-Commit Hooks Setup Guide.md
+│   └── images/                 # Documentation images
+│       ├── condition_axis.jpg
+│       ├── miss_filed.jpg
+│       └── verbs_conditions.jpg
 │
 └── .github/workflows/          # CI/CD
     ├── test.yml                # Test runner
@@ -407,7 +422,7 @@ This library is part of the broader [Pipeworks](https://github.com/aa-parky) pro
 | **pipeworks_image_generator** | Visualization and image synthesis | Interprets entity states for visual representation |
 | **the_daily_undertaking_ui** | Narrative and user-facing interface | Surfaces entity states to players |
 
-See [examples/02_pipeworks_system_architecture.md](./examples/02_pipeworks_system_architecture.md) for detailed integration documentation.
+See [docs/design/02_pipeworks_system_architecture.md](./docs/design/02_pipeworks_system_architecture.md) for detailed integration documentation.
 
 ---
 
@@ -421,11 +436,26 @@ This repository is part of the broader Pipeworks project.
 
 ## Documentation
 
+### Main Documentation
 - [CLAUDE.md](./CLAUDE.md) - Development guide for AI assistants and contributors
 - [Project TODO List](./Project_TODO_List.md) - Development roadmap and progress tracking
-- [Goblin Laws](./examples/00_goblin_laws.md) - Architectural principles and design philosophy
-- [Character State Model](./examples/01_character_state_model.md) - Conceptual foundation for state representation
-- [Pipeworks System Architecture](./examples/02_pipeworks_system_architecture.md) - How this library fits into the larger ecosystem
+- [docs/README.md](./docs/README.md) - Complete documentation index with reading paths
+
+### Design & Philosophy
+- [Goblin Laws](./docs/design/00_goblin_laws.md) - Architectural principles and design philosophy
+- [Character State Model](./docs/design/01_character_state_model.md) - Conceptual foundation for state representation
+- [Pipeworks System Architecture](./docs/design/02_pipeworks_system_architecture.md) - How this library fits into the larger ecosystem
+- [Pipeworks Components](./docs/design/03_pipeworks_components.md) - The five load-bearing parts of the system
+- [Characters First](./docs/design/04_characters_first_narrow_door.md) - Design decision rationale
+
+### Technical Specifications
+- [Character Conditions](./docs/specifications/condition_axis.md) - Character condition system specification
+- [Occupation Axis](./docs/specifications/occupation_axis.md) - Occupation characteristics specification
+- [Obey the Verb](./docs/specifications/Obey_the_Verb.md) - AI image generation prompting strategy
+
+### Setup Guides
+- [Pre-Commit Hooks Setup](./docs/guides/Pre-Commit%20Hooks%20Setup%20Guide.md) - Local development setup
+- [GitHub Actions CI Setup](./docs/guides/GitHub%20Actions%20CI%20Setup%20Guide.md) - CI/CD configuration
 
 ---
 
