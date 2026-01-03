@@ -184,7 +184,7 @@ code .
 ```
 
 **In Documentation:**
-The diagrams are embedded in [02_pipeworks_system_architecture.md](../design/02_pipeworks_system_architecture.md)
+The diagrams are referenced throughout the Sphinx documentation
 
 ---
 
@@ -234,11 +234,11 @@ These diagrams follow specific design principles:
 
 ## Integration with Documentation
 
-These diagrams are referenced in:
+These diagrams are available throughout the documentation:
 
 - **[docs/README.md](../README.md)** - Directory structure overview
-- **[design/02_pipeworks_system_architecture.md](../design/02_pipeworks_system_architecture.md)** - Primary location (embedded)
-- **[design/03_pipeworks_components.md](../design/03_pipeworks_components.md)** - Component responsibilities
+- **Sphinx Documentation** - Referenced in API docs and guides
+- **GitHub Repository** - Available in the docs/diagrams/ directory
 
 ---
 

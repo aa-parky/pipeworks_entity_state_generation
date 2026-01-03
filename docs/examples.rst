@@ -182,13 +182,14 @@ Next Steps
 
 After exploring the examples:
 
-1. Review the :doc:`API Reference <api/_base>` for detailed function documentation
-2. Read the :doc:`Design Philosophy <design/00_goblin_laws>` to understand the architectural principles
-3. Check the :doc:`Conceptual System Design <design/specifications/condition_axis>` for implementation details
-4. See ``examples/custom_axes.py`` for guidance on extending the library
+1. Review the :doc:`API Reference <api/index>` for detailed function documentation
+2. Check the :doc:`Architecture Diagrams <diagrams/README>` to understand the system design
+3. See ``examples/custom_axes.py`` for guidance on extending the library
+4. Read the project README for architectural philosophy and design decisions
 
 For more information, see:
 
 - :doc:`README <README>` - Project overview and installation
-- :doc:`API Reference <api/_base>` - Complete API documentation
+- :doc:`API Reference <api/index>` - Complete API documentation
+- :doc:`Architecture Diagrams <diagrams/README>` - System architecture visualization
 - GitHub Repository: https://github.com/aa-parky/pipeworks_entity_state_generation

@@ -17,12 +17,11 @@ Foundation utilities used by all generation systems.
 Generation Systems
 ------------------
 
-The three independent axis generation systems.
+The two independent axis generation systems.
 
 .. toctree::
    :maxdepth: 2
    :hidden:
 
    character_conditions
-   facial_conditions
    occupation_axis
