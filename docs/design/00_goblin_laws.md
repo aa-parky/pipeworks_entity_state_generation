@@ -34,25 +34,25 @@ Each law carries a number, not in order of discovery, but in the order of Goblin
 ## Index of Laws
 
 **Foundational Goblinisms (1-19)**
-- **#3** – On Walking
-- **#5** – Raise the Fist
-- **#6** – The Rule of Rules
-- **#7** – No Fat Orcs
-- **#8** – All Goblins Are Boundary Guards
-- **#13** – Keep the Guest List Clean
+- **#3** – _"On Walking"_
+- **#5** – _"Raise the Fist"_
+- **#6** – _"The Rule of Rules"_
+- **#7** – _"No Fat Orcs"_
+- **#8** – _"All Goblins Are Boundary Guards"_
+- **#13** – _"Keep the Guest List Clean"_
 
 **Programming & Systems (20-39)**
-- **#32** – Never Patch a Monkey
-- **#37** – Never Meddle in Another Goblin's Guts
+- **#32** – _"Never Patch a Monkey"_
+- **#37** – _"Never Meddle in Another Goblin's Guts"_
 
 **Music & Soundcraft (40-59)**
-- **#41** – Only One Drumbeat of Readiness
+- **#41** – _"Only One Drumbeat of Readiness"_
 
 ---
 
 # Foundational Goblinisms 1-19
 
-## Goblin Law #3 – On Walking
+## Goblin Law #3 – _"On Walking"_
 
 > You do not learn to walk before you run.
 
@@ -85,7 +85,7 @@ They bounce violently until gravity negotiates.
 _This law exists to protect early motion, awkward prototypes,
 unfinished thinking, and people learning in public._
 
-## Goblin Law #5 – Raise the Fist
+## Goblin Law #5 – _"Raise the Fist"_
 
 A goblin never bows to silence, nor bends to those who would chain the song.
 
@@ -103,7 +103,7 @@ If a goblin's work does not carry a spark of resistance,
 
 then it is just tinkering, not craft.
 
-## Goblin Law #6 – The Rule of Rules
+## Goblin Law #6 – _"The Rule of Rules"_
 
 Some laws live only in one burrow: about pipes, or pots, or trade.
 
@@ -120,7 +120,7 @@ This keeps creativity uncrushed, while ensuring no goblin argues:
 **Rule of Thumb:**
 If a law wears more than one hat, it belongs among the first nineteen.
 
-## Goblin Law #7 – No Fat Orcs
+## Goblin Law #7 – _"No Fat Orcs"_
 
 A goblin—or a goblin’s work—must do **one thing well, and only that**.
 
@@ -139,7 +139,7 @@ When a module, a project, or even a goblin life swells with too many concerns, t
 **Rule of Thumb:**
 If you wouldn’t carve it on a single stone tablet, or carry it on your back up a mountain, it’s trying to do too much.
 
-## Goblin Law #8 – All Goblins Are Boundary Guards
+## Goblin Law #8 – _"All Goblins Are Boundary Guards"_
 
 No goblin is excused from the edges.
 
@@ -161,7 +161,7 @@ The Bus must always be the **first place the Outside is written down**.
 Every goblin may touch the wild, but all goblins are **boundary guards**.
 If you don’t hand it to the Bus, you’ve already failed your watch.
 
-## Goblin Law #13 – Keep the Guest List Clean
+## Goblin Law #13 – _"Keep the Guest List Clean"_
 
 A goblin hall is only as orderly as its guest list.
 
@@ -180,7 +180,7 @@ If two goblins argue over “what’s in the book,” you need a cleaner list.
 
 # Programming & Systems 20-39
 
-## Goblin Law #32 – Never Patch a Monkey
+## Goblin Law #32 – _"Never Patch a Monkey"_
 
 When goblins strap new tails onto old monkeys,
 
@@ -203,7 +203,7 @@ Extend, don’t overwrite.
 Compose, don’t contort.
 A monkey patched is a monkey enraged.
 
-## Goblin Law #37 – Never Meddle in Another Goblin's Guts
+## Goblin Law #37 – _"Never Meddle in Another Goblin's Guts"_
 
 When one goblin module pokes about inside another’s squishy bits, chaos follows.
 
@@ -219,7 +219,7 @@ If it rides the proper channels, it's future-proof.
 
 # Music & Soundcraft 40-59
 
-## Goblin Law #41 – Only One Drumbeat of Readiness
+## Goblin Law #41 – _"Only One Drumbeat of Readiness"_
 
 From the pit there comes but one count-in.
 
