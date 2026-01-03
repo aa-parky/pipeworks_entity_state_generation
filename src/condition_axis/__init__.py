@@ -50,10 +50,11 @@ For backward compatibility, the old API is still available:
     >>> facial = generate_facial_condition(seed=42)
 """
 
+import warnings
+
 # ============================================================================
 # Character Conditions (Physical & Social States)
 # ============================================================================
-
 from .character_conditions import (
     AXIS_POLICY,
     CONDITION_AXES,
@@ -66,12 +67,24 @@ from .character_conditions import (
 )
 
 # ============================================================================
+# Occupation Conditions (Occupation Characteristics)
+# ============================================================================
+from .occupation_axis import (
+    OCCUPATION_AXES,
+    OCCUPATION_EXCLUSIONS,
+    OCCUPATION_POLICY,
+    OCCUPATION_WEIGHTS,
+    generate_occupation_condition,
+    get_available_occupation_axes,
+    get_occupation_axis_values,
+    occupation_condition_to_prompt,
+)
+
+# ============================================================================
 # Backward Compatibility: Deprecated Facial Conditions API
 # ============================================================================
 # NOTE: As of v1.1.0, facial conditions are integrated into character_conditions.
 # These wrapper functions maintain backward compatibility and will be removed in v2.0.0.
-
-import warnings
 
 
 def generate_facial_condition(seed: int | None = None) -> dict[str, str]:
@@ -188,20 +201,6 @@ FACIAL_WEIGHTS = {"facial_signal": WEIGHTS.get("facial_signal", {})}
 FACIAL_EXCLUSIONS: dict = {}  # Empty - exclusions now in EXCLUSIONS
 
 # ============================================================================
-# Occupation Conditions (Occupation Characteristics)
-# ============================================================================
-from .occupation_axis import (
-    OCCUPATION_AXES,
-    OCCUPATION_EXCLUSIONS,
-    OCCUPATION_POLICY,
-    OCCUPATION_WEIGHTS,
-    generate_occupation_condition,
-    get_available_occupation_axes,
-    get_occupation_axis_values,
-    occupation_condition_to_prompt,
-)
-
-# ============================================================================
 # Public API
 # ============================================================================
 
@@ -210,28 +209,28 @@ __all__ = [
     "AXIS_POLICY",
     "CONDITION_AXES",
     "EXCLUSIONS",
-    "WEIGHTS",
-    "condition_to_prompt",
-    "generate_condition",
-    "get_available_axes",
-    "get_axis_values",
     # Deprecated: Facial conditions (backward compatibility only)
     # These will be removed in v2.0.0
     "FACIAL_AXES",  # DEPRECATED
     "FACIAL_EXCLUSIONS",  # DEPRECATED
     "FACIAL_POLICY",  # DEPRECATED
     "FACIAL_WEIGHTS",  # DEPRECATED
-    "facial_condition_to_prompt",  # DEPRECATED
-    "generate_facial_condition",  # DEPRECATED
-    "get_available_facial_axes",  # DEPRECATED
-    "get_facial_axis_values",  # DEPRECATED
     # Occupation conditions
     "OCCUPATION_AXES",
     "OCCUPATION_EXCLUSIONS",
     "OCCUPATION_POLICY",
     "OCCUPATION_WEIGHTS",
+    "WEIGHTS",
+    "condition_to_prompt",
+    "facial_condition_to_prompt",  # DEPRECATED
+    "generate_condition",
+    "generate_facial_condition",  # DEPRECATED
     "generate_occupation_condition",
+    "get_available_axes",
+    "get_available_facial_axes",  # DEPRECATED
     "get_available_occupation_axes",
+    "get_axis_values",
+    "get_facial_axis_values",  # DEPRECATED
     "get_occupation_axis_values",
     "occupation_condition_to_prompt",
 ]
