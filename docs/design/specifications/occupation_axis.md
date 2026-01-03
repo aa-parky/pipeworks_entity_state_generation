@@ -315,7 +315,10 @@ Most importantly:
 
 ---
 
-```{STYLE_PREFIX}
+## Example Prompt Template
+
+```
+{STYLE_PREFIX}
 
 illustration of a pale blue-green goblin,
 
@@ -326,12 +329,11 @@ whose work operates under the following conditions:
 {occupation_axis}
 
 They are dressed in clothing appropriate to their work and current standing,
-showing signs of routine use rather than display.Their posture and expression reflect familiarity with the demands placed upon them, without overt dramatization.
+showing signs of routine use rather than display. Their posture and expression
+reflect familiarity with the demands placed upon them, without overt dramatization.
 
 The environment suggests a place where this kind of work is expected,
 but not celebrated.
 
 {STYLE_SUFFIX}
 ```
-
-9 & 29
