@@ -115,7 +115,11 @@ def test_format_as_narrative(test_seed: int) -> None:
     )
 
     character = generate_condition(seed=test_seed)
-    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
+    facial = (
+        {"facial_signal": character.get("facial_signal", "")}
+        if "facial_signal" in character
+        else {}
+    )
     occupation = generate_occupation_condition(seed=test_seed)
 
     narrative = format_as_narrative(character, facial, occupation)
@@ -338,7 +342,11 @@ def test_build_full_prompt_function(test_seed: int) -> None:
     )
 
     character = generate_condition(seed=test_seed)
-    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
+    facial = (
+        {"facial_signal": character.get("facial_signal", "")}
+        if "facial_signal" in character
+        else {}
+    )
     occupation = generate_occupation_condition(seed=test_seed)
 
     # Test basic prompt
@@ -556,7 +564,11 @@ def test_build_full_prompt_with_empty_components(test_seed: int) -> None:
     )
 
     character = generate_condition(seed=test_seed)
-    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
+    facial = (
+        {"facial_signal": character.get("facial_signal", "")}
+        if "facial_signal" in character
+        else {}
+    )
     occupation = generate_occupation_condition(seed=test_seed)
 
     # Should work with no optional parameters
