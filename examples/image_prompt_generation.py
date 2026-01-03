@@ -16,10 +16,8 @@ from typing import Any
 
 from condition_axis import (
     generate_condition,
-    generate_facial_condition,
     generate_occupation_condition,
     condition_to_prompt,
-    facial_condition_to_prompt,
     occupation_condition_to_prompt,
 )
 
@@ -54,7 +52,7 @@ def build_full_prompt(
     """
     # Convert conditions to prompts
     char_prompt = condition_to_prompt(character)
-    face_prompt = facial_condition_to_prompt(facial)
+    face_prompt = condition_to_prompt(facial)
     occ_prompt = occupation_condition_to_prompt(occupation)
 
     # Combine base components
@@ -116,7 +114,7 @@ def example_1_basic_image_prompt() -> None:
 
     seed = 42
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
     occupation = generate_occupation_condition(seed=seed)
 
     print("\nGenerated Conditions:")
@@ -145,7 +143,7 @@ def example_2_styled_prompts() -> None:
 
     seed = 99
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
     occupation = generate_occupation_condition(seed=seed)
 
     styles = [
@@ -173,7 +171,7 @@ def example_3_quality_enhanced_prompts() -> None:
 
     seed = 777
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
     occupation = generate_occupation_condition(seed=seed)
 
     # Different quality tag sets for different needs
@@ -216,7 +214,7 @@ def example_4_with_negative_prompts() -> None:
 
     seed = 123
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
     occupation = generate_occupation_condition(seed=seed)
 
     # Build positive prompt
@@ -260,7 +258,7 @@ def example_5_batch_prompt_generation() -> None:
     for i in range(4):
         seed = 1000 + i
         character = generate_condition(seed=seed)
-        facial = generate_facial_condition(seed=seed)
+        facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
         occupation = generate_occupation_condition(seed=seed)
 
         prompt = build_full_prompt(
@@ -281,7 +279,7 @@ def example_6_context_specific_additions() -> None:
 
     seed = 456
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": character.get("facial_signal", "")} if "facial_signal" in character else {}
     occupation = generate_occupation_condition(seed=seed)
 
     contexts = {

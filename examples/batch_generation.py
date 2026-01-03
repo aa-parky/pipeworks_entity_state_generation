@@ -19,10 +19,8 @@ from typing import Any
 
 from condition_axis import (
     generate_condition,
-    generate_facial_condition,
     generate_occupation_condition,
     condition_to_prompt,
-    facial_condition_to_prompt,
     occupation_condition_to_prompt,
 )
 
@@ -46,7 +44,7 @@ def generate_entity(seed: int) -> dict[str, Any]:
     return {
         "seed": seed,
         "character": generate_condition(seed=seed),
-        "facial": generate_facial_condition(seed=seed),
+        "facial": {"facial_signal": generate_condition(seed=seed).get("facial_signal", "")},
         "occupation": generate_occupation_condition(seed=seed),
     }
 
@@ -119,7 +117,7 @@ def example_1_simple_batch_generation() -> None:
     for entity in batch[:5]:
         seed = entity["seed"]
         char_prompt = condition_to_prompt(entity["character"])
-        face_prompt = facial_condition_to_prompt(entity["facial"])
+        face_prompt = condition_to_prompt(entity["facial"])
         occ_prompt = occupation_condition_to_prompt(entity["occupation"])
 
         full_prompt = f"{char_prompt}, {face_prompt}, {occ_prompt}"
@@ -205,7 +203,7 @@ def example_3_export_to_csv() -> None:
             # Combined prompt
             "full_prompt": (
                 f"{condition_to_prompt(char)}, "
-                f"{facial_condition_to_prompt(facial)}, "
+                f"{condition_to_prompt(facial)}, "
                 f"{occupation_condition_to_prompt(occ)}"
             ),
         }
@@ -257,7 +255,7 @@ def example_4_filtering_and_selection() -> None:
         example = wealthy[0]
         prompt = (
             f"{condition_to_prompt(example['character'])}, "
-            f"{facial_condition_to_prompt(example['facial'])}, "
+            f"{condition_to_prompt(example['facial'])}, "
             f"{occupation_condition_to_prompt(example['occupation'])}"
         )
         print(f"  Example (seed {example['seed']}): {prompt}")
@@ -271,7 +269,7 @@ def example_4_filtering_and_selection() -> None:
         example = illicit[0]
         prompt = (
             f"{condition_to_prompt(example['character'])}, "
-            f"{facial_condition_to_prompt(example['facial'])}, "
+            f"{condition_to_prompt(example['facial'])}, "
             f"{occupation_condition_to_prompt(example['occupation'])}"
         )
         print(f"  Example (seed {example['seed']}): {prompt}")
@@ -293,7 +291,7 @@ def example_4_filtering_and_selection() -> None:
         example = young_weathered[0]
         prompt = (
             f"{condition_to_prompt(example['character'])}, "
-            f"{facial_condition_to_prompt(example['facial'])}, "
+            f"{condition_to_prompt(example['facial'])}, "
             f"{occupation_condition_to_prompt(example['occupation'])}"
         )
         print(f"  Example (seed {example['seed']}): {prompt}")

@@ -16,7 +16,6 @@ from typing import Any
 
 from condition_axis import (
     generate_condition,
-    generate_facial_condition,
     generate_occupation_condition,
     condition_to_prompt,
 )

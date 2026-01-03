@@ -297,20 +297,18 @@ def example_3_combining_with_core_systems() -> None:
 
     from condition_axis import (
         generate_condition,
-        generate_facial_condition,
         condition_to_prompt,
-        facial_condition_to_prompt,
     )
 
     print("\nFantasy Character (Core + Magic):\n")
 
     seed = 42
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": generate_condition(seed=seed).get("facial_signal", "")}
     magic = generate_magic_condition(seed=seed)
 
     char_prompt = condition_to_prompt(character)
-    face_prompt = facial_condition_to_prompt(facial)
+    face_prompt = condition_to_prompt(facial)
     magic_prompt = magic_condition_to_prompt(magic)
 
     print(f"  Character: {char_prompt}")
@@ -323,11 +321,11 @@ def example_3_combining_with_core_systems() -> None:
 
     seed = 99
     character = generate_condition(seed=seed)
-    facial = generate_facial_condition(seed=seed)
+    facial = {"facial_signal": generate_condition(seed=seed).get("facial_signal", "")}
     tech = generate_tech_condition(seed=seed)
 
     char_prompt = condition_to_prompt(character)
-    face_prompt = facial_condition_to_prompt(facial)
+    face_prompt = condition_to_prompt(facial)
     tech_prompt = tech_condition_to_prompt(tech)
 
     print(f"  Character: {char_prompt}")
