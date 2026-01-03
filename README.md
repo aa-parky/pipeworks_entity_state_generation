@@ -203,6 +203,11 @@ pipeworks_entity_state_generation/
 │   │   ├── 02_pipeworks_system_architecture.md
 │   │   ├── 03_pipeworks_components.md
 │   │   └── 04_characters_first_narrow_door.md
+│   ├── diagrams/               # Architecture diagrams (NEW!)
+│   │   ├── README.md           # Diagram guide
+│   │   ├── 01-c4-container-architecture.svg
+│   │   ├── 02-layered-architecture-state-boundaries.svg
+│   │   └── 03-sequence-character-lifecycle.svg
 │   ├── specifications/         # Technical specifications
 │   │   ├── condition_axis.md
 │   │   ├── occupation_axis.md
@@ -494,7 +499,9 @@ This library is part of the broader [Pipeworks](https://github.com/aa-parky) pro
 | **pipeworks_image_generator** | Visualization and image synthesis | Interprets entity states for visual representation |
 | **the_daily_undertaking_ui** | Narrative and user-facing interface | Surfaces entity states to players |
 
-See [docs/design/02_pipeworks_system_architecture.md](./docs/design/02_pipeworks_system_architecture.md) for detailed integration documentation.
+**📊 Visual Architecture**: See [comprehensive architecture diagrams](./docs/diagrams/) showing how all five Pipeworks components connect, the pure/stateful boundary, and complete data flow.
+
+See [docs/design/02_pipeworks_system_architecture.md](./docs/design/02_pipeworks_system_architecture.md) for detailed integration documentation (includes embedded diagrams).
 
 ---
 
@@ -522,9 +529,15 @@ This repository is part of the broader Pipeworks project.
 ### Design & Philosophy
 - [Goblin Laws](./docs/design/00_goblin_laws.md) - Architectural principles and design philosophy
 - [Character State Model](./docs/design/01_character_state_model.md) - Conceptual foundation for state representation
-- [Pipeworks System Architecture](./docs/design/02_pipeworks_system_architecture.md) - How this library fits into the larger ecosystem
+- [Pipeworks System Architecture](./docs/design/02_pipeworks_system_architecture.md) - How this library fits into the larger ecosystem **(includes architecture diagrams)**
 - [Pipeworks Components](./docs/design/03_pipeworks_components.md) - The five load-bearing parts of the system
 - [Characters First](./docs/design/04_characters_first_narrow_door.md) - Design decision rationale
+
+### Architecture Diagrams
+- [Diagrams Overview](./docs/diagrams/README.md) - Complete guide to architecture visualizations
+- [C4 Container Architecture](./docs/diagrams/01-c4-container-architecture.svg) - Component connections and data flows
+- [Layered Architecture](./docs/diagrams/02-layered-architecture-state-boundaries.svg) - Pure vs stateful zones
+- [Character Lifecycle Sequence](./docs/diagrams/03-sequence-character-lifecycle.svg) - Complete pipeline in action
 
 ### Technical Specifications
 - [Character Conditions](./docs/specifications/condition_axis.md) - Character condition system specification
