@@ -105,12 +105,13 @@ def test_format_as_narrative(test_seed: int) -> None:
     Args:
         test_seed: Pytest fixture providing test seed.
     """
+    from integration_example import format_as_narrative
+
     from condition_axis import (
         generate_condition,
         generate_facial_condition,
         generate_occupation_condition,
     )
-    from integration_example import format_as_narrative
 
     character = generate_condition(seed=test_seed)
     facial = generate_facial_condition(seed=test_seed)
@@ -328,12 +329,13 @@ def test_build_full_prompt_function(test_seed: int) -> None:
     Args:
         test_seed: Pytest fixture providing test seed.
     """
+    from image_prompt_generation import build_full_prompt
+
     from condition_axis import (
         generate_condition,
         generate_facial_condition,
         generate_occupation_condition,
     )
-    from image_prompt_generation import build_full_prompt
 
     character = generate_condition(seed=test_seed)
     facial = generate_facial_condition(seed=test_seed)
@@ -465,12 +467,12 @@ def test_batch_generation_reproducibility(seed: int) -> None:
 
 def test_all_examples_have_main_functions() -> None:
     """Test that all example modules have main() functions."""
-    import basic_usage
     import advanced_usage
-    import integration_example
+    import basic_usage
     import batch_generation
     import custom_axes
     import image_prompt_generation
+    import integration_example
 
     modules = [
         basic_usage,
@@ -548,12 +550,13 @@ def test_build_full_prompt_with_empty_components(test_seed: int) -> None:
     Args:
         test_seed: Pytest fixture providing test seed.
     """
+    from image_prompt_generation import build_full_prompt
+
     from condition_axis import (
         generate_condition,
         generate_facial_condition,
         generate_occupation_condition,
     )
-    from image_prompt_generation import build_full_prompt
 
     character = generate_condition(seed=test_seed)
     facial = generate_facial_condition(seed=test_seed)
