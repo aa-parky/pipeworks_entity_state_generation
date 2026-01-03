@@ -347,9 +347,7 @@ def test_build_full_prompt_function(test_seed: int) -> None:
     assert len(basic_prompt) > 0
 
     # Test with style
-    styled_prompt = build_full_prompt(
-        character, facial, occupation, style="portrait photograph"
-    )
+    styled_prompt = build_full_prompt(character, facial, occupation, style="portrait photograph")
     assert "portrait photograph" in styled_prompt
 
     # Test with quality tags
