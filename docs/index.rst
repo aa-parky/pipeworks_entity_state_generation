@@ -82,6 +82,12 @@ Quick Start
 
 .. toctree::
    :maxdepth: 2
+   :caption: Usage Examples
+
+   examples
+
+.. toctree::
+   :maxdepth: 2
    :caption: Architecture Diagrams
 
    diagrams/README
