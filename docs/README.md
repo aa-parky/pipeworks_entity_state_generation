@@ -104,7 +104,7 @@ Like the generation systems themselves, documentation emphasizes bias and sugges
 ### Path 2: I want to generate characters
 1. [Character Conditions Spec](specifications/condition_axis.md) - Implementation details
 2. [Occupation Axis Spec](specifications/occupation_axis.md) - Occupation system
-3. Check the main [CLAUDE.md](../CLAUDE.md) in repo root for code examples
+3. Check the main CLAUDE.md in repo root for code examples
 
 ### Path 3: I want to understand the philosophy
 1. [Goblin Laws](design/00_goblin_laws.md) - Project principles
@@ -114,15 +114,15 @@ Like the generation systems themselves, documentation emphasizes bias and sugges
 ### Path 4: I want to set up my environment
 1. [Pre-Commit Hooks Setup](guides/Pre-Commit%20Hooks%20Setup%20Guide.md) - Start here
 2. [GitHub Actions Setup](guides/GitHub%20Actions%20CI%20Setup%20Guide.md) - If configuring CI
-3. Main [CLAUDE.md](../CLAUDE.md) for development commands
+3. Main CLAUDE.md for development commands
 
 ---
 
 ## Related Documentation
 
-- **[../CLAUDE.md](../CLAUDE.md)** - Main project documentation with commands, architecture overview, and code examples
-- **[../README.md](../README.md)** - Project README with installation and quick start
-- **[../Project_TODO_List.md](../Project_TODO_List.md)** - Current project status and tasks
+- **CLAUDE.md** (in repo root) - Main project documentation with commands, architecture overview, and code examples
+- **README.md** (in repo root) - Project README with installation and quick start
+- **Project_TODO_List.md** (in repo root) - Current project status and tasks
 
 ---
 

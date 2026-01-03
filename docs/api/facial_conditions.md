@@ -885,7 +885,7 @@ This module will be merged into `character_conditions.py` when:
 
 ## See Also
 
-- [Base Utilities API](._base.md) - Shared generation functions
+- [Base Utilities API](_base.md) - Shared generation functions
 - [Character Conditions API](./character_conditions.md) - Physical & social states
 - [Occupation Axis API](./occupation_axis.md) - Occupation characteristics
 - [Obey the Verb](../specifications/Obey_the_Verb.md) - Prompting philosophy
