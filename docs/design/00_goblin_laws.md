@@ -1,12 +1,12 @@
-# 🧙 Goblin Laws
+# Goblin Laws
 
 Ancient wisdoms of the Goblin folk, written down so that future builders, tinkerers, and bug-chasers may not forget.
 
-Each law carries a number, not in order of discovery, but in the order of Goblin Time , sometimes backwards, sometimes sideways.
+Each law carries a number, not in order of discovery, but in the order of Goblin Time—sometimes backwards, sometimes sideways.
 
 ---
 
-## 🗂️ Goblin Law Numbering Convention
+## Goblin Law Numbering Convention
 
 - **#1–19 :: Foundational Goblinisms**
 	Universal truths of tinkering, mischief, and survival. The sort of stuff carved into cave walls.
@@ -31,15 +31,28 @@ Each law carries a number, not in order of discovery, but in the order of Goblin
 - **#100 :: The Unwritten Law**
 	Always blank, always waiting. The goblins say if it’s ever written down, the world ends.
 
-## 📜 Index of Laws
+## Index of Laws
 
-- **#37** – Never Meddle in Another Goblin’s Guts
+**Foundational Goblinisms (1-19)**
+- **#3** – On Walking
+- **#5** – Raise the Fist
+- **#6** – The Rule of Rules
+- **#7** – No Fat Orcs
+- **#8** – All Goblins Are Boundary Guards
+- **#13** – Keep the Guest List Clean
+
+**Programming & Systems (20-39)**
+- **#32** – Never Patch a Monkey
+- **#37** – Never Meddle in Another Goblin's Guts
+
+**Music & Soundcraft (40-59)**
+- **#41** – Only One Drumbeat of Readiness
 
 ---
 
 # Foundational Goblinisms 1-19
 
-## Goblin Law #3 — On Walking
+## Goblin Law #3 – On Walking
 
 > You do not learn to walk before you run.
 
@@ -72,11 +85,11 @@ They bounce violently until gravity negotiates.
 _This law exists to protect early motion, awkward prototypes,
 unfinished thinking, and people learning in public._
 
-## ⚖️ Goblin Law #5 – _Raise the Fist_
+## Goblin Law #5 – Raise the Fist
 
 A goblin never bows to silence, nor bends to those who would chain the song.
 
-When the hall is dark, the fist is raised ,
+When the hall is dark, the fist is raised,
 
 for **solidarity**, for **movement**, for **defiance**.
 
@@ -86,17 +99,15 @@ but a hand for saying **“we build together, we resist together.”**
 
 **Rule of Thumb:**
 
-If a goblin’s work , be it rack, bus, or beat ,
+If a goblin's work does not carry a spark of resistance,
 
-does not carry a spark of resistance,
+then it is just tinkering, not craft.
 
-then it is just tinkering, not Tonika.
-
-## ⚖️ Goblin Law #6 – _The Rule of Rules_
+## Goblin Law #6 – The Rule of Rules
 
 Some laws live only in one burrow: about pipes, or pots, or trade.
 
-But when a law echoes across many halls , from mushrooms to markets, from code to chords , it must be carved into the **Foundational Stones (1–19)**.
+But when a law echoes across many halls—from mushrooms to markets, from code to chords—it must be carved into the **Foundational Stones (1–19)**.
 
 Thus the goblin lawbook stays lean and sly, not bloated with copies.
 
@@ -104,22 +115,22 @@ One carving, many echoes.
 
 This keeps creativity uncrushed, while ensuring no goblin argues:
 
-“Does this belong in Systems or Trade?” , the stone already answers.
+“Does this belong in Systems or Trade?”—the stone already answers.
 
 **Rule of Thumb:**
 If a law wears more than one hat, it belongs among the first nineteen.
 
-## ⚖️ Goblin Law #7 – _No Fat Orcs_
+## Goblin Law #7 – No Fat Orcs
 
-A goblin , or a goblin’s work , must do **one thing well, and only that**.
+A goblin—or a goblin’s work—must do **one thing well, and only that**.
 
-Catch, calculate, display, export, persist , but never all at once.
+Catch, calculate, display, export, persist—but never all at once.
 
 A pot that tries to be a drum, a helmet, and a cooking pan ends up dented and burnt.
 
 Each piece, like each goblin, stays **lean and fast**, carrying just enough to fulfill its promise.
 
-The heavy lifting , cataloguing, publishing, storing, shipping, polishing , belongs to other goblins down the chain.
+The heavy lifting—cataloguing, publishing, storing, shipping, polishing—belongs to other goblins down the chain.
 
 Every Fat Orc slows the Bus.
 
@@ -128,11 +139,11 @@ When a module, a project, or even a goblin life swells with too many concerns, t
 **Rule of Thumb:**
 If you wouldn’t carve it on a single stone tablet, or carry it on your back up a mountain, it’s trying to do too much.
 
-## ⚖️ Goblin Law #8 – _All Goblins Are Boundary Guards_
+## Goblin Law #8 – All Goblins Are Boundary Guards
 
 No goblin is excused from the edges.
 
-Every goblin meets the Outside , raw bytes, strangers at the gate, the shifting weather.
+Every goblin meets the Outside—raw bytes, strangers at the gate, the shifting weather.
 
 But the test of a goblin’s worth is not in the meeting,
 
@@ -150,7 +161,7 @@ The Bus must always be the **first place the Outside is written down**.
 Every goblin may touch the wild, but all goblins are **boundary guards**.
 If you don’t hand it to the Bus, you’ve already failed your watch.
 
-## ⚖️ Goblin Law #13 – _Keep the Guest List Clean_
+## Goblin Law #13 – Keep the Guest List Clean
 
 A goblin hall is only as orderly as its guest list.
 
@@ -169,7 +180,7 @@ If two goblins argue over “what’s in the book,” you need a cleaner list.
 
 # Programming & Systems 20-39
 
-## ⚖️ Goblin Law #32 – _Never Patch a Monkey_
+## Goblin Law #32 – Never Patch a Monkey
 
 When goblins strap new tails onto old monkeys,
 
@@ -192,7 +203,7 @@ Extend, don’t overwrite.
 Compose, don’t contort.
 A monkey patched is a monkey enraged.
 
-## ⚖️ Goblin Law #37 – _Never Meddle in Another Goblin’s Guts_
+## Goblin Law #37 – Never Meddle in Another Goblin's Guts
 
 When one goblin module pokes about inside another’s squishy bits, chaos follows.
 
@@ -203,14 +214,12 @@ Wise goblins use the Bus: speak your need, let the message travel, and let the o
 Thus modules stay sturdy, secrets stay secret, and no one wakes up to find their levers pulled without asking.
 
 **Rule of Thumb:**
-If goblins bypass the Bus and meddle directly, it always ends in burnt mushrooms.
-If it rides the Bus, it’s future-proof.
-
-**Tonika-Bus is the central event backbone for the whole Tonika ecosystem.** Its job is to handle all module communication in a single, consistent way so no module needs its own emitter or custom wiring. Every component (keyboard, chord engine, stream module, etc.) should subscribe and publish only through the bus. When cleaning up legacy code, look for direct emitter calls, one-off event dispatchers, or modules mutating each other directly , those need to be replaced with `tonika-bus` events. The rule of thumb: _if it’s handling events outside the bus, it’s legacy; if it’s on the bus, it’s future-proof._
+If goblins bypass the message system and meddle directly, it always ends in burnt mushrooms.
+If it rides the proper channels, it's future-proof.
 
 # Music & Soundcraft 40-59
 
-## ⚖️ Goblin Law #41 – Only One Drumbeat of Readiness
+## Goblin Law #41 – Only One Drumbeat of Readiness
 
 From the pit there comes but one count-in.
 
@@ -222,7 +231,7 @@ Let not every goblin shout their own “ready,”
 
 for a dozen false starts tear the tune to rags.
 
-Thus in Tonika:
+Thus in any system:
 
 the **Base Class** alone beats the lifecycle drum —
 
@@ -241,6 +250,12 @@ Then play on.
 
 # Governance & Trade 60-79
 
+_Laws in this range are carved only when needed. Goblins do not invent rules for problems they have not yet encountered._
+
 # Forbidden & Foolish 80-99
 
+_Laws in this range are carved only when needed. Goblins do not invent rules for problems they have not yet encountered._
+
 # The Unwritten Law 100
+
+_Law #100 remains forever blank. The goblins say if it's ever written down, the world ends._
