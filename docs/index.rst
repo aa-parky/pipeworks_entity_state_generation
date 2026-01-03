@@ -105,7 +105,7 @@ Quick Start
    :maxdepth: 2
    :caption: Design & Philosophy
 
-   design/index
+   design_philosophy/index
 
 .. toctree::
    :maxdepth: 1

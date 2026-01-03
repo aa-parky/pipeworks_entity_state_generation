@@ -45,7 +45,7 @@ Three complementary diagrams visualize the Pipeworks ecosystem from different pe
 
 Shows all five components, their technology boundaries, and data flow contracts.
 
-![C4 Container Architecture](../diagrams/01-c4-container-architecture.svg)
+![C4 Container Architecture](../../diagrams/01-c4-container-architecture.svg)
 
 **Key Insights:**
 - The Daily Undertaking UI is the **singularity** where all flows converge
@@ -57,7 +57,7 @@ Shows all five components, their technology boundaries, and data flow contracts.
 
 Shows the five architectural layers and the critical pure/stateful boundary.
 
-![Layered Architecture](../diagrams/02-layered-architecture-state-boundaries.svg)
+![Layered Architecture](../../diagrams/02-layered-architecture-state-boundaries.svg)
 
 **Key Insights:**
 - **Pure Zone** (Registry, Generator, Image Gen): Deterministic, reproducible, stateless
@@ -70,7 +70,7 @@ Shows the five architectural layers and the critical pure/stateful boundary.
 
 Shows a concrete example: how a character appears and is shown to the player.
 
-![Sequence Diagram](../diagrams/03-sequence-character-lifecycle.svg)
+![Sequence Diagram](../../diagrams/03-sequence-character-lifecycle.svg)
 
 **Key Insights:**
 - Complete end-to-end flow through all six phases

@@ -30,27 +30,22 @@ The `pipeworks_entity_state_generation` repository is one component in a larger 
 
 ## Navigation
 
-### Core Philosophy
+### Philosophy
 
-Start here to understand the foundational principles.
+Core design philosophy, architectural principles, and system thinking.
 
-- **[Goblin Laws](00_goblin_laws.md)** - Universal design principles for tinkering, systems, and survival
-- **[Character State Model](01_character_state_model.md)** - How Pipeworks understands character state as bias, not definition
-- **[Design Decision: Characters First](03_design_decision_characters_first.md)** - Why characters were the first artefact domain (design decision record)
+- **[Goblin Laws](philosophy/00_goblin_laws.md)** - Universal design principles for tinkering, systems, and survival
+- **[Character State Model](philosophy/01_character_state_model.md)** - How Pipeworks understands character state as bias, not definition
+- **[System Architecture](philosophy/02_system_architecture.md)** - The five components, their responsibilities, data flow, and integration contracts
+- **[Design Decision: Characters First](philosophy/03_design_decision_characters_first.md)** - Why characters were the first artefact domain (design decision record)
 
-### System Architecture
+### Conceptual Design
 
-How the pieces fit together.
+Detailed axis specifications, templates, and implementation patterns.
 
-- **[System Architecture](02_system_architecture.md)** - The five components, their responsibilities, data flow, and integration contracts
-
-### Technical Specifications
-
-Detailed axis specifications and implementation patterns.
-
-- **[Condition Axis Specification](specifications/condition_axis.md)** - Character conditions system (physique, wealth, health, demeanor, age)
-- **[Occupation Axis Specification](specifications/occupation_axis.md)** - Occupation characteristics (legitimacy, visibility, moral load, dependency, risk)
-- **[Prompt Design Principles](specifications/Obey_the_Verb.md)** - How image models respond to verbs and conditions, not nouns
+- **[Condition Axis Specification](conceptual_design/condition_axis.md)** - Character conditions system (physique, wealth, health, demeanor, age)
+- **[Occupation Axis Specification](conceptual_design/occupation_axis.md)** - Occupation characteristics (legitimacy, visibility, moral load, dependency, risk)
+- **[Prompt Design Principles](conceptual_design/Obey_the_Verb.md)** - How image models respond to verbs and conditions, not nouns
 
 ---
 
@@ -67,7 +62,7 @@ You'll encounter three kinds of documents here:
 ## Reading Guidance
 
 - **New to Pipeworks?** Start with Goblin Laws → System Architecture → Character State Model
-- **Implementing a feature?** Check the relevant specification in `specifications/`
+- **Implementing a feature?** Check the relevant specification in `conceptual_design/`
 - **Questioning a design choice?** Look for the decision record (e.g., Characters First)
 - **Adding a new axis or system?** Read the existing specifications to understand the pattern
 
