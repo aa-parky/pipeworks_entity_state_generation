@@ -59,19 +59,21 @@ Implementation details for the generation systems. These documents describe *wha
 
 ### `guides/` - Setup & Process Guides
 
-Step-by-step instructions for setting up development tools and CI/CD.
+Step-by-step instructions for setting up development tools, CI/CD, and migration guides.
 
 | Document | Purpose |
 |----------|---------|
 | [Pre-Commit Hooks Setup Guide.md](guides/Pre-Commit%20Hooks%20Setup%20Guide.md) | Local git hooks for code quality |
 | [GitHub Actions CI Setup Guide.md](guides/GitHub%20Actions%20CI%20Setup%20Guide.md) | Automated testing and linting |
 | [ReadTheDocs Setup Guide.md](guides/ReadTheDocs%20Setup%20Guide.md) | Deploying documentation to ReadTheDocs |
+| [Migration-v1.0-to-v1.1.md](guides/Migration-v1.0-to-v1.1.md) | Upgrading from v1.0 to v1.1 unified API |
 
 **Read these when:**
 - You're setting up your development environment
 - You're troubleshooting CI failures
 - You're configuring new hooks or workflows
 - You're deploying documentation to ReadTheDocs
+- You're upgrading from v1.0.0 to v1.1.0
 
 ### `diagrams/` - Architecture Diagrams
 

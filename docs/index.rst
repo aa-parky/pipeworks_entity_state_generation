@@ -43,22 +43,18 @@ Quick Start
 
    from condition_axis import (
        generate_condition,
-       generate_facial_condition,
        generate_occupation_condition,
        condition_to_prompt,
-       facial_condition_to_prompt,
        occupation_condition_to_prompt,
    )
 
-   # Generate character physical and social state
+   # Generate character physical and social state (may include facial signals)
    character_state = generate_condition(seed=42)
    print(character_state)
-   # {'physique': 'wiry', 'wealth': 'poor', 'health': 'weary'}
+   # {'physique': 'wiry', 'wealth': 'poor', 'health': 'weary', 'facial_signal': 'weathered'}
 
-   # Generate facial perception modifiers
-   facial_state = generate_facial_condition(seed=42)
-   print(facial_state)
-   # {'overall_impression': 'weathered'}
+   # Note: facial_signal is an optional axis that may or may not appear
+   # As of v1.1.0, facial signals are integrated into character conditions
 
    # Generate occupation characteristics
    occupation_state = generate_occupation_condition(seed=42)
@@ -67,10 +63,9 @@ Quick Start
 
    # Convert to comma-separated prompts
    char_prompt = condition_to_prompt(character_state)
-   face_prompt = facial_condition_to_prompt(facial_state)
    occ_prompt = occupation_condition_to_prompt(occupation_state)
 
-   full_prompt = f"{char_prompt}, {face_prompt}, {occ_prompt}"
+   full_prompt = f"{char_prompt}, {occ_prompt}"
    print(full_prompt)
    # "wiry, poor, weary, weathered, tolerated, discreet, burdened"
 
@@ -105,6 +100,7 @@ Quick Start
    guides/Pre-Commit Hooks Setup Guide
    guides/GitHub Actions CI Setup Guide
    guides/ReadTheDocs Setup Guide
+   guides/Migration-v1.0-to-v1.1
 
 .. toctree::
    :maxdepth: 2
@@ -142,7 +138,7 @@ Conditional axes describe the **current lived state** of an entity. They are:
 Available Axis Systems
 ----------------------
 
-The library currently provides three independent axis systems:
+The library currently provides two independent axis systems:
 
 **1. Character Conditions** (``character_conditions``)
    Physical and social states that establish baseline character presentation:
@@ -152,13 +148,11 @@ The library currently provides three independent axis systems:
    - **Health**: sickly, scarred, weary, hale, limping
    - **Demeanor**: timid, suspicious, resentful, alert, proud
    - **Age**: young, middle-aged, old, ancient
+   - **Facial Signal**: understated, pronounced, exaggerated, asymmetrical, weathered, soft-featured, sharp-featured
 
-**2. Facial Conditions** (``facial_conditions``)
-   Perception modifiers that bias how faces are interpreted:
+   *Note: As of v1.1.0, facial signals are integrated into character conditions as an optional axis, with cross-system exclusion rules to maintain coherence.*
 
-   - **Overall Impression**: youthful, weathered, stern, gentle, marked, unremarkable
-
-**3. Occupation Conditions** (``occupation_axis``)
+**2. Occupation Conditions** (``occupation_axis``)
    Labor pressures and social positioning (not job titles):
 
    - **Legitimacy**: sanctioned, tolerated, questioned, illicit

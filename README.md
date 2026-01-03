@@ -67,7 +67,7 @@ print(full_prompt)
 # "wiry, poor, weary, weathered, tolerated, discreet, burdened"
 ```
 
-**Note**: As of v1.1.0, facial signals are integrated into `generate_condition()` as an optional axis. The separate `generate_facial_condition()` function is deprecated but maintained for backward compatibility.
+**Note**: As of v1.1.0, facial signals are integrated into `generate_condition()` as an optional axis. The separate `generate_facial_condition()` function has been removed from the public API. See the [Migration Guide](./docs/guides/Migration-v1.0-to-v1.1.md) for upgrading from v1.0.
 
 ---
 
@@ -78,7 +78,7 @@ The `examples/` directory contains **comprehensive, runnable examples** demonstr
 ### Core Examples
 - **`basic_usage.py`** - Simple generation, serialization, and reproducibility
 - **`advanced_usage.py`** - Weighted distributions, exclusion rules, and statistical analysis
-- **`integration_example.py`** - Combining all three axis systems for complete entity generation
+- **`integration_example.py`** - Combining character and occupation axis systems for complete entity generation
 
 ### Advanced Examples
 - **`batch_generation.py`** - Bulk generation with JSON/CSV export and memory-efficient streaming
@@ -117,7 +117,7 @@ They are:
 
 ### Available Axis Systems
 
-The library currently provides three independent axis systems:
+The library currently provides two independent axis systems:
 
 #### 1. Character Conditions (`character_conditions`)
 Physical and social states that establish baseline character presentation:
@@ -213,8 +213,7 @@ pipeworks_entity_state_generation/
 ├── src/condition_axis/         # Main package
 │   ├── __init__.py             # Public API exports
 │   ├── _base.py                # Shared utilities
-│   ├── character_conditions.py # Physical, social & facial states
-│   ├── facial_conditions.py    # DEPRECATED (kept for reference)
+│   ├── character_conditions.py # Physical, social & facial states (unified in v1.1.0)
 │   └── occupation_axis.py      # Occupation characteristics
 │
 ├── tests/                      # Test suite (90%+ coverage)
@@ -223,10 +222,10 @@ pipeworks_entity_state_generation/
 │   ├── test_occupation_axis_axis.py
 │   └── test_examples.py        # Example script tests (39 tests)
 │
-├── examples/                   # Usage examples (NEW!)
+├── examples/                   # Usage examples
 │   ├── basic_usage.py          # Simple generation & serialization
 │   ├── advanced_usage.py       # Weights, exclusions & analysis
-│   ├── integration_example.py  # Combining all three systems
+│   ├── integration_example.py  # Combining character & occupation systems
 │   ├── batch_generation.py     # Bulk generation & exports
 │   ├── custom_axes.py          # Creating custom axis systems
 │   └── image_prompt_generation.py  # AI image generation integration
@@ -236,26 +235,28 @@ pipeworks_entity_state_generation/
 │   ├── api/                    # API reference documentation
 │   │   ├── _base.md
 │   │   ├── character_conditions.md
-│   │   ├── facial_conditions.md
+│   │   ├── facial_conditions.md    # DEPRECATED (v1.0 historical reference)
 │   │   └── occupation_axis.md
 │   ├── design/                 # Philosophy & architecture
 │   │   ├── 00_goblin_laws.md
 │   │   ├── 01_character_state_model.md
 │   │   ├── 02_pipeworks_system_architecture.md
 │   │   ├── 03_pipeworks_components.md
-│   │   └── 04_characters_first_narrow_door.md
-│   ├── diagrams/               # Architecture diagrams (NEW!)
+│   │   ├── 04_characters_first_narrow_door.md
+│   │   └── specifications/     # Technical specifications
+│   │       ├── condition_axis.md
+│   │       ├── occupation_axis.md
+│   │       └── Obey_the_Verb.md
+│   ├── diagrams/               # Architecture diagrams
 │   │   ├── README.md           # Diagram guide
 │   │   ├── 01-c4-container-architecture.svg
 │   │   ├── 02-layered-architecture-state-boundaries.svg
 │   │   └── 03-sequence-character-lifecycle.svg
-│   ├── specifications/         # Technical specifications
-│   │   ├── condition_axis.md
-│   │   ├── occupation_axis.md
-│   │   └── Obey_the_Verb.md
 │   ├── guides/                 # Setup & process guides
 │   │   ├── GitHub Actions CI Setup Guide.md
-│   │   └── Pre-Commit Hooks Setup Guide.md
+│   │   ├── Pre-Commit Hooks Setup Guide.md
+│   │   ├── ReadTheDocs Setup Guide.md
+│   │   └── Migration-v1.0-to-v1.1.md  # v1.0 → v1.1 upgrade guide
 │   └── images/                 # Documentation images
 │       ├── condition_axis.jpg
 │       ├── miss_filed.jpg
@@ -324,19 +325,20 @@ Those concerns belong downstream. This library produces **generation-time primit
 ### Combining Multiple Axis Systems
 
 ```python
-# Generate complete character with all three systems
+# Generate complete character (may include facial signals)
 character = generate_condition(seed=123)
-facial = generate_facial_condition(seed=123)
 occupation = generate_occupation_condition(seed=123)
 
 # Serialize for image prompt
 image_prompt = (
     f"illustration of a pale blue-green goblin, "
     f"{condition_to_prompt(character)}, "
-    f"{facial_condition_to_prompt(facial)}, "
     f"whose work operates under the following conditions: "
     f"{occupation_condition_to_prompt(occupation)}"
 )
+# Example output:
+# "illustration of a pale blue-green goblin, skinny, poor, limping, alert,
+#  whose work operates under the following conditions: tolerated, discreet, burdened"
 ```
 
 ### Inspecting Available Axes and Values
@@ -351,7 +353,7 @@ from condition_axis import (
 
 # List all character condition axes
 print(get_available_axes())
-# ['physique', 'wealth', 'health', 'demeanor', 'age']
+# ['physique', 'wealth', 'health', 'demeanor', 'age', 'facial_signal']
 
 # Get possible values for an axis
 print(get_axis_values('wealth'))
@@ -501,9 +503,14 @@ For Sphinx documentation syntax, see:
 
 ## Future Work
 
+### Implemented in v1.1.0 ✅
+
+- **Cross-system exclusion rules**: Character and facial axis exclusions implemented (young + weathered, wealth + weathered, etc.)
+- **Facial signal integration**: Merged into character_conditions with full coherence rules
+
 ### Planned Enhancements
 
-- **Cross-system exclusion rules**: Validate compatibility between character, facial, and occupation axes
+- **Extended cross-system exclusions**: Validate compatibility between character and occupation axes (e.g., `demeanor="timid"` + `visibility="conspicuous"`)
 - **Unified generator**: Single function to generate complete entity state with cross-system coherence
 - **Quirks system**: Persistent, localized irregularities that introduce structured deviation (see "Quirks" below)
 - **Serialization/deserialization**: JSON and YAML support for storing and reloading states
@@ -567,8 +574,8 @@ This repository is part of the broader Pipeworks project.
 
 ### API Reference
 - [Base Utilities](./docs/api/_base.md) - Core utilities (weighted_choice, apply_exclusion_rules, values_to_prompt)
-- [Character Conditions](./docs/api/character_conditions.md) - Physical & social character state generation
-- [Facial Conditions](./docs/api/facial_conditions.md) - Facial perception modifiers
+- [Character Conditions](./docs/api/character_conditions.md) - Physical & social character state generation (includes facial signals as of v1.1.0)
+- [Facial Conditions](./docs/api/facial_conditions.md) - **DEPRECATED** - v1.0 historical reference only (merged into character_conditions in v1.1.0)
 - [Occupation Axis](./docs/api/occupation_axis.md) - Occupation characteristics generation
 
 ### Design & Philosophy
@@ -585,13 +592,14 @@ This repository is part of the broader Pipeworks project.
 - [Character Lifecycle Sequence](./docs/diagrams/03-sequence-character-lifecycle.svg) - Complete pipeline in action
 
 ### Technical Specifications
-- [Character Conditions](./docs/specifications/condition_axis.md) - Character condition system specification
-- [Occupation Axis](./docs/specifications/occupation_axis.md) - Occupation characteristics specification
-- [Obey the Verb](./docs/specifications/Obey_the_Verb.md) - AI image generation prompting strategy
+- [Character Conditions](./docs/design/specifications/condition_axis.md) - Character condition system specification
+- [Occupation Axis](./docs/design/specifications/occupation_axis.md) - Occupation characteristics specification
+- [Obey the Verb](./docs/design/specifications/Obey_the_Verb.md) - AI image generation prompting strategy
 
 ### Setup Guides
 - [Pre-Commit Hooks Setup](./docs/guides/Pre-Commit%20Hooks%20Setup%20Guide.md) - Local development setup
 - [GitHub Actions CI Setup](./docs/guides/GitHub%20Actions%20CI%20Setup%20Guide.md) - CI/CD configuration
+- [Migration Guide v1.0 → v1.1](./docs/guides/Migration-v1.0-to-v1.1.md) - Upgrading from v1.0 to v1.1 unified API
 
 ---
 
@@ -615,8 +623,10 @@ Before submitting a PR:
 
 ## Status
 
-This library is in active development (v1.0.0).
+This library is in active development (v1.1.0).
 
-Core generation systems (character, facial, occupation) are **stable and production-ready**.
+Core generation systems (character with integrated facial signals, occupation) are **stable and production-ready**.
+
+**v1.1.0 Changes**: Facial signals integrated into character conditions with cross-system exclusion rules. See [Migration Guide](./docs/guides/Migration-v1.0-to-v1.1.md) for upgrading from v1.0.
 
 Interfaces, schemas, and axis definitions may evolve, but the core separation between state resolution (axes) and state interpretation (downstream systems) is considered foundational.

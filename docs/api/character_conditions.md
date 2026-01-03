@@ -77,7 +77,9 @@ CONDITION_AXES = {
     "wealth": ["poor", "modest", "well-kept", "wealthy", "decadent"],
     "health": ["sickly", "scarred", "weary", "hale", "limping"],
     "demeanor": ["timid", "suspicious", "resentful", "alert", "proud"],
-    "age": ["young", "middle-aged", "old", "ancient"]
+    "age": ["young", "middle-aged", "old", "ancient"],
+    "facial_signal": ["understated", "pronounced", "exaggerated", "asymmetrical",
+                      "weathered", "soft-featured", "sharp-featured"]
 }
 ```
 
@@ -163,6 +165,38 @@ Character's position in life cycle.
 - Uniform distribution (no demographic modeling)
 - Triggers exclusions (ancient excludes timidity)
 
+##### `facial_signal` - Facial Perception Modifiers
+Perception modifiers that bias how a character's face is interpreted (merged from facial_conditions in v1.1.0).
+
+| Value | Description | Relative Frequency |
+|-------|-------------|--------------------|
+| `understated` | Reduces feature prominence; subtle, unremarkable | Common (3.0) |
+| `soft-featured` | Rounded interpretation; gentle, approachable | Fairly Common (2.5) |
+| `pronounced` | Strong features; distinctive, memorable | Moderate (2.0) |
+| `sharp-featured` | Angular interpretation; defined, striking | Moderate (2.0) |
+| `weathered` | Wear/age texture; experienced, hardship | Less Common (1.5) |
+| `asymmetrical` | Irregular features; unique character | Uncommon (1.0) |
+| `exaggerated` | Extreme features; caricature-like | Rare (0.5) |
+
+**Design Notes**:
+- **Optional axis** (may or may not appear, part of the 0-2 optional axes pool)
+- **Perception modifiers, not anatomy**: Signals bias interpretation rather than prescribing specific features
+- **Species-agnostic**: "weathered" works for goblins, humans, elves, etc.
+- **Weighted toward subtle signals**: Most faces aren't remarkable (understated, soft-featured are most common)
+- **Cross-system exclusions**: Prevented combinations with age, health, and wealth axes (see EXCLUSIONS)
+
+**Signal Meanings**:
+- `understated` → Features blend harmoniously, unremarkable
+- `soft-featured` → Rounded contours, gentle impression
+- `pronounced` → Strong bone structure, clearly defined
+- `sharp-featured` → Angular lines, aristocratic or severe
+- `weathered` → Lines and texture from time/hardship
+- `asymmetrical` → Uneven features adding character
+- `exaggerated` → Striking, almost caricatured proportions
+
+**Integration Note** (v1.1.0):
+Prior to v1.1.0, facial signals were a separate `facial_conditions` module. They are now integrated into `character_conditions` with cross-system exclusion rules to maintain coherence with other character axes.
+
 ---
 
 ## Configuration Constants
@@ -177,7 +211,7 @@ Controls which axes are mandatory vs. optional and limits complexity.
 ```python
 AXIS_POLICY = {
     "mandatory": ["physique", "wealth"],
-    "optional": ["health", "demeanor", "age"],
+    "optional": ["health", "demeanor", "age", "facial_signal"],
     "max_optional": 2
 }
 ```
@@ -197,10 +231,11 @@ AXIS_POLICY = {
 - Establish baseline for interpretation of other traits
 - Provide minimum viable character description
 
-**Why health/demeanor/age are optional:**
+**Why health/demeanor/age/facial_signal are optional:**
 - Add nuance without overwhelming the prompt
 - Not always relevant to the scene
 - Keep diffusion models focused on core attributes
+- Facial signals provide perception modifiers when relevant
 
 **Why max_optional = 2:**
 - Prevents "Christmas tree" effect (too many adjectives)
@@ -232,6 +267,15 @@ WEIGHTS = {
         "frail": 1.0,
         "stocky": 1.0,
         "broad": 0.5
+    },
+    "facial_signal": {
+        "understated": 3.0,
+        "soft-featured": 2.5,
+        "pronounced": 2.0,
+        "sharp-featured": 2.0,
+        "weathered": 1.5,
+        "asymmetrical": 1.0,
+        "exaggerated": 0.5
     }
 }
 ```
@@ -263,6 +307,7 @@ WEIGHTS = {
 **Design Philosophy**:
 - Wealth heavily skewed (realistic socioeconomics)
 - Physique moderately skewed (survival builds more common)
+- Facial signals weighted toward subtle (most faces aren't remarkable)
 - Health/demeanor/age uniform (no inherent bias)
 
 ---
@@ -278,16 +323,25 @@ Semantic coherence rules that prevent illogical combinations.
 EXCLUSIONS = {
     ("wealth", "decadent"): {
         "physique": ["frail"],
-        "health": ["sickly"]
+        "health": ["sickly"],
+        "facial_signal": ["weathered"]
     },
     ("age", "ancient"): {
-        "demeanor": ["timid"]
+        "demeanor": ["timid"],
+        "facial_signal": ["understated"]
+    },
+    ("age", "young"): {
+        "facial_signal": ["weathered"]
     },
     ("physique", "broad"): {
         "health": ["sickly"]
     },
     ("health", "hale"): {
-        "physique": ["frail"]
+        "physique": ["frail"],
+        "facial_signal": ["weathered"]
+    },
+    ("health", "sickly"): {
+        "facial_signal": ["soft-featured"]
     }
 }
 ```
@@ -336,6 +390,60 @@ EXCLUSIONS = {
 **Rationale**: Being hale (healthy and vigorous) is incompatible with frail physique.
 
 **Effect**: If `health=hale`, any `physique=frail` is removed.
+
+#### Rule 5: Youth contradicts weathering (v1.1.0+)
+```python
+("age", "young"): {
+    "facial_signal": ["weathered"]
+}
+```
+**Rationale**: Young characters have not lived long enough to develop the lines, texture, and wear associated with "weathered" faces.
+
+**Effect**: If `age=young`, any `facial_signal=weathered` is removed.
+
+#### Rule 6: Ancient age is rarely subtle (v1.1.0+)
+```python
+("age", "ancient"): {
+    "demeanor": ["timid"],
+    "facial_signal": ["understated"]
+}
+```
+**Rationale**: Extreme age leaves visible marks. Ancient faces are rarely unremarkable or understated.
+
+**Effect**: If `age=ancient`, any `facial_signal=understated` is removed (in addition to `demeanor=timid`).
+
+#### Rule 7: Wealth preserves appearance (v1.1.0+)
+```python
+("wealth", "decadent"): {
+    "physique": ["frail"],
+    "health": ["sickly"],
+    "facial_signal": ["weathered"]
+}
+```
+**Rationale**: Extreme wealth provides access to healthcare, nutrition, and cosmetic care that preserves appearance and prevents weathering.
+
+**Effect**: If `wealth=decadent`, any `facial_signal=weathered` is removed (in addition to existing exclusions).
+
+#### Rule 8: Health shows in appearance (v1.1.0+)
+```python
+("health", "hale"): {
+    "physique": ["frail"],
+    "facial_signal": ["weathered"]
+}
+```
+**Rationale**: Hale characters are healthy and vigorous, which prevents weathered appearance.
+
+**Effect**: If `health=hale`, any `facial_signal=weathered` is removed.
+
+#### Rule 9: Sickness contradicts softness (v1.1.0+)
+```python
+("health", "sickly"): {
+    "facial_signal": ["soft-featured"]
+}
+```
+**Rationale**: Sickness typically gaunt or drawn appearance, which contradicts soft, rounded features.
+
+**Effect**: If `health=sickly`, any `facial_signal=soft-featured` is removed.
 
 **Design Philosophy**:
 - Exclusions happen **after** generation (transparent, debuggable)
@@ -595,7 +703,7 @@ def get_available_axes() -> list[str]
 
 | Type | Description |
 |------|-------------|
-| `list[str]` | List of axis names (e.g., `['physique', 'wealth', 'health', 'demeanor', 'age']`) |
+| `list[str]` | List of axis names (e.g., `['physique', 'wealth', 'health', 'demeanor', 'age', 'facial_signal']`) |
 
 #### Examples
 
@@ -605,7 +713,7 @@ from condition_axis import get_available_axes
 
 axes = get_available_axes()
 print(axes)
-# ['physique', 'wealth', 'health', 'demeanor', 'age']
+# ['physique', 'wealth', 'health', 'demeanor', 'age', 'facial_signal']
 ```
 
 **Build UI selector**
