@@ -4,7 +4,7 @@
 
 **Estimated Time**: 2-3 hours (actual: ~2 hours so far)
 
-**Status**: 🟡 In Progress - 69% Complete (Sections 1-4 done)
+**Status**: 🟢 Nearly Complete - 90% Complete (Sections 1-5 done)
 
 **Last Updated**: 2026-01-03
 
@@ -18,12 +18,12 @@
 | 2. Code Integration | ✅ Complete | 6/6 | ~20 min |
 | 3. Test Updates | ✅ Complete | 7/7 | ~30 min |
 | 4. Example Updates | ✅ Complete | 4/4 | ~35 min |
-| 5. Documentation Updates | ⏳ Pending | 0/6 | Est. ~60 min |
+| 5. Documentation Updates | ✅ Complete | 6/6 | ~55 min |
 | 6. Verification & Testing | ⏳ Pending | 0/6 | Est. ~30 min |
 | 7. Deprecation & Cleanup | ⏳ Pending | 0/3 | Est. ~20 min |
 | 8. Risk Mitigation | ⏳ Pending | 0/3 | Est. ~20 min |
 
-**Completed**: 20/29 tasks (69%)
+**Completed**: 26/29 tasks (90%)
 
 ### Recent Commits
 - ✅ `0405711` - docs: add comprehensive merge TODO
@@ -34,6 +34,8 @@
 - ✅ `b9fdd19` - style: fix linting issues (black formatting + ruff E402)
 - ✅ `271bb4e` - docs: mark Sections 2 & 3 tasks complete in merge_todo.md
 - ✅ `d2560e4` - feat: update examples for unified facial signal API (Section 4)
+- ✅ `6a48c79` - docs: mark Section 4 complete in merge_todo.md (69% complete)
+- ✅ `0a3a102` - docs: complete Section 5 - Documentation Updates
 
 ### Key Achievements
 - ✅ Facial signal axis added to CONDITION_AXES (7 values)
@@ -923,9 +925,11 @@
 
 ---
 
-## 5. Documentation Updates
+## 5. Documentation Updates ✅
 
 **Goal**: Update all documentation to reflect merged API.
+
+**Status**: ✅ Complete (Commit: 0a3a102)
 
 ### 5.1 Update __init__.py
 
