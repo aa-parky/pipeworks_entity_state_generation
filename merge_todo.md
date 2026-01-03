@@ -2,9 +2,41 @@
 
 **Purpose**: Merge `facial_conditions.py` into `character_conditions.py` to create a unified character state generation system with cross-system exclusion rules.
 
-**Estimated Time**: 2-3 hours
+**Estimated Time**: 2-3 hours (actual: ~2 hours so far)
 
-**Status**: 🔴 Not Started
+**Status**: 🟡 In Progress - 60% Complete (Sections 1-3 done)
+
+**Last Updated**: 2026-01-03
+
+---
+
+## Current Progress
+
+| Section | Status | Tasks Complete | Time |
+|---------|--------|----------------|------|
+| 1. Pre-Merge Preparation | ✅ Complete | 3/3 | ~10 min |
+| 2. Code Integration | ✅ Complete | 6/6 | ~20 min |
+| 3. Test Updates | ✅ Complete | 7/7 | ~30 min |
+| 4. Example Updates | ⏳ Next | 0/4 | Est. ~40 min |
+| 5. Documentation Updates | ⏳ Pending | 0/6 | Est. ~60 min |
+| 6. Verification & Testing | ⏳ Pending | 0/6 | Est. ~30 min |
+| 7. Deprecation & Cleanup | ⏳ Pending | 0/3 | Est. ~20 min |
+| 8. Risk Mitigation | ⏳ Pending | 0/3 | Est. ~20 min |
+
+**Completed**: 16/29 tasks (55%)
+
+### Recent Commits
+- ✅ `0405711` - docs: add comprehensive merge TODO
+- ✅ `6587a7b` - docs: establish baseline API documentation
+- ✅ `0eed1e0` - feat: integrate facial signals into character conditions system
+- ✅ `ace1ae2` - test: update tests for facial signal integration
+
+### Key Achievements
+- ✅ Facial signal axis added to CONDITION_AXES (7 values)
+- ✅ Cross-system exclusion rules implemented (6 total rules)
+- ✅ All 171 tests passing (added 9 new tests)
+- ✅ Baseline API documented for backward compatibility
+- ✅ Test coverage maintained at 89%+
 
 ---
 
@@ -21,29 +53,32 @@
 
 ---
 
-## 1. Pre-Merge Preparation
+## 1. Pre-Merge Preparation ✅
 
 **Goal**: Ensure clean starting point and create safety net.
 
-### 1.1 Create Backup Branch
-- [ ] **Task**: Create feature branch for merge work
+**Status**: ✅ Complete
+
+### 1.1 Create Backup Branch ✅
+- [x] **Task**: Create feature branch for merge work
   ```bash
   git checkout -b feature/merge-facial-into-character
   ```
-  - **Acceptance**: Branch created, no uncommitted changes
-  - **Time**: 1 min
+  - **Acceptance**: Branch created, no uncommitted changes ✅
+  - **Time**: 1 min ✅
+  - **Result**: Branch `feature/merge-facial-into-character` created
 
-### 1.2 Run Full Test Suite (Baseline)
-- [ ] **Task**: Run all tests to establish baseline
+### 1.2 Run Full Test Suite (Baseline) ✅
+- [x] **Task**: Run all tests to establish baseline
   ```bash
   pytest --cov=condition_axis --cov-report=term-missing -v
   ```
-  - **Acceptance**: All tests pass (100% pass rate)
-  - **Record**: Note current test count and coverage percentage
-  - **Time**: 2 min
+  - **Acceptance**: All tests pass (100% pass rate) ✅
+  - **Record**: 162 tests, 100% pass rate, 89.66% coverage ✅
+  - **Time**: 2 min ✅
 
-### 1.3 Document Current API Surface
-- [ ] **Task**: Document all exported facial functions
+### 1.3 Document Current API Surface ✅
+- [x] **Task**: Document all exported facial functions
   ```python
   # Current exports from facial_conditions:
   # - FACIAL_AXES
@@ -60,9 +95,11 @@
 
 ---
 
-## 2. Code Integration
+## 2. Code Integration ✅
 
 **Goal**: Merge facial conditions data structures and logic into character_conditions.py.
+
+**Status**: ✅ Complete (Commit: 0eed1e0)
 
 ### 2.1 Add facial_signal to CONDITION_AXES
 
@@ -315,9 +352,12 @@
 
 ---
 
-## 3. Test Updates
+## 3. Test Updates ✅
 
 **Goal**: Update and expand test suite to cover merged functionality.
+
+**Status**: ✅ Complete (Commit: ace1ae2)
+**Results**: 171 tests passing (added 9 new tests), 1 deprecation warning
 
 ### 3.1 Update test_character_conditions_axis.py
 
