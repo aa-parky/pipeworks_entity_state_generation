@@ -1,5 +1,15 @@
 """Unit tests for facial condition generation system.
 
+⚠️ DEPRECATED: This test suite is deprecated as of the facial conditions merge (v1.1.0).
+Facial conditions have been integrated into character_conditions.py as of 2026-01-03.
+
+This file is kept temporarily for backward compatibility verification.
+All new tests for facial_signal functionality are in test_character_conditions_axis.py.
+
+This test file will be removed in v2.0.0.
+
+---
+
 This module tests the facial_conditions module which implements a structured
 system for generating facial signal descriptors that modulate character perception.
 
@@ -17,6 +27,16 @@ Test coverage includes:
 """
 
 import random
+import warnings
+
+# Emit deprecation warning when this test module is loaded
+warnings.warn(
+    "test_facial_conditions_axis.py is deprecated. "
+    "Facial conditions merged into character_conditions. "
+    "See test_character_conditions_axis.py for updated tests.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 import pytest
 

@@ -49,6 +49,11 @@ class TestDataStructures:
             # All values should be strings
             assert all(isinstance(v, str) for v in values)
 
+    def test_condition_axes_contains_expected_axes(self):
+        """Test that CONDITION_AXES contains all expected axes including facial_signal."""
+        expected_axes = ["physique", "wealth", "health", "demeanor", "age", "facial_signal"]
+        assert set(CONDITION_AXES.keys()) == set(expected_axes)
+
     def test_axis_policy_structure(self):
         """Test AXIS_POLICY has expected structure."""
         assert isinstance(AXIS_POLICY, dict)
@@ -64,6 +69,18 @@ class TestDataStructures:
         # max_optional should be reasonable
         assert AXIS_POLICY["max_optional"] > 0
         assert AXIS_POLICY["max_optional"] <= len(AXIS_POLICY["optional"])
+
+        # Verify mandatory axes (should have 2: physique, wealth)
+        assert len(AXIS_POLICY["mandatory"]) == 2
+        assert "physique" in AXIS_POLICY["mandatory"]
+        assert "wealth" in AXIS_POLICY["mandatory"]
+
+        # Verify optional axes (should have 4: health, demeanor, age, facial_signal)
+        assert len(AXIS_POLICY["optional"]) == 4
+        assert "health" in AXIS_POLICY["optional"]
+        assert "demeanor" in AXIS_POLICY["optional"]
+        assert "age" in AXIS_POLICY["optional"]
+        assert "facial_signal" in AXIS_POLICY["optional"]
 
     def test_axis_policy_references_valid_axes(self):
         """Test that AXIS_POLICY only references defined axes."""
@@ -95,6 +112,13 @@ class TestDataStructures:
                 ), f"Weighted value '{value}' not in axis '{axis}'"
                 assert isinstance(weight, int | float)
                 assert weight > 0, f"Weight for {axis}.{value} must be positive"
+
+    def test_facial_signal_weights_complete_coverage(self):
+        """Test that all facial_signal values have weights defined."""
+        assert "facial_signal" in WEIGHTS
+        facial_signal_values = set(CONDITION_AXES["facial_signal"])
+        weighted_values = set(WEIGHTS["facial_signal"].keys())
+        assert facial_signal_values == weighted_values, "All facial signals should have weights"
 
     def test_exclusions_structure(self):
         """Test EXCLUSIONS has expected structure."""
@@ -281,6 +305,61 @@ class TestGenerateCondition:
             if "poor" in wealth_counts and "decadent" in wealth_counts:
                 assert wealth_counts["poor"] > wealth_counts["decadent"]
 
+    def test_young_excludes_weathered(self):
+        """Test that young age excludes weathered facial signal."""
+        violations = []
+
+        for seed in range(500):
+            condition = generate_condition(seed=seed)
+            if condition.get("age") == "young" and condition.get("facial_signal") == "weathered":
+                violations.append(seed)
+
+        assert len(violations) == 0, f"Young + weathered found at seeds: {violations}"
+
+    def test_ancient_excludes_understated(self):
+        """Test that ancient age excludes understated facial signal."""
+        violations = []
+
+        for seed in range(500):
+            condition = generate_condition(seed=seed)
+            if condition.get("age") == "ancient" and condition.get("facial_signal") == "understated":
+                violations.append(seed)
+
+        assert len(violations) == 0, f"Ancient + understated found at seeds: {violations}"
+
+    def test_hale_excludes_weathered(self):
+        """Test that hale health excludes weathered facial signal."""
+        violations = []
+
+        for seed in range(500):
+            condition = generate_condition(seed=seed)
+            if condition.get("health") == "hale" and condition.get("facial_signal") == "weathered":
+                violations.append(seed)
+
+        assert len(violations) == 0, f"Hale + weathered found at seeds: {violations}"
+
+    def test_sickly_excludes_soft_featured(self):
+        """Test that sickly health excludes soft-featured facial signal."""
+        violations = []
+
+        for seed in range(500):
+            condition = generate_condition(seed=seed)
+            if condition.get("health") == "sickly" and condition.get("facial_signal") == "soft-featured":
+                violations.append(seed)
+
+        assert len(violations) == 0, f"Sickly + soft-featured found at seeds: {violations}"
+
+    def test_decadent_excludes_weathered(self):
+        """Test that decadent wealth excludes weathered facial signal."""
+        violations = []
+
+        for seed in range(500):
+            condition = generate_condition(seed=seed)
+            if condition.get("wealth") == "decadent" and condition.get("facial_signal") == "weathered":
+                violations.append(seed)
+
+        assert len(violations) == 0, f"Decadent + weathered found at seeds: {violations}"
+
 
 # ============================================================================
 # Test condition_to_prompt Function
@@ -416,6 +495,34 @@ class TestIntegration:
 
         # Should have good diversity (at least 20 unique prompts out of 50)
         assert len(prompts) >= 20, f"Low diversity: only {len(prompts)} unique prompts"
+
+    def test_facial_signal_can_be_selected(self):
+        """Test that facial_signal can appear in generated conditions."""
+        facial_signal_found = False
+
+        for seed in range(100):
+            condition = generate_condition(seed=seed)
+            if "facial_signal" in condition:
+                facial_signal_found = True
+                # Verify it's a valid value
+                assert condition["facial_signal"] in CONDITION_AXES["facial_signal"]
+                break
+
+        assert facial_signal_found, "facial_signal never appeared in 100 generations"
+
+    def test_all_facial_signals_can_appear(self):
+        """Test that all facial signal values can appear over many generations."""
+        facial_signals_found = set()
+
+        for seed in range(2000):
+            condition = generate_condition(seed=seed)
+            if "facial_signal" in condition:
+                facial_signals_found.add(condition["facial_signal"])
+
+        expected_signals = set(CONDITION_AXES["facial_signal"])
+        missing_signals = expected_signals - facial_signals_found
+
+        assert len(missing_signals) == 0, f"Missing facial signals: {missing_signals}"
 
 
 # ============================================================================
