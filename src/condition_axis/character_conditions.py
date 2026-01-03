@@ -1,7 +1,8 @@
 """Character condition generation system.
 
 This module implements a structured, rule-based system for generating coherent
-character state descriptions across multiple axes (physique, wealth, health, etc.).
+character state descriptions across multiple axes (physique, wealth, health,
+facial signals, etc.).
 
 Unlike simple text file lookups, this system uses:
 - Weighted probability distributions for realistic populations
@@ -19,11 +20,13 @@ Example usage:
     >>> print(prompt_fragment)
     'skinny, poor, weary, alert'
 
+    Note: The condition dict may also include 'facial_signal' as an optional axis.
+
 Architecture:
-    1. CONDITION_AXES: Define all possible values for each axis
+    1. CONDITION_AXES: Define all possible values for each axis (including facial_signal)
     2. AXIS_POLICY: Rules for mandatory vs optional axes
     3. WEIGHTS: Statistical distribution for realistic populations
-    4. EXCLUSIONS: Semantic constraints to prevent nonsense
+    4. EXCLUSIONS: Semantic constraints to prevent nonsense (including cross-system rules)
     5. Generator: Produces constrained random combinations
     6. Converter: Transforms structured data into prompt text
 """
@@ -51,6 +54,16 @@ CONDITION_AXES: dict[str, list[str]] = {
     "demeanor": ["timid", "suspicious", "resentful", "alert", "proud"],
     # Life stage
     "age": ["young", "middle-aged", "old", "ancient"],
+    # Facial perception modifiers (merged from facial_conditions.py)
+    "facial_signal": [
+        "understated",
+        "pronounced",
+        "exaggerated",
+        "asymmetrical",
+        "weathered",
+        "soft-featured",
+        "sharp-featured",
+    ],
 }
 
 # ============================================================================
@@ -61,7 +74,7 @@ AXIS_POLICY: dict[str, Any] = {
     # Always include these axes (establish baseline character state)
     "mandatory": ["physique", "wealth"],
     # May include 0-N of these axes (add narrative detail)
-    "optional": ["health", "demeanor", "age"],
+    "optional": ["health", "demeanor", "age", "facial_signal"],
     # Maximum number of optional axes to include
     # (prevents prompt dilution and maintains diffusion model clarity)
     "max_optional": 2,
@@ -89,6 +102,16 @@ WEIGHTS: dict[str, dict[str, float]] = {
         "stocky": 1.0,
         "broad": 0.5,  # Rare
     },
+    # Facial signal distribution: skewed toward subtle/neutral signals
+    "facial_signal": {
+        "understated": 3.0,  # Most common - most faces aren't remarkable
+        "soft-featured": 2.5,  # Fairly common
+        "pronounced": 2.0,  # Moderate
+        "sharp-featured": 2.0,  # Moderate
+        "weathered": 1.5,  # Less common (requires age/experience)
+        "asymmetrical": 1.0,  # Uncommon
+        "exaggerated": 0.5,  # Rare - extreme features
+    },
     # Other axes use uniform distribution (no weights defined)
 }
 
@@ -98,23 +121,37 @@ WEIGHTS: dict[str, dict[str, float]] = {
 
 EXCLUSIONS: dict[tuple[str, str], dict[str, list[str]]] = {
     # Decadent characters are unlikely to be frail or sickly
-    # (wealth enables health care and nutrition)
+    # (wealth enables health care and nutrition, preserves appearance)
     ("wealth", "decadent"): {
         "physique": ["frail"],
         "health": ["sickly"],
+        "facial_signal": ["weathered"],  # Wealth preserves appearance
     },
-    # Ancient characters aren't timid
-    # (age brings confidence, even if it brings frailty)
+    # Ancient characters aren't timid and rarely have subtle features
+    # (age brings confidence and pronounced characteristics)
     ("age", "ancient"): {
         "demeanor": ["timid"],
+        "facial_signal": ["understated"],  # Ancient faces are rarely subtle
     },
     # Broad, strong physiques don't pair with sickness
     ("physique", "broad"): {
         "health": ["sickly"],
     },
-    # Hale (healthy) characters shouldn't have frail physiques
+    # Hale (healthy) characters shouldn't have frail physiques or weathered faces
+    # (health affects both body and appearance)
     ("health", "hale"): {
         "physique": ["frail"],
+        "facial_signal": ["weathered"],  # Healthy people look healthy
+    },
+    # Young characters shouldn't look weathered
+    # (youth contradicts wear and age texture)
+    ("age", "young"): {
+        "facial_signal": ["weathered"],
+    },
+    # Sickly characters already imply soft features
+    # (redundant signal - sickness softens appearance)
+    ("health", "sickly"): {
+        "facial_signal": ["soft-featured"],
     },
 }
 
@@ -231,11 +268,11 @@ def get_available_axes() -> list[str]:
     """Get list of all defined condition axes.
 
     Returns:
-        List of axis names (e.g., ['physique', 'wealth', 'health', ...])
+        List of axis names (e.g., ['physique', 'wealth', 'health', 'facial_signal', ...])
 
     Example:
         >>> get_available_axes()
-        ['physique', 'wealth', 'health', 'demeanor', 'age']
+        ['physique', 'wealth', 'health', 'demeanor', 'age', 'facial_signal']
     """
     return list(CONDITION_AXES.keys())
 
