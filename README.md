@@ -77,6 +77,39 @@ print(full_prompt)
 
 ---
 
+## Usage Examples
+
+The `examples/` directory contains **comprehensive, runnable examples** demonstrating all library features:
+
+### Core Examples
+- **`basic_usage.py`** - Simple generation, serialization, and reproducibility
+- **`advanced_usage.py`** - Weighted distributions, exclusion rules, and statistical analysis
+- **`integration_example.py`** - Combining all three axis systems for complete entity generation
+
+### Advanced Examples
+- **`batch_generation.py`** - Bulk generation with JSON/CSV export and memory-efficient streaming
+- **`custom_axes.py`** - Creating custom axis systems (includes fantasy magic and sci-fi tech examples)
+- **`image_prompt_generation.py`** - Integration with Stable Diffusion, DALL-E, and Midjourney
+
+### Running Examples
+
+```bash
+# Run any example directly
+python examples/basic_usage.py
+python examples/integration_example.py
+python examples/image_prompt_generation.py
+
+# All examples include:
+# - Comprehensive type hints and docstrings
+# - Working, executable code with main() functions
+# - Educational comments explaining concepts
+# - Multiple examples per file (5-7 examples each)
+```
+
+Each example is fully tested (39 tests in `tests/test_examples.py`) and demonstrates best practices for using the library.
+
+---
+
 ## What Are Conditional Axes?
 
 Conditional axes describe the **current lived state** of an entity.
@@ -188,7 +221,16 @@ pipeworks_entity_state_generation/
 ├── tests/                      # Test suite (90%+ coverage)
 │   ├── test_character_conditions_axis.py
 │   ├── test_facial_conditions_axis.py
-│   └── test_occupation_axis_axis.py
+│   ├── test_occupation_axis_axis.py
+│   └── test_examples.py        # Example script tests (39 tests)
+│
+├── examples/                   # Usage examples (NEW!)
+│   ├── basic_usage.py          # Simple generation & serialization
+│   ├── advanced_usage.py       # Weights, exclusions & analysis
+│   ├── integration_example.py  # Combining all three systems
+│   ├── batch_generation.py     # Bulk generation & exports
+│   ├── custom_axes.py          # Creating custom axis systems
+│   └── image_prompt_generation.py  # AI image generation integration
 │
 ├── docs/                       # Documentation & guides
 │   ├── README.md               # Documentation overview

@@ -34,12 +34,13 @@
 
 ### Usage Examples
 
-- [ ] Create `examples/basic_usage.py` - Simple generation and serialization
-- [ ] Create `examples/advanced_usage.py` - Custom weights and exclusion rules
-- [ ] Create `examples/integration_example.py` - Combining all three systems
-- [ ] Create `examples/batch_generation.py` - Generating multiple conditions
-- [ ] Create `examples/custom_axes.py` - Adding new condition types
-- [ ] Create `examples/image_prompt_generation.py` - Integration with image generation
+- [x] Create `examples/basic_usage.py` - Simple generation and serialization
+- [x] Create `examples/advanced_usage.py` - Custom weights and exclusion rules
+- [x] Create `examples/integration_example.py` - Combining all three systems
+- [x] Create `examples/batch_generation.py` - Generating multiple conditions
+- [x] Create `examples/custom_axes.py` - Adding new condition types
+- [x] Create `examples/image_prompt_generation.py` - Integration with image generation
+- [x] Create `tests/test_examples.py` - Comprehensive tests for all examples (39 tests, all passing)
 - [x] Update examples in README.md with working code snippets
 
 ### Contributing Guide
@@ -166,11 +167,11 @@
 
 - [x] Phase 1: Test Suite Implementation
 - [x] Phase 1: Code Quality
-- [ ] Phase 2: API Documentation
+- [x] Phase 2: API Documentation (6/7 complete - ReadTheDocs deploy pending)
 
 **HIGH (Do Soon)**
 
-- [ ] Phase 2: Usage Examples
+- [x] Phase 2: Usage Examples
 - [x] Phase 3: GitHub Actions Workflows
 - [ ] Phase 2: Contributing Guide
 
@@ -193,7 +194,7 @@
 | Phase   | Status       | Completion | Last Updated |
 | ------- | ------------ | ---------- | ------------ |
 | Phase 1 | ✅ Completed | 100%       | 2025-12-27   |
-| Phase 2 | In Progress  | 39%        | 2026-01-02   |
+| Phase 2 | In Progress  | 74%        | 2026-01-03   |
 | Phase 3 | ✅ Completed | 100%       | 2025-12-27   |
 | Phase 4 | Not Started  | 0%         | 2025-12-27   |
 | Phase 5 | Not Started  | 0%         | 2025-12-27   |
