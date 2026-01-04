@@ -214,8 +214,7 @@ def generate_occupation_condition(seed: int | None = None) -> dict[str, str]:
 
     Returns:
         Dictionary mapping axis names to selected values.
-        Example: {"legitimacy": "tolerated", "visibility": "discreet",
-                 "moral_load": "burdened"}
+        Example: ``{"legitimacy": "tolerated", "visibility": "discreet", "moral_load": "burdened"}``
 
     Examples:
         >>> # Reproducible generation
