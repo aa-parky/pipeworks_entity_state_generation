@@ -67,7 +67,7 @@ print(full_prompt)
 # "wiry, poor, weary, weathered, tolerated, discreet, burdened"
 ```
 
-**Note**: Facial signals are integrated into `generate_condition()` as an optional axis. The separate `generate_facial_condition()` function is not part of the public API.
+**Note**: Facial signals are integrated into `generate_condition()` as an optional axis. The standalone `generate_facial_condition()` function was removed in v0.10.0 when facial conditions were merged into the unified character system for better cross-system exclusion rules.
 
 ---
 
@@ -222,7 +222,8 @@ pipeworks_entity_state_generation/
 │   ├── test_occupation_axis_axis.py
 │   └── test_examples.py        # Example script tests (39 tests)
 │
-├── examples/                   # Usage examples
+├── examples/                   # Usage examples (see examples/README.md)
+│   ├── README.md               # Comprehensive examples guide
 │   ├── basic_usage.py          # Simple generation & serialization
 │   ├── advanced_usage.py       # Weights, exclusions & analysis
 │   ├── integration_example.py  # Combining character & occupation systems
@@ -230,36 +231,17 @@ pipeworks_entity_state_generation/
 │   ├── custom_axes.py          # Creating custom axis systems
 │   └── image_prompt_generation.py  # AI image generation integration
 │
-├── docs/                       # Documentation & guides
-│   ├── README.md               # Documentation overview
-│   ├── api/                    # API reference documentation
-│   │   ├── _base.md
-│   │   ├── character_conditions.md
-│   │   ├── facial_conditions.md    # DEPRECATED (v1.0 historical reference)
-│   │   └── occupation_axis.md
-│   ├── design/                 # Philosophy & architecture
-│   │   ├── 00_goblin_laws.md
-│   │   ├── 01_character_state_model.md
-│   │   ├── 02_pipeworks_system_architecture.md
-│   │   ├── 03_pipeworks_components.md
-│   │   ├── 04_characters_first_narrow_door.md
-│   │   └── specifications/     # Technical specifications
-│   │       ├── condition_axis.md
-│   │       ├── occupation_axis.md
-│   │       └── Obey_the_Verb.md
-│   ├── diagrams/               # Architecture diagrams
-│   │   ├── README.md           # Diagram guide
-│   │   ├── 01-c4-container-architecture.svg
-│   │   ├── 02-layered-architecture-state-boundaries.svg
-│   │   └── 03-sequence-character-lifecycle.svg
-│   ├── guides/                 # Setup & process guides
-│   │   ├── GitHub Actions CI Setup Guide.md
-│   │   ├── Pre-Commit Hooks Setup Guide.md
-│   │   └── ReadTheDocs Setup Guide.md
-│   └── images/                 # Documentation images
-│       ├── condition_axis.jpg
-│       ├── miss_filed.jpg
-│       └── verbs_conditions.jpg
+├── docs/                       # Sphinx documentation (autodoc)
+│   ├── index.rst               # Documentation root
+│   ├── conf.py                 # Sphinx configuration
+│   ├── api/                    # Auto-generated API reference
+│   │   ├── index.rst           # API overview
+│   │   ├── _base.rst           # Core utilities (from docstrings)
+│   │   ├── character_conditions.rst  # Character generation (from docstrings)
+│   │   └── occupation_axis.rst # Occupation generation (from docstrings)
+│   ├── _static/                # Sphinx static assets
+│   ├── _templates/             # Sphinx templates
+│   └── _build/                 # Generated HTML (git-ignored)
 │
 └── .github/workflows/          # CI/CD
     ├── test.yml                # Test runner
@@ -433,11 +415,17 @@ pre-commit run --all-files
 
 ### Building Documentation
 
-This project uses **Sphinx** to generate professional HTML documentation from Markdown and Python docstrings. The documentation is automatically built and hosted on **ReadTheDocs** when changes are pushed to GitHub.
+This project uses **Sphinx with autodoc** to automatically generate API documentation from Python docstrings. This approach provides:
+
+- ✅ **Zero maintenance burden** - Documentation stays in sync with code automatically
+- ✅ **Always accurate** - Content is extracted directly from source code
+- ✅ **Professional output** - Clean HTML with search, indexing, and cross-references
+
+The documentation focuses exclusively on the **API reference** (modules, functions, classes, parameters). Design philosophy and architectural discussions are maintained in this README and CLAUDE.md to keep them easily accessible.
 
 #### What is Sphinx?
 
-Sphinx is a documentation generator that converts reStructuredText (.rst) and Markdown (.md) files into beautiful HTML documentation. It can also extract documentation from your Python code's docstrings.
+Sphinx is Python's standard documentation generator that extracts documentation from your code's docstrings and renders it as beautiful, searchable HTML. The `autodoc` extension automatically pulls docstrings from the source code, eliminating manual documentation maintenance.
 
 #### What is ReadTheDocs?
 
@@ -473,30 +461,20 @@ Once this repository is connected to ReadTheDocs, the documentation will be avai
 
 The documentation updates automatically whenever changes are pushed to the main branch.
 
-#### Documentation Structure
-
-The documentation includes:
-- **API Reference**: Complete function and module documentation (extracted from docstrings)
-- **Design & Philosophy**: Architectural principles and design decisions
-- **Technical Specifications**: Implementation details for each system
-- **Setup Guides**: Development environment and CI/CD configuration
-
-See [docs/README.md](./docs/README.md) for a complete guide to the documentation structure and reading paths.
-
 #### Contributing to Documentation
 
-To update the documentation:
+To update the API documentation, simply edit the docstrings in the Python source files:
 
-1. **API docs**: Edit docstrings in the Python source files (src/condition_axis/)
-2. **Markdown docs**: Edit .md files in docs/api/, docs/design/, docs/specifications/, or docs/guides/
-3. **Sphinx config**: Edit docs/conf.py or docs/index.rst
-4. **Build locally** to preview changes before committing
-5. **Push to GitHub** - ReadTheDocs will automatically rebuild and deploy
+1. **Edit docstrings** in `src/condition_axis/*.py` files (use Google style)
+2. **Build locally** to preview changes: `sphinx-build -b html docs docs/_build/html`
+3. **Push to GitHub** - ReadTheDocs will automatically rebuild and deploy
 
-For Sphinx documentation syntax, see:
+The documentation is 100% auto-generated from code - no manual .md or .rst files to maintain (except the minimal Sphinx configuration files).
+
+For Sphinx and autodoc syntax, see:
 - [Sphinx documentation](https://www.sphinx-doc.org/)
-- [MyST Markdown Guide](https://myst-parser.readthedocs.io/) (for .md files)
-- [reStructuredText Primer](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html) (for .rst files)
+- [Sphinx autodoc guide](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html)
+- [Google-style docstring format](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html)
 
 ---
 
@@ -550,9 +528,7 @@ This library is part of the broader [Pipeworks](https://github.com/aa-parky) pro
 | **pipeworks_image_generator** | Visualization and image synthesis | Interprets entity states for visual representation |
 | **the_daily_undertaking_ui** | Narrative and user-facing interface | Surfaces entity states to players |
 
-**📊 Visual Architecture**: See [comprehensive architecture diagrams](./docs/diagrams/) showing how all five Pipeworks components connect, the pure/stateful boundary, and complete data flow.
-
-See [docs/design/02_pipeworks_system_architecture.md](./docs/design/02_pipeworks_system_architecture.md) for detailed integration documentation (includes embedded diagrams).
+This library serves as the **pure, stateless generation layer** that produces coherent state descriptions consumed by the other components.
 
 ---
 
@@ -567,37 +543,26 @@ This repository is part of the broader Pipeworks project.
 ## Documentation
 
 ### Main Documentation
-- [CLAUDE.md](./CLAUDE.md) - Development guide for AI assistants and contributors
-- [Project TODO List](./Project_TODO_List.md) - Development roadmap and progress tracking
-- [docs/README.md](./docs/README.md) - Complete documentation index with reading paths
+- **[README.md](./README.md)** - This file (project overview, quick start, usage examples)
+- **[CLAUDE.md](./CLAUDE.md)** - Development guide for AI assistants and contributors
+- **[examples/README.md](./examples/README.md)** - Comprehensive guide to usage examples
+- **[API Reference](https://pipeworks-conditional-axis.readthedocs.io/)** - Auto-generated from docstrings (ReadTheDocs)
 
-### API Reference
-- [Base Utilities](./docs/api/_base.md) - Core utilities (weighted_choice, apply_exclusion_rules, values_to_prompt)
-- [Character Conditions](./docs/api/character_conditions.md) - Physical & social character state generation (includes facial signals)
-- [Facial Conditions](./docs/api/facial_conditions.md) - **DEPRECATED** - Historical reference only (merged into character_conditions)
-- [Occupation Axis](./docs/api/occupation_axis.md) - Occupation characteristics generation
+### Local API Documentation
 
-### Design & Philosophy
-- [Goblin Laws](./docs/design/00_goblin_laws.md) - Architectural principles and design philosophy
-- [Character State Model](./docs/design/01_character_state_model.md) - Conceptual foundation for state representation
-- [Pipeworks System Architecture](./docs/design/02_pipeworks_system_architecture.md) - How this library fits into the larger ecosystem **(includes architecture diagrams)**
-- [Pipeworks Components](./docs/design/03_pipeworks_components.md) - The five load-bearing parts of the system
-- [Characters First](./docs/design/04_characters_first_narrow_door.md) - Design decision rationale
+Build the Sphinx documentation locally to browse the complete API reference:
 
-### Architecture Diagrams
-- [Diagrams Overview](./docs/diagrams/README.md) - Complete guide to architecture visualizations
-- [C4 Container Architecture](./docs/diagrams/01-c4-container-architecture.svg) - Component connections and data flows
-- [Layered Architecture](./docs/diagrams/02-layered-architecture-state-boundaries.svg) - Pure vs stateful zones
-- [Character Lifecycle Sequence](./docs/diagrams/03-sequence-character-lifecycle.svg) - Complete pipeline in action
+```bash
+pip install -e ".[docs]"
+cd docs
+sphinx-build -b html . _build/html
+open _build/html/index.html  # or xdg-open / start on Linux/Windows
+```
 
-### Technical Specifications
-- [Character Conditions](./docs/design/specifications/condition_axis.md) - Character condition system specification
-- [Occupation Axis](./docs/design/specifications/occupation_axis.md) - Occupation characteristics specification
-- [Obey the Verb](./docs/design/specifications/Obey_the_Verb.md) - AI image generation prompting strategy
-
-### Setup Guides
-- [Pre-Commit Hooks Setup](./docs/guides/Pre-Commit%20Hooks%20Setup%20Guide.md) - Local development setup
-- [GitHub Actions CI Setup](./docs/guides/GitHub%20Actions%20CI%20Setup%20Guide.md) - CI/CD configuration
+The auto-generated documentation includes:
+- **condition_axis._base** - Core utilities (weighted_choice, apply_exclusion_rules, values_to_prompt)
+- **condition_axis.character_conditions** - Physical & social character state generation (includes facial signals)
+- **condition_axis.occupation_axis** - Occupation characteristics generation
 
 ---
 
