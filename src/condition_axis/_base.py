@@ -23,7 +23,11 @@ import random
 logger = logging.getLogger(__name__)
 
 
-def weighted_choice(options: list[str], weights: dict[str, float] | None = None) -> str:
+def weighted_choice(
+    options: list[str],
+    weights: dict[str, float] | None = None,
+    rng: random.Random | None = None,
+) -> str:
     """Select a random option with optional weighted probabilities.
 
     This is the core selection mechanism for all condition axis generators.
@@ -36,6 +40,8 @@ def weighted_choice(options: list[str], weights: dict[str, float] | None = None)
         weights: Optional dictionary mapping options to weights.
                 If None or missing entries, defaults to uniform distribution.
                 Weights must be non-negative (zero weight = never selected).
+        rng: Optional Random instance for isolated random generation.
+            If None, uses global random module.
 
     Returns:
         Randomly selected option (str)
@@ -53,21 +59,31 @@ def weighted_choice(options: list[str], weights: dict[str, float] | None = None)
         >>> weighted_choice(["a", "b", "c"], {"a": 3.0})  # a=3.0, b=1.0, c=1.0
         'a'
 
+        >>> # With isolated RNG
+        >>> rng = random.Random(42)
+        >>> weighted_choice(["a", "b", "c"], rng=rng)
+        'a'
+
     Notes:
         - Uses random.choices() for weighted selection
         - Falls back to random.choice() for uniform distribution (performance)
-        - Thread-safety depends on Python's random module (thread-local RNG)
+        - When rng is provided, uses isolated Random instance (thread-safe)
+        - When rng is None, uses global random module (backward compatible)
     """
     if not weights:
         # Fast path: uniform distribution
-        return random.choice(options)
+        if rng is None:
+            return random.choice(options)
+        return rng.choice(options)
 
     # Build weight list matching option order
     # Use weight of 1.0 for any option not in the weights dict
     weight_values = [weights.get(option, 1.0) for option in options]
 
     # random.choices returns a list of k elements, we want just one
-    return random.choices(options, weights=weight_values, k=1)[0]
+    if rng is None:
+        return random.choices(options, weights=weight_values, k=1)[0]
+    return rng.choices(options, weights=weight_values, k=1)[0]
 
 
 def apply_exclusion_rules(

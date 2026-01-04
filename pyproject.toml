@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipeworks-conditional-axis"
-version = "0.10.0"
+version = "0.10.1"
 description = "Structured, rule-based framework for generating coherent state descriptions across multiple semantic dimensions"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -25,7 +25,6 @@ keywords = [
 classifiers = [
 	"Development Status :: 4 - Beta",
 	"Intended Audience :: Developers",
-	"Intended Audience :: End Users/Desktop",
 	"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 	"Natural Language :: English",
 	"Operating System :: OS Independent",
@@ -59,7 +58,7 @@ docs = [
 Homepage = "https://github.com/aa-parky/pipeworks_conditional_axis"
 Repository = "https://github.com/aa-parky/pipeworks_conditional_axis.git"
 Issues = "https://github.com/aa-parky/pipeworks_conditional_axis/issues"
-Documentation = "https://github.com/aa-parky/pipeworks_conditional_axis/blob/main/README.md"
+Documentation = "https://github.com/aa-parky/pipeworks_conditional_axis/tree/main/docs"
 
 [tool.setuptools]
 packages = ["condition_axis"]

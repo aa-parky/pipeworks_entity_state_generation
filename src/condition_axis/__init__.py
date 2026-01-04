@@ -95,4 +95,4 @@ __all__ = [
     "occupation_condition_to_prompt",
 ]
 
-__version__ = "0.10.0"
+__version__ = "0.10.1"

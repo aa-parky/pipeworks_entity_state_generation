@@ -190,9 +190,8 @@ def generate_condition(seed: int | None = None) -> dict[str, str]:
         >>> generate_condition()
         {'physique': 'stocky', 'wealth': 'modest', 'health': 'weary'}
     """
-    # Set random seed for reproducibility if provided
-    if seed is not None:
-        random.seed(seed)
+    # Create isolated RNG instance to avoid polluting global random state
+    rng = random.Random(seed)
 
     chosen: dict[str, str] = {}
 
@@ -205,7 +204,7 @@ def generate_condition(seed: int | None = None) -> dict[str, str]:
             logger.warning(f"Mandatory axis '{axis}' not defined in CONDITION_AXES")
             continue
 
-        chosen[axis] = weighted_choice(CONDITION_AXES[axis], WEIGHTS.get(axis))
+        chosen[axis] = weighted_choice(CONDITION_AXES[axis], WEIGHTS.get(axis), rng=rng)
         logger.debug(f"Mandatory axis selected: {axis} = {chosen[axis]}")
 
     # ========================================================================
@@ -213,10 +212,10 @@ def generate_condition(seed: int | None = None) -> dict[str, str]:
     # Randomly pick 0 to max_optional axes to add narrative detail
     # ========================================================================
     max_optional = AXIS_POLICY.get("max_optional", 2)
-    num_optional = random.randint(0, min(max_optional, len(AXIS_POLICY["optional"])))
+    num_optional = rng.randint(0, min(max_optional, len(AXIS_POLICY["optional"])))
 
     # Randomly sample without replacement
-    optional_axes = random.sample(AXIS_POLICY["optional"], num_optional)
+    optional_axes = rng.sample(AXIS_POLICY["optional"], num_optional)
     logger.debug(f"Selected {num_optional} optional axes: {optional_axes}")
 
     for axis in optional_axes:
@@ -224,7 +223,7 @@ def generate_condition(seed: int | None = None) -> dict[str, str]:
             logger.warning(f"Optional axis '{axis}' not defined in CONDITION_AXES")
             continue
 
-        chosen[axis] = weighted_choice(CONDITION_AXES[axis], WEIGHTS.get(axis))
+        chosen[axis] = weighted_choice(CONDITION_AXES[axis], WEIGHTS.get(axis), rng=rng)
         logger.debug(f"Optional axis selected: {axis} = {chosen[axis]}")
 
     # ========================================================================
