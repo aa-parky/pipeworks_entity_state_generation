@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 # Add the source directory to the path so Sphinx can find the modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # -- Project information -----------------------------------------------------
