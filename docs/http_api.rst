@@ -1,0 +1,174 @@
+HTTP API Service
+================
+
+The repository includes a FastAPI service entrypoint at ``entity_api.py`` that
+wraps the ``condition_axis`` generators for HTTP clients.
+
+This service is intended to run behind Nginx with TLS termination and can be
+managed via ``systemd``.
+
+Overview
+--------
+
+The API exposes:
+
+- health checks for monitoring and load balancers
+- discoverability for available axes and values
+- single entity generation
+- deterministic batch generation
+
+All generation logic is delegated to library functions in
+``condition_axis`` so HTTP responses stay aligned with library behavior.
+
+Run Locally
+-----------
+
+From the repository root:
+
+.. code-block:: bash
+
+   pip install -e ".[dev]"
+   python -m uvicorn entity_api:app --host 127.0.0.1 --port 8200
+
+Then verify:
+
+.. code-block:: bash
+
+   curl -sS http://127.0.0.1:8200/api/health
+
+Endpoints
+---------
+
+GET ``/api/health``
+^^^^^^^^^^^^^^^^^^^
+
+Purpose:
+Returns a minimal status payload to confirm process responsiveness.
+
+Example response:
+
+.. code-block:: json
+
+   {
+     "status": "ok",
+     "service": "pipeworks-entity-state-api"
+   }
+
+GET ``/api/axes``
+^^^^^^^^^^^^^^^^^
+
+Purpose:
+Returns available axis names and valid values for both systems:
+
+- character
+- occupation
+
+Example response (truncated):
+
+.. code-block:: json
+
+   {
+     "character": {
+       "axes": ["physique", "wealth", "health", "demeanor", "age", "facial_signal"],
+       "values": {
+         "physique": ["skinny", "wiry", "stocky", "..."]
+       }
+     },
+     "occupation": {
+       "axes": ["legitimacy", "visibility", "moral_load", "dependency", "risk_exposure"],
+       "values": {
+         "legitimacy": ["sanctioned", "tolerated", "questioned", "illicit"]
+       }
+     }
+   }
+
+POST ``/api/entity``
+^^^^^^^^^^^^^^^^^^^^
+
+Purpose:
+Generate one entity payload.
+
+Request body:
+
+.. code-block:: json
+
+   {
+     "seed": 42,
+     "include_prompts": true
+   }
+
+Notes:
+
+- ``seed`` is optional. If omitted, the API generates a random replayable seed.
+- ``include_prompts`` defaults to ``true``.
+
+Example response (truncated):
+
+.. code-block:: json
+
+   {
+     "seed": 42,
+     "character": {
+       "physique": "wiry",
+       "wealth": "poor"
+     },
+     "occupation": {
+       "legitimacy": "tolerated",
+       "visibility": "routine"
+     },
+     "prompts": {
+       "character": "wiry, poor",
+       "occupation": "tolerated, routine",
+       "full": "wiry, poor, tolerated, routine"
+     }
+   }
+
+POST ``/api/entities/batch``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Purpose:
+Generate multiple entities using deterministic sequential seeds.
+
+Request body:
+
+.. code-block:: json
+
+   {
+     "start_seed": 100,
+     "count": 3,
+     "include_prompts": false
+   }
+
+Validation:
+
+- ``count`` must be between ``1`` and ``500`` (inclusive).
+
+Seed behavior:
+
+- entity ``0`` uses seed ``start_seed``
+- entity ``1`` uses seed ``start_seed + 1``
+- etc.
+
+Example response (truncated):
+
+.. code-block:: json
+
+   {
+     "start_seed": 100,
+     "count": 3,
+     "entities": [
+       {"seed": 100, "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}},
+       {"seed": 101, "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}},
+       {"seed": 102, "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}}
+     ]
+   }
+
+Test Coverage
+-------------
+
+API behavior tests live in ``tests/test_entity_api.py`` and cover:
+
+- endpoint availability and payload shape
+- request validation behavior
+- deterministic seeded responses
+- batch sequencing semantics

@@ -23,6 +23,7 @@ API Documentation
 .. toctree::
    :maxdepth: 2
 
+   http_api
    api/index
 
 Indices and Tables

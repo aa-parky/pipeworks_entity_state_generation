@@ -38,3 +38,13 @@ Generates occupation characteristics based on labor pressures and social positio
    :maxdepth: 2
 
    occupation_axis
+
+HTTP Service Module
+-------------------
+
+FastAPI application module providing HTTP endpoints for entity generation.
+
+.. toctree::
+   :maxdepth: 2
+
+   entity_api
