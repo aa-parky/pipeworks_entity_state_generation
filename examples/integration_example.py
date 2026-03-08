@@ -182,7 +182,7 @@ def format_as_narrative(
     Example:
         >>> char = {"physique": "wiry", "wealth": "poor", "facial_signal": "weathered"}
         >>> facial = {}  # Optional, for backward compat
-        >>> occ = {"legitimacy": "tolerated", "visibility": "discreet"}
+        >>> occ = {"legitimacy": "tolerated", "visibility": "discrete"}
         >>> format_as_narrative(char, facial, occ)
         "A wiry, poor individual with a weathered face..."
 

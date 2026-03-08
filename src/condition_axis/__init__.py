@@ -27,19 +27,19 @@ Example usage:
     >>> # Generate character conditions (may include facial_signal)
     >>> char = generate_condition(seed=42)
     >>> print(condition_to_prompt(char))
-    'wiry, poor, weary, weathered'
+    'wiry, poor, suspicious'
     >>>
     >>> # Generate occupation conditions
     >>> occupation = generate_occupation_condition(seed=42)
     >>> print(occupation_condition_to_prompt(occupation))
-    'tolerated, discreet, burdened'
+    'tolerated, hidden, neutral'
     >>>
     >>> # Combine for complete character
     >>> char_prompt = condition_to_prompt(char)
     >>> occ_prompt = occupation_condition_to_prompt(occupation)
     >>> full_prompt = f"{char_prompt}, {occ_prompt}"
     >>> print(full_prompt)
-    'wiry, poor, weary, weathered, tolerated, discreet, burdened'
+    'wiry, poor, suspicious, tolerated, hidden, neutral'
 """
 
 # ============================================================================
