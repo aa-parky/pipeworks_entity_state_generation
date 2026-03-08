@@ -71,13 +71,28 @@ print(full_prompt)
 
 ## Entity API Contract (Web App)
 
-When the API surface is enabled, `POST /api/entity` returns both legacy label groups and canonical numeric axis scores:
+When the API surface is enabled, `POST /api/entity` returns both legacy label groups and canonical numeric axis scores.
+Default API behavior uses `axis_profile="character_full"` so all canonical character+occupation axes are emitted:
 
 ```json
 {
   "seed": 42,
-  "character": {"physique": "wiry", "wealth": "poor", "demeanor": "suspicious"},
-  "occupation": {"legitimacy": "tolerated", "visibility": "hidden", "moral_load": "neutral"},
+  "axis_profile": "character_full",
+  "character": {
+    "physique": "wiry",
+    "wealth": "poor",
+    "health": "hale",
+    "demeanor": "alert",
+    "age": "old",
+    "facial_signal": "weathered"
+  },
+  "occupation": {
+    "legitimacy": "tolerated",
+    "visibility": "hidden",
+    "moral_load": "neutral",
+    "dependency": "necessary",
+    "risk_exposure": "straining"
+  },
   "axes": {
     "physique": {"label": "wiry", "score": 0.6},
     "visibility": {"label": "hidden", "score": 0.0}
@@ -96,7 +111,9 @@ When the API surface is enabled, `POST /api/entity` returns both legacy label gr
 Compatibility guarantees:
 
 - Existing `character` and `occupation` label payloads are preserved.
-- `axes` adds deterministic normalized scores for adapters that require numeric contracts.
+- `character_full` (default) returns the full canonical character+occupation axis set.
+- `subset_legacy` preserves historical sparse optional-axis behavior as explicit opt-in.
+- `axes` keeps the same deterministic normalized score shape for adapter contracts.
 - `generator_capabilities` now includes `numeric_axis_scores` when this dual-format output is available.
 
 ---

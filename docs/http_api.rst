@@ -94,13 +94,16 @@ Request body:
 
    {
      "seed": 42,
-     "include_prompts": true
+     "include_prompts": true,
+     "axis_profile": "character_full"
    }
 
 Notes:
 
 - ``seed`` is optional. If omitted, the API generates a random replayable seed.
 - ``include_prompts`` defaults to ``true``.
+- ``axis_profile`` defaults to ``character_full``.
+- ``axis_profile="subset_legacy"`` preserves sparse optional-axis output.
 
 Example response (truncated):
 
@@ -108,6 +111,7 @@ Example response (truncated):
 
    {
      "seed": 42,
+     "axis_profile": "character_full",
      "generator_version": "0.11.1",
      "generator_capabilities": [
        "character_conditions",
@@ -117,16 +121,23 @@ Example response (truncated):
      ],
      "character": {
        "physique": "wiry",
-       "wealth": "poor"
+       "wealth": "poor",
+       "health": "hale",
+       "demeanor": "alert",
+       "age": "old",
+       "facial_signal": "weathered"
      },
      "occupation": {
        "legitimacy": "tolerated",
-       "visibility": "routine"
+       "visibility": "routine",
+       "moral_load": "neutral",
+       "dependency": "necessary",
+       "risk_exposure": "straining"
      },
      "prompts": {
-       "character": "wiry, poor",
-       "occupation": "tolerated, routine",
-       "full": "wiry, poor, tolerated, routine"
+       "character": "wiry, poor, hale, alert, old, weathered",
+       "occupation": "tolerated, routine, neutral, necessary, straining",
+       "full": "wiry, poor, hale, alert, old, weathered, tolerated, routine, neutral, necessary, straining"
      }
    }
 
@@ -143,7 +154,8 @@ Request body:
    {
      "start_seed": 100,
      "count": 3,
-     "include_prompts": false
+     "include_prompts": false,
+     "axis_profile": "character_full"
    }
 
 Validation:
@@ -163,10 +175,11 @@ Example response (truncated):
    {
      "start_seed": 100,
      "count": 3,
+     "axis_profile": "character_full",
      "entities": [
-       {"seed": 100, "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}},
-       {"seed": 101, "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}},
-       {"seed": 102, "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}}
+       {"seed": 100, "axis_profile": "character_full", "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}},
+       {"seed": 101, "axis_profile": "character_full", "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}},
+       {"seed": 102, "axis_profile": "character_full", "character": {"physique": "..."}, "occupation": {"legitimacy": "..."}}
      ]
    }
 
