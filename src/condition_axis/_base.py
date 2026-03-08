@@ -11,7 +11,7 @@ coherent state descriptions across multiple dimensions. It is used for:
 - Narrative content generation
 
 Core concepts:
-- **Axes**: Semantic dimensions with discrete values (e.g., physique: skinny, wiry, stocky)
+- **Axes**: Semantic dimensions with discrete values (e.g., physique: frail, hunched, skinny)
 - **Weights**: Probability distributions for realistic populations
 - **Exclusions**: Semantic constraints to prevent illogical combinations
 - **Policy**: Rules for mandatory vs. optional axes

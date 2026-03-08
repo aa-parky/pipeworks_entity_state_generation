@@ -51,12 +51,12 @@ from condition_axis import (
 # Generate character physical and social state (may include facial signals)
 character_state = generate_condition(seed=42)
 print(character_state)
-# {'physique': 'wiry', 'wealth': 'poor', 'health': 'weary', 'facial_signal': 'weathered'}
+# {'physique': 'wiry', 'wealth': 'poor', 'demeanor': 'suspicious'}
 
 # Generate occupation characteristics
 occupation_state = generate_occupation_condition(seed=42)
 print(occupation_state)
-# {'legitimacy': 'tolerated', 'visibility': 'discreet', 'moral_load': 'burdened'}
+# {'legitimacy': 'tolerated', 'visibility': 'hidden', 'moral_load': 'neutral'}
 
 # Convert to comma-separated prompts (for image generation, text, etc.)
 char_prompt = condition_to_prompt(character_state)
@@ -64,7 +64,7 @@ occ_prompt = occupation_condition_to_prompt(occupation_state)
 
 full_prompt = f"{char_prompt}, {occ_prompt}"
 print(full_prompt)
-# "wiry, poor, weary, weathered, tolerated, discreet, burdened"
+# "wiry, poor, suspicious, tolerated, hidden, neutral"
 ```
 
 **Note**: Facial signals are integrated into `generate_condition()` as an optional axis. The standalone `generate_facial_condition()` function was removed in v0.10.0 when facial conditions were merged into the unified character system for better cross-system exclusion rules.
@@ -76,11 +76,13 @@ print(full_prompt)
 The `examples/` directory contains **comprehensive, runnable examples** demonstrating all library features:
 
 ### Core Examples
+
 - **`basic_usage.py`** - Simple generation, serialization, and reproducibility
 - **`advanced_usage.py`** - Weighted distributions, exclusion rules, and statistical analysis
 - **`integration_example.py`** - Combining character and occupation axis systems for complete entity generation
 
 ### Advanced Examples
+
 - **`batch_generation.py`** - Bulk generation with JSON/CSV export and memory-efficient streaming
 - **`custom_axes.py`** - Creating custom axis systems (includes fantasy magic and sci-fi tech examples)
 - **`image_prompt_generation.py`** - Integration with Stable Diffusion, DALL-E, and Midjourney
@@ -120,11 +122,12 @@ They are:
 The library currently provides two independent axis systems:
 
 #### 1. Character Conditions (`character_conditions`)
+
 Physical and social states that establish baseline character presentation:
 
-- **Physique**: `skinny`, `wiry`, `stocky`, `hunched`, `frail`, `broad`
+- **Physique**: `frail`, `hunched`, `skinny`, `wiry`, `broad`, `stocky`
 - **Wealth**: `poor`, `modest`, `well-kept`, `wealthy`, `decadent`
-- **Health**: `sickly`, `scarred`, `weary`, `hale`, `limping`
+- **Health**: `sickly`, `limping`, `weary`, `scarred`, `hale`
 - **Demeanor**: `timid`, `suspicious`, `resentful`, `alert`, `proud`
 - **Age**: `young`, `middle-aged`, `old`, `ancient`
 - **Facial Signal**: `understated`, `pronounced`, `exaggerated`, `asymmetrical`, `weathered`, `soft-featured`, `sharp-featured`
@@ -132,10 +135,11 @@ Physical and social states that establish baseline character presentation:
 **Note on Facial Signals**: Previously available as a separate `facial_conditions` module, facial signals are now integrated into the character conditions system. This allows for cross-system exclusion rules and more coherent character generation.
 
 #### 2. Occupation Conditions (`occupation_axis`)
+
 Labor pressures and social positioning (not job titles):
 
 - **Legitimacy**: `sanctioned`, `tolerated`, `questioned`, `illicit`
-- **Visibility**: `hidden`, `discreet`, `routine`, `conspicuous`
+- **Visibility**: `hidden`, `discrete`, `routine`, `conspicuous`
 - **Moral Load**: `neutral`, `burdened`, `conflicted`, `corrosive`
 - **Dependency**: `optional`, `useful`, `necessary`, `unavoidable`
 - **Risk Exposure**: `benign`, `straining`, `hazardous`, `eroding`
@@ -164,12 +168,14 @@ This creates believable populations where most characters are poor or modest.
 The system prevents illogical combinations through exclusion rules:
 
 **Within-system exclusions:**
+
 - Decadent characters can't be frail or sickly (wealth enables healthcare)
 - Ancient characters aren't timid (age brings confidence)
 - Broad, strong physiques don't pair with sickness
 - Hale (healthy) characters shouldn't have frail physiques
 
 **Cross-system exclusions (Character + Facial):**
+
 - Young characters can't have weathered faces (youth vs. wear)
 - Ancient characters rarely have understated features (age is pronounced)
 - Hale (healthy) characters don't look weathered (health affects appearance)
@@ -318,7 +324,7 @@ image_prompt = (
 )
 # Example output:
 # "illustration of a pale blue-green goblin, skinny, poor, limping, alert,
-#  whose work operates under the following conditions: tolerated, discreet, burdened"
+#  whose work operates under the following conditions: tolerated, discrete, burdened"
 ```
 
 ### Inspecting Available Axes and Values
@@ -341,7 +347,7 @@ print(get_axis_values('wealth'))
 
 # Access raw data structures
 print(CONDITION_AXES['physique'])
-# ['skinny', 'wiry', 'stocky', 'hunched', 'frail', 'broad']
+# ['frail', 'hunched', 'skinny', 'wiry', 'broad', 'stocky']
 
 print(WEIGHTS['wealth'])
 # {'poor': 4.0, 'modest': 3.0, 'well-kept': 2.0, 'wealthy': 1.0, 'decadent': 0.5}
@@ -356,6 +362,7 @@ Cross-system exclusion rules are implemented between character and facial axes:
 - `health="hale"` + `facial_signal="weathered"` → Excluded (health affects appearance)
 
 Future work:
+
 - Cross-validation with occupation axes (e.g., `demeanor="timid"` + `visibility="conspicuous"`)
 - Weighted cross-system preferences (soft constraints vs. hard exclusions)
 
@@ -455,6 +462,7 @@ start _build/html/index.html
 #### Accessing Online Documentation
 
 Once this repository is connected to ReadTheDocs, the documentation will be available at:
+
 - **Latest version**: `https://pipeworks-conditional-axis.readthedocs.io/en/latest/`
 - **Stable version**: `https://pipeworks-conditional-axis.readthedocs.io/en/stable/`
 
@@ -471,6 +479,7 @@ To update the API documentation, simply edit the docstrings in the Python source
 The documentation is 100% auto-generated from code - no manual .md or .rst files to maintain (except the minimal Sphinx configuration files).
 
 For Sphinx and autodoc syntax, see:
+
 - [Sphinx documentation](https://www.sphinx-doc.org/)
 - [Sphinx autodoc guide](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html)
 - [Google-style docstring format](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html)
@@ -542,6 +551,7 @@ This repository is part of the broader Pipeworks project.
 ## Documentation
 
 ### Main Documentation
+
 - **[README.md](./README.md)** - This file (project overview, quick start, usage examples)
 - **[CLAUDE.md](./CLAUDE.md)** - Development guide for AI assistants and contributors
 - **[examples/README.md](./examples/README.md)** - Comprehensive guide to usage examples
@@ -559,6 +569,7 @@ open _build/html/index.html  # or xdg-open / start on Linux/Windows
 ```
 
 The auto-generated documentation includes:
+
 - **condition_axis._base** - Core utilities (weighted_choice, apply_exclusion_rules, values_to_prompt)
 - **condition_axis.character_conditions** - Physical & social character state generation (includes facial signals)
 - **condition_axis.occupation_axis** - Occupation characteristics generation

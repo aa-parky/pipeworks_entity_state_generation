@@ -71,7 +71,7 @@ Example response (truncated):
      "character": {
        "axes": ["physique", "wealth", "health", "demeanor", "age", "facial_signal"],
        "values": {
-         "physique": ["skinny", "wiry", "stocky", "..."]
+         "physique": ["frail", "hunched", "skinny", "..."]
        }
      },
      "occupation": {
@@ -108,6 +108,13 @@ Example response (truncated):
 
    {
      "seed": 42,
+     "generator_version": "0.11.1",
+     "generator_capabilities": [
+       "character_conditions",
+       "occupation_conditions",
+       "seeded_generation",
+       "prompt_serialization"
+     ],
      "character": {
        "physique": "wiry",
        "wealth": "poor"

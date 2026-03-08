@@ -13,11 +13,16 @@ The service is designed to be reverse-proxied by Nginx and run under systemd.
 from __future__ import annotations
 
 import random
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as package_version
 from typing import Any
 
 from fastapi import FastAPI
 from pydantic import BaseModel, ConfigDict, Field
 
+from condition_axis import (
+    __version__ as condition_axis_version,
+)
 from condition_axis import (
     condition_to_prompt,
     generate_condition,
@@ -30,6 +35,27 @@ from condition_axis import (
 )
 
 app = FastAPI(title="Pipeworks Entity State API", version="0.1.0")
+
+GENERATOR_PACKAGE_NAME = "pipeworks-conditional-axis"
+GENERATOR_CAPABILITIES = [
+    "character_conditions",
+    "occupation_conditions",
+    "seeded_generation",
+    "prompt_serialization",
+]
+
+
+def _resolve_generator_version() -> str:
+    """Resolve the generator version for adapter-facing metadata."""
+
+    try:
+        return package_version(GENERATOR_PACKAGE_NAME)
+    except PackageNotFoundError:
+        # Fallback keeps metadata available in non-installed contexts.
+        return condition_axis_version
+
+
+GENERATOR_VERSION = _resolve_generator_version()
 
 
 class EntityRequest(BaseModel):
@@ -158,7 +184,10 @@ def generate_entity(req: EntityRequest) -> dict[str, Any]:
         One generated entity, optionally with prompt strings.
     """
     seed = _resolve_seed(req.seed)
-    return _build_entity(seed=seed, include_prompts=req.include_prompts)
+    payload = _build_entity(seed=seed, include_prompts=req.include_prompts)
+    payload["generator_version"] = GENERATOR_VERSION
+    payload["generator_capabilities"] = list(GENERATOR_CAPABILITIES)
+    return payload
 
 
 @app.post("/api/entities/batch")

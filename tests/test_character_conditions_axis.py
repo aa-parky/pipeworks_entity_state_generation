@@ -54,6 +54,18 @@ class TestDataStructures:
         expected_axes = ["physique", "wealth", "health", "demeanor", "age", "facial_signal"]
         assert set(CONDITION_AXES.keys()) == set(expected_axes)
 
+    def test_condition_axis_label_order_matches_policy(self):
+        """Axis label ordering should match canonical low->high policy order."""
+        assert CONDITION_AXES["physique"] == [
+            "frail",
+            "hunched",
+            "skinny",
+            "wiry",
+            "broad",
+            "stocky",
+        ]
+        assert CONDITION_AXES["health"] == ["sickly", "limping", "weary", "scarred", "hale"]
+
     def test_axis_policy_structure(self):
         """Test AXIS_POLICY has expected structure."""
         assert isinstance(AXIS_POLICY, dict)

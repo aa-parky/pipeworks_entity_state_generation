@@ -19,12 +19,12 @@ Example usage:
     >>> from pipeworks.core.condition_axis import generate_occupation_condition
     >>> occupation = generate_occupation_condition(seed=42)
     >>> print(occupation)
-    {'legitimacy': 'tolerated', 'visibility': 'discreet', 'moral_load': 'burdened'}
+    {'legitimacy': 'tolerated', 'visibility': 'discrete', 'moral_load': 'burdened'}
 
     >>> from pipeworks.core.condition_axis import occupation_condition_to_prompt
     >>> prompt_fragment = occupation_condition_to_prompt(occupation)
     >>> print(prompt_fragment)
-    'tolerated, discreet, burdened'
+    'tolerated, discrete, burdened'
 
 Architecture:
     1. OCCUPATION_AXES: Define all possible values for each axis
@@ -65,7 +65,7 @@ OCCUPATION_AXES: dict[str, list[str]] = {
     # Public visibility and conspicuousness
     "visibility": [
         "hidden",  # Deliberately concealed from public view
-        "discreet",  # Low-profile, not advertised
+        "discrete",  # Low-profile, not advertised
         "routine",  # Normal, unremarkable presence
         "conspicuous",  # Highly visible, attention-drawing
     ],
@@ -118,10 +118,10 @@ OCCUPATION_WEIGHTS: dict[str, dict[str, float]] = {
         "questioned": 1.5,  # Less common (grey areas)
         "illicit": 0.5,  # Rare (criminal enterprises)
     },
-    # Visibility distribution: Most work is routine or discreet
+    # Visibility distribution: Most work is routine or discrete
     "visibility": {
         "routine": 4.0,  # Most common (everyday jobs)
-        "discreet": 3.0,  # Common (behind-the-scenes work)
+        "discrete": 3.0,  # Common (behind-the-scenes work)
         "hidden": 1.0,  # Uncommon (secret operations)
         "conspicuous": 1.0,  # Uncommon (public performances)
     },
@@ -214,7 +214,7 @@ def generate_occupation_condition(seed: int | None = None) -> dict[str, str]:
 
     Returns:
         Dictionary mapping axis names to selected values.
-        Example: ``{"legitimacy": "tolerated", "visibility": "discreet", "moral_load": "burdened"}``
+        Example: ``{"legitimacy": "tolerated", "visibility": "discrete", "moral_load": "burdened"}``
 
     Examples:
         >>> # Reproducible generation
@@ -229,7 +229,7 @@ def generate_occupation_condition(seed: int | None = None) -> dict[str, str]:
 
         >>> # May include 0-2 optional axes
         >>> generate_occupation_condition(seed=100)
-        {'legitimacy': 'tolerated', 'visibility': 'discreet'}
+        {'legitimacy': 'tolerated', 'visibility': 'discrete'}
     """
     # Create isolated RNG instance to avoid polluting global random state
     rng = random.Random(seed)
@@ -290,8 +290,8 @@ def occupation_condition_to_prompt(condition_dict: dict[str, str]) -> str:
         Comma-separated string of condition values
 
     Examples:
-        >>> occupation_condition_to_prompt({"legitimacy": "tolerated", "visibility": "discreet"})
-        'tolerated, discreet'
+        >>> occupation_condition_to_prompt({"legitimacy": "tolerated", "visibility": "discrete"})
+        'tolerated, discrete'
 
         >>> occupation_condition_to_prompt({
         ...     "legitimacy": "sanctioned",

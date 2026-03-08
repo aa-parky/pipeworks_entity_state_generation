@@ -66,7 +66,7 @@ class TestDataStructures:
         # Test visibility axis
         assert set(OCCUPATION_AXES["visibility"]) == {
             "hidden",
-            "discreet",
+            "discrete",
             "routine",
             "conspicuous",
         }
@@ -94,6 +94,10 @@ class TestDataStructures:
             "hazardous",
             "eroding",
         }
+
+    def test_occupation_axis_label_order_matches_policy(self):
+        """Axis label ordering should match canonical low->high policy order."""
+        assert OCCUPATION_AXES["visibility"] == ["hidden", "discrete", "routine", "conspicuous"]
 
     def test_occupation_policy_structure(self):
         """Test OCCUPATION_POLICY has expected structure."""
@@ -326,12 +330,12 @@ class TestOccupationConditionToPrompt:
 
     def test_occupation_condition_to_prompt_basic(self):
         """Test basic prompt text generation."""
-        condition = {"legitimacy": "tolerated", "visibility": "discreet"}
+        condition = {"legitimacy": "tolerated", "visibility": "discrete"}
         result = occupation_condition_to_prompt(condition)
 
         assert isinstance(result, str)
         assert "tolerated" in result
-        assert "discreet" in result
+        assert "discrete" in result
         assert ", " in result  # Comma-separated
 
     def test_occupation_condition_to_prompt_empty(self):
@@ -350,7 +354,7 @@ class TestOccupationConditionToPrompt:
         """Test prompt generation with multiple axes."""
         condition = {
             "legitimacy": "tolerated",
-            "visibility": "discreet",
+            "visibility": "discrete",
             "moral_load": "burdened",
         }
         result = occupation_condition_to_prompt(condition)
@@ -359,7 +363,7 @@ class TestOccupationConditionToPrompt:
         parts = result.split(", ")
         assert len(parts) == 3
         assert "tolerated" in parts
-        assert "discreet" in parts
+        assert "discrete" in parts
         assert "burdened" in parts
 
     def test_occupation_condition_to_prompt_integration(self):
@@ -428,7 +432,7 @@ class TestHelperFunctions:
 
         # Test visibility
         visibility_values = get_occupation_axis_values("visibility")
-        assert set(visibility_values) == {"hidden", "discreet", "routine", "conspicuous"}
+        assert set(visibility_values) == {"hidden", "discrete", "routine", "conspicuous"}
 
 
 # ============================================================================
@@ -533,13 +537,13 @@ class TestEdgeCases:
         # Create condition with known order
         condition = {}
         condition["legitimacy"] = "tolerated"
-        condition["visibility"] = "discreet"
+        condition["visibility"] = "discrete"
         condition["moral_load"] = "burdened"
 
         result = occupation_condition_to_prompt(condition)
 
         # Should be in insertion order
-        assert result == "tolerated, discreet, burdened"
+        assert result == "tolerated, discrete, burdened"
 
     def test_minimum_mandatory_axes_usually_present(self):
         """Test that mandatory axes are usually present (unless removed by exclusions).

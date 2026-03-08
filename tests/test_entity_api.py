@@ -121,6 +121,21 @@ def test_generate_entity_without_prompts_omits_prompt_block(api_client: TestClie
     assert "prompts" not in payload
 
 
+def test_generate_entity_includes_generator_metadata(
+    api_client: TestClient,
+    entity_api_module: Any,
+) -> None:
+    """`POST /api/entity` should include adapter-facing generator metadata."""
+
+    response = api_client.post("/api/entity", json={"seed": 42, "include_prompts": False})
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["generator_version"] == entity_api_module.GENERATOR_VERSION
+    assert payload["generator_capabilities"] == entity_api_module.GENERATOR_CAPABILITIES
+    assert all(isinstance(capability, str) for capability in payload["generator_capabilities"])
+
+
 def test_generate_entity_without_seed_returns_integer_seed(api_client: TestClient) -> None:
     """Unseeded generation should still return a concrete replayable seed."""
 

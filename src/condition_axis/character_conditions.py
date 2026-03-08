@@ -45,11 +45,11 @@ logger = logging.getLogger(__name__)
 
 CONDITION_AXES: dict[str, list[str]] = {
     # Physical build and body structure
-    "physique": ["skinny", "wiry", "stocky", "hunched", "frail", "broad"],
+    "physique": ["frail", "hunched", "skinny", "wiry", "broad", "stocky"],
     # Economic/social status indicators
     "wealth": ["poor", "modest", "well-kept", "wealthy", "decadent"],
     # Physical health and condition
-    "health": ["sickly", "scarred", "weary", "hale", "limping"],
+    "health": ["sickly", "limping", "weary", "scarred", "hale"],
     # Behavioral presentation and attitude
     "demeanor": ["timid", "suspicious", "resentful", "alert", "proud"],
     # Life stage
