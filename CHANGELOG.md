@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.4](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.3...pipeworks-conditional-axis-v0.11.4) (2026-03-08)
+
+
+### Features
+
+* default /api/entity to full-axis profile ([d01e7be](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/d01e7bef9bf47fd7b1d662ecbce3ae1d8ad028c3))
+* default /api/entity to full-axis profile ([8e48157](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/8e481577ecf494382d0550dd9f5b5a17e22d675e))
+
 ## [0.11.3](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.2...pipeworks-conditional-axis-v0.11.3) (2026-03-08)
 
 
