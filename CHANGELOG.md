@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.3](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.2...pipeworks-conditional-axis-v0.11.3) (2026-03-08)
+
+
+### Features
+
+* add numeric axes to entity api payload ([f9397f6](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/f9397f62745593b5d771852de8272f20775cd42c))
+* add numeric axes to entity API payload ([563bff5](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/563bff57bad07d9c14054ffe2d90fe05f90bfdd2))
+
 ## [0.11.2](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.1...pipeworks-conditional-axis-v0.11.2) (2026-03-08)
 
 
