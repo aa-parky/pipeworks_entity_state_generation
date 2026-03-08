@@ -247,6 +247,7 @@ All examples use public API only and should work unchanged:
 - ✅ `image_prompt_generation.py` - Uses `generate_condition(seed=X)` (no changes needed)
 
 **Verification command**:
+
 ```bash
 for script in basic_usage.py advanced_usage.py integration_example.py batch_generation.py custom_axes.py image_prompt_generation.py
 do
@@ -331,6 +332,7 @@ behavior, which remains unchanged.
 #### 6.1 Update Version Numbers
 
 **Files to update**:
+
 - `pyproject.toml:7` - `version = "0.10.1"`
 - `src/condition_axis/__init__.py:98` - `__version__ = "0.10.1"`
 
@@ -398,8 +400,8 @@ Create or update `CHANGELOG.md`:
 
 ## References
 
-- **Python random module docs**: https://docs.python.org/3/library/random.html#random.Random
-- **NumPy random approach**: https://numpy.org/doc/stable/reference/random/generator.html
+- **Python random module docs**: <https://docs.python.org/3/library/random.html#random.Random>
+- **NumPy random approach**: <https://numpy.org/doc/stable/reference/random/generator.html>
 - **Issue raised by**: Code review feedback on global state pollution
 
 ## Timeline

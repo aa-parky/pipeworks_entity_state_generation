@@ -12,12 +12,36 @@ Run this example:
     python examples/integration_example.py
 """
 
+from typing import TypedDict
+
 from condition_axis import (
     condition_to_prompt,
     generate_condition,
     generate_occupation_condition,
     occupation_condition_to_prompt,
 )
+
+type ConditionPayload = dict[str, str]
+
+
+class EntityRecord(TypedDict):
+    """Structured entity record used in example population loops."""
+
+    seed: int
+    character: ConditionPayload
+    facial: ConditionPayload
+    occupation: ConditionPayload
+
+
+class InterestingCaseRecord(TypedDict):
+    """Structured interesting-case record used in pattern analysis."""
+
+    seed: int
+    character: ConditionPayload
+    facial: ConditionPayload
+    occupation: ConditionPayload
+    pattern: str
+
 
 # ============================================================================
 # NOTE: Unified API for Facial Conditions
@@ -92,10 +116,10 @@ def example_2_multiple_complete_entities() -> None:
     print("EXAMPLE 2: Multiple Complete Entities")
     print("=" * 70)
 
-    entities = []
+    entities: list[EntityRecord] = []
     for seed in range(5):
         char = generate_condition(seed=seed)
-        entity = {
+        entity: EntityRecord = {
             "seed": seed,
             "character": char,
             "facial": (
@@ -244,7 +268,7 @@ def example_4_identifying_coherence_patterns() -> None:
 
     print("\nSearching for interesting combinations (seeds 0-50)...")
 
-    interesting_cases = []
+    interesting_cases: list[InterestingCaseRecord] = []
 
     for seed in range(50):
         character = generate_condition(seed=seed)

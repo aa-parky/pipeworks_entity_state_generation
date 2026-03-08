@@ -8,11 +8,11 @@ version: 2
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.12"
+    python: '3.12'
   jobs:
     post_install:
       # Install the package with documentation dependencies
-      - pip install -e ".[docs]"
+    - pip install -e ".[docs]"
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
@@ -22,13 +22,13 @@ sphinx:
 
 # Optionally build formats (PDF, ePub)
 formats:
-  - pdf
-  - epub
+- pdf
+- epub
 
 # Python requirements
 python:
   install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - docs
+  - method: pip
+    path: .
+    extra_requirements:
+    - docs

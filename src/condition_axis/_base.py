@@ -73,7 +73,7 @@ def weighted_choice(
     if not weights:
         # Fast path: uniform distribution
         if rng is None:
-            return random.choice(options)
+            return random.choice(options)  # nosec B311 - non-crypto procedural generation
         return rng.choice(options)
 
     # Build weight list matching option order
@@ -82,7 +82,9 @@ def weighted_choice(
 
     # random.choices returns a list of k elements, we want just one
     if rng is None:
-        return random.choices(options, weights=weight_values, k=1)[0]
+        return random.choices(  # nosec B311 - non-crypto procedural generation
+            options, weights=weight_values, k=1
+        )[0]
     return rng.choices(options, weights=weight_values, k=1)[0]
 
 

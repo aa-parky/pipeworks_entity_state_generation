@@ -191,7 +191,7 @@ def generate_condition(seed: int | None = None) -> dict[str, str]:
         {'physique': 'stocky', 'wealth': 'modest', 'health': 'weary'}
     """
     # Create isolated RNG instance to avoid polluting global random state
-    rng = random.Random(seed)
+    rng = random.Random(seed)  # nosec B311 - deterministic gameplay/content generation
 
     chosen: dict[str, str] = {}
 
