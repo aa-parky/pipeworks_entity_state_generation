@@ -108,7 +108,9 @@ def generate_magic_condition(seed: int | None = None) -> dict[str, str]:
     optional_axes = MAGIC_POLICY["optional"]
     max_optional = MAGIC_POLICY["max_optional"]
 
-    num_optional = random.randint(0, min(max_optional, len(optional_axes)))
+    num_optional = random.randint(  # nosec B311 - non-crypto example generation
+        0, min(max_optional, len(optional_axes))
+    )
     selected_optional = random.sample(optional_axes, num_optional)
 
     for axis in selected_optional:
@@ -222,7 +224,9 @@ def generate_tech_condition(seed: int | None = None) -> dict[str, str]:
     optional_axes = TECH_POLICY["optional"]
     max_optional = TECH_POLICY["max_optional"]
 
-    num_optional = random.randint(0, min(max_optional, len(optional_axes)))
+    num_optional = random.randint(  # nosec B311 - non-crypto example generation
+        0, min(max_optional, len(optional_axes))
+    )
     selected_optional = random.sample(optional_axes, num_optional)
 
     for axis in selected_optional:

@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Essential Commands
 
 ### Development Setup
+
 ```bash
 # Install with development dependencies
 pip install -e ".[dev]"
@@ -20,6 +21,7 @@ pre-commit install
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 pytest
@@ -40,6 +42,7 @@ pytest -m slow
 ```
 
 ### Code Quality
+
 ```bash
 # Format code with black (line length: 100)
 black src/ tests/ --line-length=100
@@ -118,22 +121,26 @@ All systems provide `<type>_condition_to_prompt()` functions that convert struct
 ## Important Constraints
 
 ### Python Version
+
 - **Minimum**: Python 3.12
 - Uses modern type hints (`dict[str, str]`, not `Dict[str, str]`)
 - Relies on dict insertion order (guaranteed in Python 3.7+)
 
 ### Zero Runtime Dependencies
+
 - Pure Python implementation
 - No external libraries required for core functionality
 - Dev dependencies (pytest, black, ruff, mypy) only for development
 
 ### Code Style
+
 - Line length: 100 characters (enforced by black and ruff)
 - Type hints required for all public APIs
 - Docstrings follow Google style
 - All modules use structured logging (`import logging`)
 
 ### Testing Philosophy
+
 - All tests use seeds for reproducibility
 - Tests verify both structure (dict keys) and determinism (exact values with seed)
 - Exclusion rules are tested with specific triggered combinations
@@ -144,6 +151,7 @@ All systems provide `<type>_condition_to_prompt()` functions that convert struct
 Facial signals are integrated into the character conditions system. Cross-system exclusion rules are implemented between character axes (including facial):
 
 **Implemented exclusions:**
+
 - `age="young"` + `facial_signal="weathered"` (contradiction)
 - `age="ancient"` + `facial_signal="understated"` (ancient is rarely subtle)
 - `wealth="decadent"` + `facial_signal="weathered"` (wealth preserves appearance)
@@ -151,18 +159,22 @@ Facial signals are integrated into the character conditions system. Cross-system
 - `health="sickly"` + `facial_signal="soft-featured"` (redundant signal)
 
 **Future integration:**
+
 - Cross-validation with occupation axes (e.g., `demeanor="timid"` + `visibility="conspicuous"`)
 - Weighted preferences for complementary combinations
 
 ## GitHub Actions
 
 ### CI/CD Workflows
+
 - **test.yml**: Runs pytest on Python 3.12 and 3.13, uploads coverage to Codecov
 - **lint.yml**: Runs ruff (auto-fixes and commits), black (check-only), and mypy
 - **publish.yml**: Publishes to PyPI on release tags
 
 ### Pre-commit Hooks
+
 The repository uses pre-commit hooks for:
+
 - Trailing whitespace removal
 - End-of-file fixing
 - YAML/TOML/JSON validation
@@ -186,12 +198,13 @@ The repository uses pre-commit hooks for:
 2. Define your AXES, POLICY, WEIGHTS, EXCLUSIONS
 3. Use `weighted_choice()` and `apply_exclusion_rules()` from _base
 4. Write `generate_<type>_condition()` and `<type>_condition_to_prompt()` functions
-5. Export via __init__.py
+5. Export via **init**.py
 6. Add comprehensive tests
 
 ### Exclusion Rule Design
 
 Exclusions encode domain knowledge about incompatible combinations:
+
 - Physical impossibilities (e.g., "broad + frail")
 - Socioeconomic contradictions (e.g., "wealthy + sickly")
 - Behavioral incoherence (e.g., "ancient + timid")

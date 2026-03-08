@@ -38,11 +38,13 @@ Examples show how to generate, combine, and serialize these for visual generatio
 ## Learning Paths
 
 ### New Users: Start Here
+
 1. **`basic_usage.py`** - Core concepts, seeds, serialization
 2. **`integration_example.py`** - Combining character and occupation systems
 3. **`image_prompt_generation.py`** - Practical AI image generation
 
 ### Advanced Users: Deep Dives
+
 1. **`advanced_usage.py`** - Weighted distributions, exclusion rules, internals
 2. **`batch_generation.py`** - Performance patterns, bulk generation
 3. **`custom_axes.py`** - Extending the library for custom domains
@@ -50,19 +52,23 @@ Examples show how to generate, combine, and serialize these for visual generatio
 ### By Use Case
 
 **AI Image Generation** (Stable Diffusion, DALL-E, Midjourney):
+
 - Start: `basic_usage.py` (generation and serialization)
 - Then: `image_prompt_generation.py` (prompt engineering, styles, quality tags)
 
 **Game Development / MUDs / Interactive Fiction**:
+
 - Start: `basic_usage.py` (generation basics)
 - Then: `integration_example.py` (narrative formatting, archetypes)
 - Scale: `batch_generation.py` (populations, export to JSON/CSV)
 
 **Custom Domains** (Fantasy, Sci-Fi, Horror):
+
 - Start: `advanced_usage.py` (understanding the pattern)
 - Then: `custom_axes.py` (magic systems, tech systems)
 
 **Bulk Content Generation**:
+
 - Start: `batch_generation.py` (efficient generation, streaming, export)
 - Filter: `integration_example.py` (archetype filtering)
 
@@ -73,10 +79,12 @@ Examples show how to generate, combine, and serialize these for visual generatio
 ### Core Examples
 
 #### `basic_usage.py` - Foundation
+
 **Difficulty**: Beginner
 **Best For**: First-time users, getting started
 
 Learn fundamental concepts:
+
 - Simple generation (with and without seeds)
 - Reproducible generation for testing and consistency
 - Serialization to prompt strings
@@ -87,10 +95,12 @@ Learn fundamental concepts:
 Start here if you're new to the library.
 
 #### `advanced_usage.py` - Internals Deep Dive
+
 **Difficulty**: Intermediate
 **Best For**: Power users, understanding mechanics
 
 Explore how the system works:
+
 - Weighted probability distributions (realistic populations)
 - Exclusion rules (preventing illogical combinations)
 - Mandatory vs optional axes (complexity control)
@@ -101,10 +111,12 @@ Explore how the system works:
 Includes visualization of distributions and 500-sample statistical analysis.
 
 #### `integration_example.py` - Complete Character Generation
+
 **Difficulty**: Intermediate
 **Best For**: Real-world usage, complete entities
 
 Combine character and occupation systems:
+
 - Complete entity generation (character + occupation)
 - Population generation (multiple entities with unique seeds)
 - Narrative vs visual formatting (same data, different outputs)
@@ -116,10 +128,12 @@ Shows how to format output for both AI image generation and narrative text.
 ### Advanced Examples
 
 #### `batch_generation.py` - Scale & Performance
+
 **Difficulty**: Advanced
 **Best For**: Bulk content generation, data export
 
 Generate entities efficiently at scale:
+
 - Simple batch generation (moderate scale)
 - Export to JSON and CSV formats
 - Filtering and selection from batches
@@ -129,10 +143,12 @@ Generate entities efficiently at scale:
 Essential for generating large populations or integrating with databases and APIs.
 
 #### `custom_axes.py` - Extensibility
+
 **Difficulty**: Advanced
 **Best For**: Extending the library, custom domains
 
 Create your own axis systems:
+
 - Complete pattern for custom axes
 - Using shared utilities from `_base.py`
 - Defining AXES, POLICY, WEIGHTS, EXCLUSIONS
@@ -141,14 +157,17 @@ Create your own axis systems:
 - Combining custom axes with core systems
 
 Includes two complete custom systems:
+
 - **Fantasy Magic System**: affinity, proficiency, manifestation, cost
 - **Sci-Fi Technology System**: augmentation, tech_access, integration, stability
 
 #### `image_prompt_generation.py` - AI Image Integration
+
 **Difficulty**: Advanced
 **Best For**: AI image generation tools
 
 Generate optimized prompts for image generation:
+
 - Converting conditions to image prompts
 - Style modifiers (portrait, oil painting, 3D render, pixel art, concept art, etc.)
 - Quality-enhanced prompts (photorealistic, artistic, fantasy presets)
@@ -158,6 +177,7 @@ Generate optimized prompts for image generation:
 - Prompt engineering best practices
 
 **Supported Tools**:
+
 - Stable Diffusion (Web UI, ComfyUI)
 - DALL-E 3
 - Midjourney
@@ -191,6 +211,7 @@ pytest -v
 ```
 
 **Test Coverage**:
+
 - Import tests (all modules load correctly)
 - Function tests (utility functions work as expected)
 - Reproducibility tests (seeds produce consistent results)

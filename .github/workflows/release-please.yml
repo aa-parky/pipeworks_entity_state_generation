@@ -3,7 +3,7 @@ name: Release Please
 on:
   push:
     branches:
-      - main
+    - main
   workflow_dispatch:  # Allow manual triggering for testing
 
 permissions:
@@ -16,8 +16,8 @@ jobs:
   release:
     uses: pipe-works/.github/.github/workflows/reusable-release-please.yml@main
     with:
-      release-type: 'python'
-      package-name: 'pipeworks-conditional-axis'
+      release-type: python
+      package-name: pipeworks-conditional-axis
       bump-minor-pre-major: true
       bump-patch-for-minor-pre-major: true
     secrets: inherit

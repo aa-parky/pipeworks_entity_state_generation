@@ -24,6 +24,7 @@ API Documentation
    :maxdepth: 2
 
    http_api
+   release_notes
    api/index
 
 Indices and Tables

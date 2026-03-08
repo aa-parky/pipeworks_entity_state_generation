@@ -232,7 +232,7 @@ def generate_occupation_condition(seed: int | None = None) -> dict[str, str]:
         {'legitimacy': 'tolerated', 'visibility': 'discrete'}
     """
     # Create isolated RNG instance to avoid polluting global random state
-    rng = random.Random(seed)
+    rng = random.Random(seed)  # nosec B311 - deterministic gameplay/content generation
 
     chosen: dict[str, str] = {}
 
