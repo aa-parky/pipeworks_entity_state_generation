@@ -13,6 +13,7 @@ The service is designed to be reverse-proxied by Nginx and run under systemd.
 from __future__ import annotations
 
 import random
+from hashlib import sha256
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as package_version
 from typing import Any
@@ -44,6 +45,8 @@ GENERATOR_CAPABILITIES = [
     "numeric_axis_scores",
     "prompt_serialization",
 ]
+DEFAULT_AXIS_PROFILE = "character_full"
+LEGACY_AXIS_PROFILE = "subset_legacy"
 
 
 def _resolve_generator_version() -> str:
@@ -69,6 +72,15 @@ class EntityRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     seed: int | None = Field(default=None)
     include_prompts: bool = True
+    axis_profile: str = Field(
+        default=DEFAULT_AXIS_PROFILE,
+        pattern=f"^({DEFAULT_AXIS_PROFILE}|{LEGACY_AXIS_PROFILE})$",
+        description=(
+            "Axis profile used for generation. "
+            "'character_full' returns the full canonical character+occupation axis set; "
+            "'subset_legacy' preserves historical sparse optional-axis behavior."
+        ),
+    )
 
 
 class BatchRequest(BaseModel):
@@ -83,6 +95,15 @@ class BatchRequest(BaseModel):
     start_seed: int = 0
     count: int = Field(default=10, ge=1, le=500)
     include_prompts: bool = True
+    axis_profile: str = Field(
+        default=DEFAULT_AXIS_PROFILE,
+        pattern=f"^({DEFAULT_AXIS_PROFILE}|{LEGACY_AXIS_PROFILE})$",
+        description=(
+            "Axis profile used for each generated entity. "
+            "'character_full' returns the full canonical character+occupation axis set; "
+            "'subset_legacy' preserves historical sparse optional-axis behavior."
+        ),
+    )
 
 
 def _ordinal_score_from_values(value: str, ordered_values: list[str]) -> float | None:
@@ -148,7 +169,33 @@ def _build_numeric_axes(
     return axes
 
 
-def _build_entity(seed: int, include_prompts: bool) -> dict[str, Any]:
+def _deterministic_full_axis_value(*, seed: int, axis_name: str, values: list[str]) -> str:
+    """Select one axis label deterministically from ordered axis values.
+
+    Args:
+        seed: Deterministic seed used for payload generation.
+        axis_name: Axis key (including group prefix for uniqueness).
+        values: Canonical ordered value list for the axis.
+
+    Returns:
+        Deterministically selected axis label.
+
+    Raises:
+        ValueError: If values list is empty.
+    """
+    if not values:
+        raise ValueError(f"Axis {axis_name!r} has no values.")
+
+    digest = sha256(f"{seed}:{axis_name}".encode()).digest()
+    index = int.from_bytes(digest[:8], byteorder="big", signed=False) % len(values)
+    return values[index]
+
+
+def _build_entity(
+    seed: int,
+    include_prompts: bool,
+    axis_profile: str,
+) -> dict[str, Any]:
     """Build one entity payload from library generators.
 
     Args:
@@ -160,12 +207,31 @@ def _build_entity(seed: int, include_prompts: bool) -> dict[str, Any]:
     """
     # Generate both axis systems from the same seed so payloads are
     # reproducible and easy to reference/debug by seed.
-    character = generate_condition(seed=seed)
-    occupation = generate_occupation_condition(seed=seed)
+    if axis_profile == LEGACY_AXIS_PROFILE:
+        character = generate_condition(seed=seed)
+        occupation = generate_occupation_condition(seed=seed)
+    else:
+        character = {
+            axis_name: _deterministic_full_axis_value(
+                seed=seed,
+                axis_name=f"character:{axis_name}",
+                values=get_axis_values(axis_name),
+            )
+            for axis_name in get_available_axes()
+        }
+        occupation = {
+            axis_name: _deterministic_full_axis_value(
+                seed=seed,
+                axis_name=f"occupation:{axis_name}",
+                values=get_occupation_axis_values(axis_name),
+            )
+            for axis_name in get_available_occupation_axes()
+        }
 
     # Keep response schema explicit and stable for frontend/API consumers.
     payload: dict[str, Any] = {
         "seed": seed,
+        "axis_profile": axis_profile,
         "character": character,
         "occupation": occupation,
         "axes": _build_numeric_axes(character=character, occupation=occupation),
@@ -249,7 +315,11 @@ def generate_entity(req: EntityRequest) -> dict[str, Any]:
         One generated entity, optionally with prompt strings.
     """
     seed = _resolve_seed(req.seed)
-    payload = _build_entity(seed=seed, include_prompts=req.include_prompts)
+    payload = _build_entity(
+        seed=seed,
+        include_prompts=req.include_prompts,
+        axis_profile=req.axis_profile,
+    )
     payload["generator_version"] = GENERATOR_VERSION
     payload["generator_capabilities"] = list(GENERATOR_CAPABILITIES)
     return payload
@@ -269,7 +339,16 @@ def generate_entities(req: BatchRequest) -> dict[str, Any]:
     # Use sequential seeds to make batch generation deterministic and simple to
     # replay (start_seed + index for each element).
     entities = [
-        _build_entity(seed=req.start_seed + index, include_prompts=req.include_prompts)
+        _build_entity(
+            seed=req.start_seed + index,
+            include_prompts=req.include_prompts,
+            axis_profile=req.axis_profile,
+        )
         for index in range(req.count)
     ]
-    return {"start_seed": req.start_seed, "count": req.count, "entities": entities}
+    return {
+        "start_seed": req.start_seed,
+        "count": req.count,
+        "axis_profile": req.axis_profile,
+        "entities": entities,
+    }

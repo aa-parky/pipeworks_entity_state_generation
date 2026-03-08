@@ -10,6 +10,12 @@ Condition-axis contract parity update:
 - Added canonical numeric ``axes`` output (``axis -> {label, score}``) while preserving
   existing ``character`` and ``occupation`` label payloads.
 - Added ``numeric_axis_scores`` generator capability token for adapter feature detection.
+- Added ``axis_profile`` request/response metadata for ``/api/entity`` and
+  ``/api/entities/batch``.
+- Defaulted ``axis_profile`` to ``character_full`` so API output now includes
+  the full canonical character+occupation axis set.
+- Preserved historical sparse optional-axis output under explicit
+  ``axis_profile="subset_legacy"``.
 - Aligned canonical label ordering for ``physique`` and ``health`` with mud-server policy.
 - Aligned occupation ``visibility`` label spelling to canonical ``discrete``.
 - Updated tests to lock metadata, dual-format axis payloads, and label-order contracts.

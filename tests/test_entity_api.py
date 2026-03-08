@@ -96,6 +96,7 @@ def test_generate_entity_seeded_is_reproducible(api_client: TestClient) -> None:
 
     entity = response_a.json()
     assert entity["seed"] == 42
+    assert entity["axis_profile"] == "character_full"
     assert "character" in entity
     assert "occupation" in entity
     assert "axes" in entity
@@ -117,6 +118,7 @@ def test_generate_entity_without_prompts_omits_prompt_block(api_client: TestClie
     assert response.status_code == 200
     payload = response.json()
     assert payload["seed"] == 7
+    assert payload["axis_profile"] == "character_full"
     assert "character" in payload
     assert "occupation" in payload
     assert "axes" in payload
@@ -164,6 +166,77 @@ def test_generate_entity_includes_numeric_axes_with_labels(api_client: TestClien
     assert "visibility" in axes
 
 
+def test_generate_entity_defaults_to_full_axis_profile(api_client: TestClient) -> None:
+    """Default profile should emit the full character+occupation axis set."""
+
+    axes_response = api_client.get("/api/axes")
+    assert axes_response.status_code == 200
+    axes_payload = axes_response.json()
+    expected_character_axes = set(axes_payload["character"]["axes"])
+    expected_occupation_axes = set(axes_payload["occupation"]["axes"])
+    expected_all_axes = expected_character_axes | expected_occupation_axes
+
+    for seed in (1, 7, 42, 4242, 99999):
+        response = api_client.post("/api/entity", json={"seed": seed, "include_prompts": False})
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["axis_profile"] == "character_full"
+        assert set(payload["character"].keys()) == expected_character_axes
+        assert set(payload["occupation"].keys()) == expected_occupation_axes
+        assert set(payload["axes"].keys()) == expected_all_axes
+
+
+def test_generate_entity_subset_legacy_profile_preserves_sparse_behavior(
+    api_client: TestClient,
+) -> None:
+    """Legacy profile should preserve sparse optional-axis generation behavior."""
+
+    axes_response = api_client.get("/api/axes")
+    assert axes_response.status_code == 200
+    axes_payload = axes_response.json()
+    expected_all_axes = set(axes_payload["character"]["axes"]) | set(
+        axes_payload["occupation"]["axes"]
+    )
+
+    response = api_client.post(
+        "/api/entity",
+        json={
+            "seed": 42,
+            "include_prompts": False,
+            "axis_profile": "subset_legacy",
+        },
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["axis_profile"] == "subset_legacy"
+    assert set(payload["axes"].keys()) < expected_all_axes
+    assert set(payload["character"].keys()) < set(axes_payload["character"]["axes"])
+    assert set(payload["occupation"].keys()) < set(axes_payload["occupation"]["axes"])
+
+
+def test_generate_entity_is_deterministic_per_seed_and_profile(api_client: TestClient) -> None:
+    """Determinism should hold for each (seed, axis_profile) pair."""
+
+    full_request = {"seed": 1234, "include_prompts": False, "axis_profile": "character_full"}
+    legacy_request = {"seed": 1234, "include_prompts": False, "axis_profile": "subset_legacy"}
+
+    full_a = api_client.post("/api/entity", json=full_request)
+    full_b = api_client.post("/api/entity", json=full_request)
+    legacy_a = api_client.post("/api/entity", json=legacy_request)
+    legacy_b = api_client.post("/api/entity", json=legacy_request)
+
+    assert full_a.status_code == 200
+    assert full_b.status_code == 200
+    assert legacy_a.status_code == 200
+    assert legacy_b.status_code == 200
+    assert full_a.json() == full_b.json()
+    assert legacy_a.json() == legacy_b.json()
+
+    # Profiles are intentionally distinct contracts.
+    assert full_a.json()["axis_profile"] != legacy_a.json()["axis_profile"]
+    assert set(full_a.json()["axes"].keys()) != set(legacy_a.json()["axes"].keys())
+
+
 def test_generate_entity_without_seed_returns_integer_seed(api_client: TestClient) -> None:
     """Unseeded generation should still return a concrete replayable seed."""
 
@@ -198,15 +271,39 @@ def test_batch_endpoint_uses_sequential_seeds(api_client: TestClient) -> None:
     payload = response.json()
     assert payload["start_seed"] == 100
     assert payload["count"] == 3
+    assert payload["axis_profile"] == "character_full"
     assert len(payload["entities"]) == 3
 
     seeds = [entity["seed"] for entity in payload["entities"]]
     assert seeds == [100, 101, 102]
 
     for entity in payload["entities"]:
+        assert entity["axis_profile"] == "character_full"
         assert "character" in entity
         assert "occupation" in entity
         assert "prompts" not in entity
+
+
+def test_batch_endpoint_accepts_subset_legacy_profile(api_client: TestClient) -> None:
+    """Batch endpoint should preserve explicit legacy profile selection."""
+
+    response = api_client.post(
+        "/api/entities/batch",
+        json={
+            "start_seed": 10,
+            "count": 2,
+            "include_prompts": False,
+            "axis_profile": "subset_legacy",
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["axis_profile"] == "subset_legacy"
+    assert [entity["axis_profile"] for entity in payload["entities"]] == [
+        "subset_legacy",
+        "subset_legacy",
+    ]
 
 
 def test_batch_endpoint_rejects_out_of_range_count(api_client: TestClient) -> None:
