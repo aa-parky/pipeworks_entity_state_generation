@@ -208,3 +208,6 @@ __marimo__/
 
 # OSX
 .DS_Store
+
+# Local planning/scratch artifacts
+_working/

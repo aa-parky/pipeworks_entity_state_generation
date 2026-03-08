@@ -42,6 +42,11 @@ Example usage:
     'wiry, poor, suspicious, tolerated, hidden, neutral'
 """
 
+import tomllib
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as package_version
+from pathlib import Path
+
 # ============================================================================
 # Character Conditions (Physical & Social States)
 # ============================================================================
@@ -95,4 +100,26 @@ __all__ = [
     "occupation_condition_to_prompt",
 ]
 
-__version__ = "0.11.1"
+_PACKAGE_NAME = "pipeworks-conditional-axis"
+
+
+def _resolve_package_version() -> str:
+    """Resolve package version from distribution metadata or local pyproject.
+
+    Distribution metadata is authoritative in installed environments.
+    Local source fallback keeps `__version__` available during direct module imports.
+    """
+
+    try:
+        return package_version(_PACKAGE_NAME)
+    except PackageNotFoundError:
+        pyproject_path = Path(__file__).resolve().parents[2] / "pyproject.toml"
+        try:
+            with pyproject_path.open("rb") as pyproject_file:
+                pyproject_data = tomllib.load(pyproject_file)
+            return str(pyproject_data["project"]["version"])
+        except (FileNotFoundError, OSError, KeyError, TypeError, tomllib.TOMLDecodeError):
+            return "0.0.0+unknown"
+
+
+__version__ = _resolve_package_version()
