@@ -98,6 +98,7 @@ def test_generate_entity_seeded_is_reproducible(api_client: TestClient) -> None:
     assert entity["seed"] == 42
     assert "character" in entity
     assert "occupation" in entity
+    assert "axes" in entity
     assert "prompts" in entity
     assert "full" in entity["prompts"]
 
@@ -118,6 +119,7 @@ def test_generate_entity_without_prompts_omits_prompt_block(api_client: TestClie
     assert payload["seed"] == 7
     assert "character" in payload
     assert "occupation" in payload
+    assert "axes" in payload
     assert "prompts" not in payload
 
 
@@ -134,6 +136,32 @@ def test_generate_entity_includes_generator_metadata(
     assert payload["generator_version"] == entity_api_module.GENERATOR_VERSION
     assert payload["generator_capabilities"] == entity_api_module.GENERATOR_CAPABILITIES
     assert all(isinstance(capability, str) for capability in payload["generator_capabilities"])
+
+
+def test_generate_entity_includes_numeric_axes_with_labels(api_client: TestClient) -> None:
+    """`POST /api/entity` should include normalized numeric axis scores."""
+
+    response = api_client.post("/api/entity", json={"seed": 42, "include_prompts": False})
+
+    assert response.status_code == 200
+    payload = response.json()
+    axes = payload["axes"]
+
+    assert isinstance(axes, dict)
+    assert axes
+
+    for axis_name, axis_payload in axes.items():
+        assert isinstance(axis_name, str)
+        assert isinstance(axis_payload, dict)
+        assert isinstance(axis_payload["label"], str)
+        assert isinstance(axis_payload["score"], (int, float))
+        assert 0.0 <= float(axis_payload["score"]) <= 1.0
+
+    # Spot-check representative character + occupation axes.
+    assert "physique" in axes
+    assert "wealth" in axes
+    assert "legitimacy" in axes
+    assert "visibility" in axes
 
 
 def test_generate_entity_without_seed_returns_integer_seed(api_client: TestClient) -> None:

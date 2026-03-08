@@ -69,6 +69,36 @@ print(full_prompt)
 
 **Note**: Facial signals are integrated into `generate_condition()` as an optional axis. The standalone `generate_facial_condition()` function was removed in v0.10.0 when facial conditions were merged into the unified character system for better cross-system exclusion rules.
 
+## Entity API Contract (Web App)
+
+When the API surface is enabled, `POST /api/entity` returns both legacy label groups and canonical numeric axis scores:
+
+```json
+{
+  "seed": 42,
+  "character": {"physique": "wiry", "wealth": "poor", "demeanor": "suspicious"},
+  "occupation": {"legitimacy": "tolerated", "visibility": "hidden", "moral_load": "neutral"},
+  "axes": {
+    "physique": {"label": "wiry", "score": 0.6},
+    "visibility": {"label": "hidden", "score": 0.0}
+  },
+  "generator_version": "0.11.2",
+  "generator_capabilities": [
+    "character_conditions",
+    "occupation_conditions",
+    "seeded_generation",
+    "numeric_axis_scores",
+    "prompt_serialization"
+  ]
+}
+```
+
+Compatibility guarantees:
+
+- Existing `character` and `occupation` label payloads are preserved.
+- `axes` adds deterministic normalized scores for adapters that require numeric contracts.
+- `generator_capabilities` now includes `numeric_axis_scores` when this dual-format output is available.
+
 ---
 
 ## Usage Examples
