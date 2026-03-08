@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.11.2](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.1...pipeworks-conditional-axis-v0.11.2) (2026-03-08)
+
+
+### Features
+
+* **api:** add entity state FastAPI service with tests and docs ([bbaffa3](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/bbaffa387bf65c0f165ee78ae6a22aa4d4c73ada))
+* **api:** add entity state FastAPI service, tests, and docs ([c85a21b](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/c85a21b0a59a13895f21d5208f16bcd65dde12c0))
+* **condition-axis:** align canonical labels and lock api metadata parity ([798c508](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/798c5085f05ab6e49746fce01c4d964ae99578c0))
+* **condition-axis:** align canonical labels and lock API metadata parity ([8bb9b79](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/8bb9b799fb416dd9972ae6088d7effaf99f34f3f))
+
+
+### Documentation
+
+* add repository contributor guidelines ([9fa0f17](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/9fa0f176cb8971b78741bba215d91c47c0ae56a2))
+* add repository contributor guidelines ([d81c930](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/d81c9301a6b921d8800b38a9c735971821f15c60))
+
 ## [0.11.1](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.0...pipeworks-conditional-axis-v0.11.1) (2026-01-27)
 
 
