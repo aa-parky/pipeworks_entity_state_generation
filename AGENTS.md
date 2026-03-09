@@ -1,4 +1,21 @@
-# Repository Guidelines
+# AGENTS.md
+
+## Foundation Must-Dos (Org-Wide)
+
+Read and apply these before repo-specific instructions:
+
+- Local workspace path: `../.github/.github/docs/AGENT_FOUNDATION.md`
+- Local workspace path: `../.github/.github/docs/TEST_TAGGING_AND_GITHUB_CHECKLIST.md`
+- Canonical URL: `https://github.com/pipe-works/.github/blob/main/.github/docs/AGENT_FOUNDATION.md`
+- Canonical URL: `https://github.com/pipe-works/.github/blob/main/.github/docs/TEST_TAGGING_AND_GITHUB_CHECKLIST.md`
+
+Mandatory requirements:
+
+1. Run the GitHub preflight checklist before any `gh` interaction, CI edits, or
+   test-tag changes.
+2. Preserve required checks (`All Checks Passed`, `Secret Scan (Gitleaks)`).
+3. Do not weaken test-tag semantics to reduce runtime.
+4. Keep CI optimization changes evidence-based (run IDs, timings, check states).
 
 ## Project Structure & Module Organization
 
@@ -46,6 +63,13 @@ Use markers consistently: `unit`, `integration`, `slow`, and `requires_model`.
 Add unit tests for all behavior changes and update example tests when public
 API behavior changes. CI enforces an 80% coverage threshold, so include
 coverage-relevant tests with each PR.
+
+## CI, Coverage, and Scheduling
+
+- CI uses the shared reusable workflow (`.github/workflows/ci.yml`).
+- Matrix/coverage lanes use fast marker routing (`not slow and not requires_model`).
+- Weekly schedule (`cron`) runs a full-sweep CI pass on the default branch.
+- Content-only skip behavior is not currently enabled in this repository.
 
 ## Commit & Pull Request Guidelines
 
