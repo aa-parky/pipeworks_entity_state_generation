@@ -1,0 +1,22 @@
+[Unit]
+Description=PipeWorks Entity State API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pipeworks
+Group=pipeworks
+WorkingDirectory=/srv/work/pipeworks/repos/pipeworks_entity_state_generation
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=/etc/pipeworks/entity-state-api/entity-state-api.env
+ExecStart=/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m uvicorn entity_api:app --host ${ENTITY_STATE_API_HOST} --port ${ENTITY_STATE_API_PORT}
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

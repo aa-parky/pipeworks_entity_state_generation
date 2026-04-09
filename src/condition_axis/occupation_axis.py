@@ -16,12 +16,12 @@ Design Philosophy:
     - risk_exposure: Physical/psychological toll over time
 
 Example usage:
-    >>> from pipeworks.core.condition_axis import generate_occupation_condition
+    >>> from condition_axis import generate_occupation_condition
     >>> occupation = generate_occupation_condition(seed=42)
     >>> print(occupation)
     {'legitimacy': 'tolerated', 'visibility': 'discrete', 'moral_load': 'burdened'}
 
-    >>> from pipeworks.core.condition_axis import occupation_condition_to_prompt
+    >>> from condition_axis import occupation_condition_to_prompt
     >>> prompt_fragment = occupation_condition_to_prompt(occupation)
     >>> print(prompt_fragment)
     'tolerated, discrete, burdened'
@@ -35,8 +35,8 @@ Architecture:
     6. Converter: Transforms structured data into prompt text
 
 Future Integration:
-    This module can be combined with character_conditions and facial_conditions
-    to create complete character profiles. Cross-system exclusions may be needed:
+    This module can be combined with character_conditions to create complete
+    character profiles. Cross-system exclusions may be needed:
     - wealth="decadent" + legitimacy="illicit" (criminal wealth sources)
     - age="young" + dependency="unavoidable" (unlikely to hold critical roles)
     - demeanor="timid" + visibility="conspicuous" (contradictory behavior)

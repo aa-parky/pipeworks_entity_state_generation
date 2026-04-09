@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,10 +8,8 @@ version = "0.11.4"
 description = "Structured, rule-based framework for generating coherent state descriptions across multiple semantic dimensions"
 readme = "README.md"
 requires-python = ">=3.12"
-license = {text = "GPL-3.0-or-later"}
-authors = [
-	{name = "aapark", email = "aa.parky@gmail.com"}
-]
+license = {text = "GNU General Public License v3.0"}
+authors = [{name = "Pipe-Works"}]
 keywords = [
 	"procedural-generation",
 	"character-generation",
@@ -44,6 +42,7 @@ dev = [
 	"black==26.1.0",  # PINNED org-wide to prevent formatting drift
 	"ruff>=0.14.0",
 	"mypy>=1.19.0",
+	"bandit[toml]>=1.7.0",
 	"pre-commit>=3.0.0",
 	"fastapi>=0.115.0",
 	"httpx>=0.27.0",
@@ -64,11 +63,10 @@ Issues = "https://github.com/pipe-works/pipeworks_entity_state_generation/issues
 Documentation = "https://github.com/pipe-works/pipeworks_entity_state_generation/tree/main/docs"
 
 [tool.setuptools]
-packages = ["condition_axis"]
 include-package-data = false
 
-[tool.setuptools.package-dir]
-"" = "src"
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.black]
 line-length = 100
@@ -127,6 +125,7 @@ known-first-party = ["condition_axis"]
 
 [tool.mypy]
 python_version = "3.12"
+mypy_path = ["src"]
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
@@ -145,15 +144,15 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = [
 	"-v",
+	"-ra",
 	"--strict-markers",
 	"--tb=short",
 	"--disable-warnings",
 ]
 markers = [
-	"unit: Fast unit tests (default)",
-	"integration: Integration tests requiring external resources",
-	"slow: Tests that take >5 seconds (deselect with '-m \"not slow\"')",
-	"requires_model: Tests requiring ML model downloads (deselect with '-m \"not requires_model\"')",
+	"unit: Unit tests",
+	"integration: Integration tests",
+	"slow: Slow running tests",
 ]
 
 [tool.coverage.run]
