@@ -64,12 +64,12 @@ occ_prompt = occupation_condition_to_prompt(occupation_state)
 
 full_prompt = f"{char_prompt}, {occ_prompt}"
 print(full_prompt)
-# "wiry, poor, suspicious, tolerated, hidden, neutral"
+# "wiry, poor, suspicious, tolerated, hidden"
 ```
 
 **Note**: Facial signals are integrated into `generate_condition()` as an optional axis. The standalone `generate_facial_condition()` function was removed in v0.10.0 when facial conditions were merged into the unified character system for better cross-system exclusion rules.
 
-## Entity API Contract (Web App)
+## Entity API Contract
 
 When the API surface is enabled, `POST /api/entity` returns both legacy label groups and canonical numeric axis scores.
 Default API behavior uses `axis_profile="character_full"` so all canonical character+occupation axes are emitted:
@@ -97,7 +97,7 @@ Default API behavior uses `axis_profile="character_full"` so all canonical chara
     "physique": {"label": "wiry", "score": 0.6},
     "visibility": {"label": "hidden", "score": 0.0}
   },
-  "generator_version": "0.11.2",
+  "generator_version": "0.11.4",
   "generator_capabilities": [
     "character_conditions",
     "occupation_conditions",
@@ -236,7 +236,7 @@ Exclusions are applied **after** random selection, removing conflicts rather tha
 Axes are categorized as **mandatory** (always included) or **optional** (conditionally included):
 
 - Character conditions: Physique and wealth are mandatory; health, demeanor, age, and facial_signal are optional (0-2 selected)
-- Occupation conditions: All five axes are mandatory
+- Occupation conditions: Legitimacy and visibility are mandatory; moral_load, dependency, and risk_exposure are optional (0-2 selected) for the library generator. The HTTP API's `axis_profile="character_full"` mode expands both systems to the full canonical axis set.
 
 This prevents prompt dilution while maintaining narrative clarity.
 
@@ -260,8 +260,7 @@ pipeworks_entity_state_generation/
 ├── README.md                    # This file
 ├── CLAUDE.md                    # AI assistant development guide
 ├── LICENSE                      # GPL-3.0
-├── pyproject.toml              # Package configuration
-├── pytest.ini                  # Test configuration
+├── pyproject.toml              # Package and tool configuration
 │
 ├── src/condition_axis/         # Main package
 │   ├── __init__.py             # Public API exports
@@ -271,9 +270,10 @@ pipeworks_entity_state_generation/
 │
 ├── tests/                      # Test suite (90%+ coverage)
 │   ├── test_character_conditions_axis.py
-│   ├── test_facial_conditions_axis.py
+│   ├── test_entity_api.py
 │   ├── test_occupation_axis_axis.py
-│   └── test_examples.py        # Example script tests (39 tests)
+│   ├── test_examples.py
+│   └── test_version_sync.py
 │
 ├── examples/                   # Usage examples (see examples/README.md)
 │   ├── README.md               # Comprehensive examples guide
@@ -287,18 +287,14 @@ pipeworks_entity_state_generation/
 ├── docs/                       # Sphinx documentation (autodoc)
 │   ├── index.rst               # Documentation root
 │   ├── conf.py                 # Sphinx configuration
-│   ├── api/                    # Auto-generated API reference
-│   │   ├── index.rst           # API overview
-│   │   ├── _base.rst           # Core utilities (from docstrings)
-│   │   ├── character_conditions.rst  # Character generation (from docstrings)
-│   │   └── occupation_axis.rst # Occupation generation (from docstrings)
+│   ├── api/                    # API reference source
 │   ├── _static/                # Sphinx static assets
 │   ├── _templates/             # Sphinx templates
-│   └── _build/                 # Generated HTML (git-ignored)
+│   ├── http_api.rst            # HTTP adapter contract
+│   └── release_notes.rst       # Release notes index
 │
 └── .github/workflows/          # CI/CD
-    ├── ci.yml                  # Unified CI workflow (test, lint, security, docs, build)
-    └── publish.yml             # PyPI publishing
+    └── ci.yml                  # Test, lint, security, docs, and build workflow
 ```
 
 ---

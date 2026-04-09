@@ -267,8 +267,9 @@ def _resolve_seed(requested_seed: int | None) -> int:
     return random.SystemRandom().randrange(0, 2_147_483_647)
 
 
+@app.get("/health")
 @app.get("/api/health")
-def health() -> dict[str, str]:
+async def health() -> dict[str, str]:
     """Health endpoint for load balancers and monitoring systems.
 
     Returns:
@@ -279,7 +280,7 @@ def health() -> dict[str, str]:
 
 
 @app.get("/api/axes")
-def axes() -> dict[str, Any]:
+async def axes() -> dict[str, Any]:
     """Return available axes and values for all supported generation systems.
 
     Returns:
@@ -305,7 +306,7 @@ def axes() -> dict[str, Any]:
 
 
 @app.post("/api/entity")
-def generate_entity(req: EntityRequest) -> dict[str, Any]:
+async def generate_entity(req: EntityRequest) -> dict[str, Any]:
     """Generate one entity state payload.
 
     Args:
@@ -326,7 +327,7 @@ def generate_entity(req: EntityRequest) -> dict[str, Any]:
 
 
 @app.post("/api/entities/batch")
-def generate_entities(req: BatchRequest) -> dict[str, Any]:
+async def generate_entities(req: BatchRequest) -> dict[str, Any]:
     """Generate a sequential batch of entity state payloads.
 
     Args:

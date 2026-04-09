@@ -17,7 +17,7 @@ Available Modules:
     - _base: Shared utilities (internal)
 
 Example usage:
-    >>> from pipeworks.core.condition_axis import (
+    >>> from condition_axis import (
     ...     generate_condition,
     ...     generate_occupation_condition,
     ...     condition_to_prompt,
@@ -32,14 +32,14 @@ Example usage:
     >>> # Generate occupation conditions
     >>> occupation = generate_occupation_condition(seed=42)
     >>> print(occupation_condition_to_prompt(occupation))
-    'tolerated, hidden, neutral'
+    'tolerated, discrete, burdened'
     >>>
     >>> # Combine for complete character
     >>> char_prompt = condition_to_prompt(char)
     >>> occ_prompt = occupation_condition_to_prompt(occupation)
     >>> full_prompt = f"{char_prompt}, {occ_prompt}"
     >>> print(full_prompt)
-    'wiry, poor, suspicious, tolerated, hidden, neutral'
+    'wiry, poor, suspicious, tolerated, discrete, burdened'
 """
 
 import tomllib

@@ -4,8 +4,10 @@ HTTP API Service
 The repository includes a FastAPI service entrypoint at ``entity_api.py`` that
 wraps the ``condition_axis`` generators for HTTP clients.
 
-This service is intended to run behind Nginx with TLS termination and can be
-managed via ``systemd``.
+This adapter can be exercised locally with ``uvicorn`` and may later be
+promoted into a host-managed service behind nginx, but that hosted-service
+shape should be treated as an explicit rollout step rather than as a default
+assumption.
 
 Overview
 --------
@@ -28,13 +30,13 @@ From the repository root:
 .. code-block:: bash
 
    pip install -e ".[dev]"
-   python -m uvicorn entity_api:app --host 127.0.0.1 --port 8200
+   python -m uvicorn entity_api:app --host 127.0.0.1 --port 8400
 
 Then verify:
 
 .. code-block:: bash
 
-   curl -sS http://127.0.0.1:8200/api/health
+   curl -sS http://127.0.0.1:8400/api/health
 
 Endpoints
 ---------
@@ -112,11 +114,12 @@ Example response (truncated):
    {
      "seed": 42,
      "axis_profile": "character_full",
-     "generator_version": "0.11.1",
+     "generator_version": "0.11.4",
      "generator_capabilities": [
        "character_conditions",
        "occupation_conditions",
        "seeded_generation",
+       "numeric_axis_scores",
        "prompt_serialization"
      ],
      "character": {
@@ -134,12 +137,24 @@ Example response (truncated):
        "dependency": "necessary",
        "risk_exposure": "straining"
      },
+     "axes": {
+       "physique": {"label": "wiry", "score": 0.6},
+       "visibility": {"label": "routine", "score": 0.67}
+     },
      "prompts": {
        "character": "wiry, poor, hale, alert, old, weathered",
        "occupation": "tolerated, routine, neutral, necessary, straining",
        "full": "wiry, poor, hale, alert, old, weathered, tolerated, routine, neutral, necessary, straining"
      }
    }
+
+Notes:
+
+- The library generators may return sparse optional-axis outputs.
+- The HTTP adapter's default ``axis_profile="character_full"`` mode emits the
+  full canonical character and occupation axis sets.
+- ``generator_version`` and ``generator_capabilities`` are part of the
+  adapter-facing metadata contract consumed by downstream PipeWorks services.
 
 POST ``/api/entities/batch``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
