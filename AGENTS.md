@@ -230,6 +230,11 @@ Keep commits scoped to one concern. PRs should include:
 - any host-topology impact on Luminal
 - the exact validation commands run
 
+Because this repo uses squash merges together with `release-please`, the PR
+title must itself use a releasable Conventional Commit prefix such as
+`feat(...)`, `fix(...)`, `perf(...)`, or `docs(...)`. A non-conventional squash
+merge title on `main` can prevent the next release PR from being generated.
+
 If a change starts introducing the dedicated Luminal environment for this repo,
 call that out explicitly in the PR so neighboring PipeWorks repos are not left
 guessing which venv or host posture is now canonical.
