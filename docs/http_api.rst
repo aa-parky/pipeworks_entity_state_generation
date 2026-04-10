@@ -4,10 +4,10 @@ HTTP API Service
 The repository includes a FastAPI service entrypoint at ``entity_api.py`` that
 wraps the ``condition_axis`` generators for HTTP clients.
 
-This adapter can be exercised locally with ``uvicorn`` and may later be
-promoted into a host-managed service behind nginx, but that hosted-service
-shape should be treated as an explicit rollout step rather than as a default
-assumption.
+This adapter can be exercised locally with ``uvicorn`` and the repository also
+includes checked-in example deploy assets under ``deploy/`` for Luminal host
+rollout. Those examples document the current intended hosted shape, but they do
+not by themselves prove that a given host has already been rolled out.
 
 Overview
 --------
@@ -25,18 +25,25 @@ All generation logic is delegated to library functions in
 Run Locally
 -----------
 
-From the repository root:
+From the repository root, using the dedicated Luminal repo-specific venv:
 
 .. code-block:: bash
 
-   pip install -e ".[dev]"
-   python -m uvicorn entity_api:app --host 127.0.0.1 --port 8400
+   /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pip install -e ".[dev]"
+   /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m uvicorn entity_api:app --host 127.0.0.1 --port 8390
 
 Then verify:
 
 .. code-block:: bash
 
-   curl -sS http://127.0.0.1:8400/api/health
+   curl -sS http://127.0.0.1:8390/api/health
+
+The checked-in example deploy assets currently assume the same localhost bind:
+
+- ``deploy/entity-state-api.env.example`` sets ``127.0.0.1:8390``
+- ``deploy/systemd/pipeworks-entity-state-api.service.example`` starts ``uvicorn``
+- ``deploy/nginx/entity-state-api.luminal.local.conf.example`` proxies
+  ``entity-state-api.luminal.local`` to that backend
 
 Endpoints
 ---------
