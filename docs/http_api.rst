@@ -42,7 +42,7 @@ The checked-in example deploy assets currently assume the same localhost bind:
 
 - ``deploy/entity-state-api.env.example`` sets ``127.0.0.1:8390``
 - ``deploy/systemd/pipeworks-entity-state-api.service.example`` starts ``uvicorn``
-- ``deploy/nginx/entity-state-api.luminal.local.conf.example`` proxies
+- ``deploy/nginx/entity-state-api.luminal.local.example`` proxies
   ``entity-state-api.luminal.local`` to that backend
 
 Endpoints
