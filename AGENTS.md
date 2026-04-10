@@ -101,8 +101,11 @@ Other important repo areas:
 - `tests/` contains unit, integration, example, and version-sync coverage
 - `examples/` contains runnable usage demos
 - `docs/` contains the Sphinx documentation source
+- `deploy/` contains checked-in Luminal host rollout examples for nginx,
+  systemd, and runtime env files
 - `pyproject.toml` is the primary packaging and tool configuration file
-- `pytest.ini` exists and is still active for pytest discovery/addopts
+- pytest configuration now lives in `pyproject.toml` under
+  `[tool.pytest.ini_options]`
 
 Do not copy assumptions from other PipeWorks repos that use a `src/<package>/web`
 or multi-app service layout. This repo is flatter and currently mixes library
@@ -115,25 +118,38 @@ Prefer the dedicated environment binaries explicitly:
 ```bash
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pip install -e '.[dev]'
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pip install -e '.[dev,docs]'
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pip install build setuptools wheel
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pytest -v
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pytest -m "not slow" -v
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m pytest --cov=condition_axis --cov-report=term-missing --cov-report=xml
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m ruff check src tests examples entity_api.py
-/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m black src tests examples entity_api.py
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m black --check src tests examples entity_api.py
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m mypy src
 /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/pre-commit run --all-files
-/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m build
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m build --no-isolation
 make -C docs html
 ```
+
+When the checkout is not writable by the current user or execution context,
+prefer explicit cache directories for Ruff and mypy:
+
+```bash
+RUFF_CACHE_DIR=/tmp/pipeworks-entity-state-generation-ruff-cache /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m ruff check src tests examples entity_api.py
+MYPY_CACHE_DIR=/tmp/pipeworks-entity-state-generation-mypy-cache /srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m mypy src
+```
+
+`python -m build --no-isolation` may still require a writable checkout because
+`setuptools` can update local egg-info metadata during the build.
 
 For quick local API verification without host rollout:
 
 ```bash
-/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m uvicorn entity_api:app --host 127.0.0.1 --port 8400
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python -m uvicorn entity_api:app --host 127.0.0.1 --port 8390
 ```
 
 Use localhost binding for ad hoc API runs unless the task explicitly requires a
-different posture.
+different posture. Port `8390` matches the checked-in deploy examples under
+`deploy/`.
 
 ## Coding Style And Naming Conventions
 
@@ -160,7 +176,7 @@ Because this repo feeds deterministic generation and adapter contracts:
 
 ## Testing Guidelines
 
-Pytest markers currently present in `pytest.ini` are:
+Pytest markers currently configured in `pyproject.toml` are:
 
 - `unit`
 - `integration`
@@ -179,14 +195,19 @@ Do not remove or relabel slow/integration tests merely to make CI faster.
 
 ## API And Service Guidance
 
-`entity_api.py` is an adapter surface, not proof that this repo already has an
-approved Luminal production shape.
+`entity_api.py` is the current adapter and service surface for this repository.
+The repo already carries checked-in example deploy assets for Luminal under
+`deploy/`, but those examples are not by themselves proof that the service has
+been rolled out on a specific host.
 
 If the task is about local development only:
 
 - use localhost-bound ad hoc runs
 - keep changes repo-scoped
-- do not invent nginx/systemd/certificate assets unless requested
+- prefer the committed example assets under `deploy/` over inventing new host
+  shapes from scratch
+- do not introduce additional nginx/systemd/certificate assets unless the task
+  explicitly changes the rollout design
 
 If the task is about promoting this repo into the Luminal host environment:
 
@@ -196,6 +217,13 @@ If the task is about promoting this repo into the Luminal host environment:
 - align with the Luminal host topology policy before creating a vhost or unit
 - document host-owned config/runtime paths outside the repo rather than
   smuggling them into source control as if they were app defaults
+
+Current checked-in Luminal example shape:
+
+- nginx hostname: `entity-state-api.luminal.local`
+- localhost backend bind: `127.0.0.1:8390`
+- systemd unit example: `deploy/systemd/pipeworks-entity-state-api.service.example`
+- runtime env example: `deploy/entity-state-api.env.example`
 
 ## CI, Coverage, And Release Notes
 
