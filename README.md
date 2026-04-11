@@ -1,640 +1,145 @@
-[![CI](https://github.com/pipe-works/pipeworks_entity_state_generation/actions/workflows/ci.yml/badge.svg)](https://github.com/pipe-works/pipeworks_entity_state_generation/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/pipe-works/pipeworks_entity_state_generation/branch/main/graph/badge.svg)](https://codecov.io/gh/pipe-works/pipeworks_entity_state_generation) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CI](https://github.com/pipe-works/pipeworks_entity_state_generation/actions/workflows/ci.yml/badge.svg)](https://github.com/pipe-works/pipeworks_entity_state_generation/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/pipe-works/pipeworks_entity_state_generation/branch/main/graph/badge.svg)](https://codecov.io/gh/pipe-works/pipeworks_entity_state_generation) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-# Pipeworks Conditional Axis
+# PipeWorks Conditional Axis
 
-A structured, rule-based Python framework for generating coherent character and entity state descriptions across multiple semantic dimensions. Designed for procedural content generation in both visual contexts (AI image prompts) and narrative systems (game development, MUDs, interactive fiction).
+`pipeworks_entity_state_generation` provides the structured, rule-based entity
+state generation library used for procedural character and occupation
+descriptions across the PipeWorks ecosystem. It is a Python package first, not
+the canonical runtime authority for game state.
 
-**Core Philosophy**: Conditions exist on axes (e.g., `Stable ↔ Precarious`) rather than binary flags. The system asks *"Where along this axis does interpretation tilt?"* rather than *"Do you have the condition?"* This modulates resolution margins, biases outcomes, and colors narrative interpretation without prescribing specific outcomes.
+## PipeWorks Workspace
 
----
+These repositories are designed to live inside a shared PipeWorks workspace
+rooted at `/srv/work/pipeworks`.
 
-## What This Library Does
+- `repos/` contains source checkouts only.
+- `venvs/` contains per-project virtual environments such as `pw-mud-server`.
+- `runtime/` contains mutable runtime state such as databases, exports, session
+  files, and caches.
+- `logs/` contains service-owned log output when a project writes logs outside
+  the process manager.
+- `config/` contains workspace-level configuration files that should not be
+  treated as source.
+- `bin/` contains optional workspace helper scripts.
+- `home/` is reserved for workspace-local user data when a project needs it.
 
-This library generates **structured, interpretable state** for entities during generation time.
+Across the PipeWorks ecosphere, the rule is simple: keep source in `repos/`,
+keep mutable state outside the repo checkout, and use explicit paths between
+repos when one project depends on another.
 
-It is not a rendering system, a simulation engine, or a narrative framework.
+## What This Repo Owns
 
-Its sole responsibility is to answer the question:
+This repository is the source of truth for:
 
-> **"What is the state of this thing, and where does it behave slightly off-pattern?"**
+- character-condition and occupation-condition axis definitions
+- weighted generation, exclusion rules, and reproducible seeded output
+- prompt-serialization helpers such as `condition_to_prompt`
+- examples showing integration with image-generation and narrative workflows
 
-State is expressed through **conditional axes**—structured, population-weighted descriptors that bias probability and interpretation without dictating outcomes.
+This repository does not own:
 
----
+- canonical mud-server policy/runtime state
+- browser UIs or admin tools
+- package-import or artifact-exchange workflows
 
-## Installation
+## Public API
 
-```bash
-# Install from PyPI (when published)
-pip install pipeworks-conditional-axis
+The public package is `condition_axis`.
 
-# Install from source for development
-git clone https://github.com/pipe-works/pipeworks_entity_state_generation.git
-cd pipeworks_entity_state_generation
-pip install -e ".[dev]"
-```
+Common entry points include:
 
-**Requirements**: Python 3.12+
+- `generate_condition`
+- `generate_occupation_condition`
+- `condition_to_prompt`
+- `occupation_condition_to_prompt`
+- `get_available_axes`
+- `get_axis_values`
+- `get_available_occupation_axes`
+- `get_occupation_axis_values`
 
----
+The package is designed for reproducible generation via explicit seeds and for
+inspection of the underlying axis/weight/exclusion structures.
+
+## Repository Layout
+
+- `src/condition_axis/character_conditions.py` character-state axes and helpers
+- `src/condition_axis/occupation_axis.py` occupation-state axes and helpers
+- `examples/` runnable examples for basic, advanced, batch, and image-prompt
+  usage
+- `tests/` pytest coverage, including example validation
+- `docs/` project documentation
+- `deploy/` example deployment assets for API-style integration surfaces
 
 ## Quick Start
 
+Create a dedicated workspace venv and install the package:
+
+```bash
+python3 -m venv /srv/work/pipeworks/venvs/pw-entity-state-generation
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/pip install -e ".[dev]"
+```
+
+Minimal usage:
+
 ```python
 from condition_axis import (
+    condition_to_prompt,
     generate_condition,
     generate_occupation_condition,
-    condition_to_prompt,
     occupation_condition_to_prompt,
 )
 
-# Generate character physical and social state (may include facial signals)
-character_state = generate_condition(seed=42)
-print(character_state)
-# {'physique': 'wiry', 'wealth': 'poor', 'demeanor': 'suspicious'}
+character = generate_condition(seed=42)
+occupation = generate_occupation_condition(seed=42)
 
-# Generate occupation characteristics
-occupation_state = generate_occupation_condition(seed=42)
-print(occupation_state)
-# {'legitimacy': 'tolerated', 'visibility': 'hidden', 'moral_load': 'neutral'}
-
-# Convert to comma-separated prompts (for image generation, text, etc.)
-char_prompt = condition_to_prompt(character_state)
-occ_prompt = occupation_condition_to_prompt(occupation_state)
-
-full_prompt = f"{char_prompt}, {occ_prompt}"
-print(full_prompt)
-# "wiry, poor, suspicious, tolerated, hidden"
+character_prompt = condition_to_prompt(character)
+occupation_prompt = occupation_condition_to_prompt(occupation)
 ```
 
-**Note**: Facial signals are integrated into `generate_condition()` as an optional axis. The standalone `generate_facial_condition()` function was removed in v0.10.0 when facial conditions were merged into the unified character system for better cross-system exclusion rules.
-
-## Entity API Contract
-
-When the API surface is enabled, `POST /api/entity` returns both legacy label groups and canonical numeric axis scores.
-Default API behavior uses `axis_profile="character_full"` so all canonical character+occupation axes are emitted:
-
-```json
-{
-  "seed": 42,
-  "axis_profile": "character_full",
-  "character": {
-    "physique": "wiry",
-    "wealth": "poor",
-    "health": "hale",
-    "demeanor": "alert",
-    "age": "old",
-    "facial_signal": "weathered"
-  },
-  "occupation": {
-    "legitimacy": "tolerated",
-    "visibility": "hidden",
-    "moral_load": "neutral",
-    "dependency": "necessary",
-    "risk_exposure": "straining"
-  },
-  "axes": {
-    "physique": {"label": "wiry", "score": 0.6},
-    "visibility": {"label": "hidden", "score": 0.0}
-  },
-  "generator_version": "0.11.4",
-  "generator_capabilities": [
-    "character_conditions",
-    "occupation_conditions",
-    "seeded_generation",
-    "numeric_axis_scores",
-    "prompt_serialization"
-  ]
-}
-```
-
-Compatibility guarantees:
-
-- Existing `character` and `occupation` label payloads are preserved.
-- `character_full` (default) returns the full canonical character+occupation axis set.
-- `subset_legacy` preserves historical sparse optional-axis behavior as explicit opt-in.
-- `axes` keeps the same deterministic normalized score shape for adapter contracts.
-- `generator_capabilities` now includes `numeric_axis_scores` when this dual-format output is available.
-
----
-
-## Usage Examples
-
-The `examples/` directory contains **comprehensive, runnable examples** demonstrating all library features:
-
-### Core Examples
-
-- **`basic_usage.py`** - Simple generation, serialization, and reproducibility
-- **`advanced_usage.py`** - Weighted distributions, exclusion rules, and statistical analysis
-- **`integration_example.py`** - Combining character and occupation axis systems for complete entity generation
-
-### Advanced Examples
-
-- **`batch_generation.py`** - Bulk generation with JSON/CSV export and memory-efficient streaming
-- **`custom_axes.py`** - Creating custom axis systems (includes fantasy magic and sci-fi tech examples)
-- **`image_prompt_generation.py`** - Integration with Stable Diffusion, DALL-E, and Midjourney
-
-### Running Examples
+Run the bundled examples from the repo root:
 
 ```bash
-# Run any example directly
-python examples/basic_usage.py
-python examples/integration_example.py
-python examples/image_prompt_generation.py
-
-# All examples include:
-# - Comprehensive type hints and docstrings
-# - Working, executable code with main() functions
-# - Educational comments explaining concepts
-# - Multiple examples per file (5-7 examples each)
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python examples/basic_usage.py
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python examples/integration_example.py
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/python examples/image_prompt_generation.py
 ```
 
-Each example is fully tested (39 tests in `tests/test_examples.py`) and demonstrates best practices for using the library.
+## Integration Role
 
----
+This package is suitable for:
 
-## What Are Conditional Axes?
+- deterministic pre-generation of entity descriptors
+- prompt-building for image or text rendering systems
+- optional integration behind service boundaries such as `pipeworks_mud_server`
 
-Conditional axes describe the **current lived state** of an entity.
+It is not a substitute for runtime authority. If a host application needs to
+store, validate, or expose generated state over HTTP, that responsibility stays
+with the consuming service.
 
-They are:
+## Validation And Development
 
-- **Mutually exclusive within an axis**: A character can't be both "wealthy" and "poor"
-- **Population-weighted**: Poor characters are more common than wealthy ones
-- **Explainable and auditable**: Every value comes from a traceable rule
-- **Resolved once during generation**: Deterministic given the same seed
-
-### Available Axis Systems
-
-The library currently provides two independent axis systems:
-
-#### 1. Character Conditions (`character_conditions`)
-
-Physical and social states that establish baseline character presentation:
-
-- **Physique**: `frail`, `hunched`, `skinny`, `wiry`, `broad`, `stocky`
-- **Wealth**: `poor`, `modest`, `well-kept`, `wealthy`, `decadent`
-- **Health**: `sickly`, `limping`, `weary`, `scarred`, `hale`
-- **Demeanor**: `timid`, `suspicious`, `resentful`, `alert`, `proud`
-- **Age**: `young`, `middle-aged`, `old`, `ancient`
-- **Facial Signal**: `understated`, `pronounced`, `exaggerated`, `asymmetrical`, `weathered`, `soft-featured`, `sharp-featured`
-
-**Note on Facial Signals**: Previously available as a separate `facial_conditions` module, facial signals are now integrated into the character conditions system. This allows for cross-system exclusion rules and more coherent character generation.
-
-#### 2. Occupation Conditions (`occupation_axis`)
-
-Labor pressures and social positioning (not job titles):
-
-- **Legitimacy**: `sanctioned`, `tolerated`, `questioned`, `illicit`
-- **Visibility**: `hidden`, `discrete`, `routine`, `conspicuous`
-- **Moral Load**: `neutral`, `burdened`, `conflicted`, `corrosive`
-- **Dependency**: `optional`, `useful`, `necessary`, `unavoidable`
-- **Risk Exposure**: `benign`, `straining`, `hazardous`, `eroding`
-
----
-
-## Key Features
-
-### Weighted Probability Distributions
-
-Axes use realistic population weights rather than uniform randomness:
-
-```python
-# Wealth distribution (from WEIGHTS)
-"poor": 4.0      # Most common
-"modest": 3.0
-"well-kept": 2.0
-"wealthy": 1.0
-"decadent": 0.5  # Rare
-```
-
-This creates believable populations where most characters are poor or modest.
-
-### Semantic Exclusion Rules
-
-The system prevents illogical combinations through exclusion rules:
-
-**Within-system exclusions:**
-
-- Decadent characters can't be frail or sickly (wealth enables healthcare)
-- Ancient characters aren't timid (age brings confidence)
-- Broad, strong physiques don't pair with sickness
-- Hale (healthy) characters shouldn't have frail physiques
-
-**Cross-system exclusions (Character + Facial):**
-
-- Young characters can't have weathered faces (youth vs. wear)
-- Ancient characters rarely have understated features (age is pronounced)
-- Hale (healthy) characters don't look weathered (health affects appearance)
-- Sickly characters don't have soft-featured faces (redundant signal)
-- Decadent wealth prevents weathered appearance (wealth preserves)
-
-Exclusions are applied **after** random selection, removing conflicts rather than preventing selection. This allows for transparent debugging and maintains generative variety.
-
-### Mandatory and Optional Axes
-
-Axes are categorized as **mandatory** (always included) or **optional** (conditionally included):
-
-- Character conditions: Physique and wealth are mandatory; health, demeanor, age, and facial_signal are optional (0-2 selected)
-- Occupation conditions: Legitimacy and visibility are mandatory; moral_load, dependency, and risk_exposure are optional (0-2 selected) for the library generator. The HTTP API's `axis_profile="character_full"` mode expands both systems to the full canonical axis set.
-
-This prevents prompt dilution while maintaining narrative clarity.
-
-### Reproducible Generation
-
-All generation functions accept an optional `seed` parameter for deterministic output:
-
-```python
-# Same seed = same result
-char1 = generate_condition(seed=42)
-char2 = generate_condition(seed=42)
-assert char1 == char2  # True
-```
-
----
-
-## Repository Structure
-
-```text
-pipeworks_entity_state_generation/
-├── README.md                    # This file
-├── CLAUDE.md                    # AI assistant development guide
-├── LICENSE                      # GPL-3.0
-├── pyproject.toml              # Package and tool configuration
-│
-├── src/condition_axis/         # Main package
-│   ├── __init__.py             # Public API exports
-│   ├── _base.py                # Shared utilities
-│   ├── character_conditions.py # Physical, social & facial states (unified)
-│   └── occupation_axis.py      # Occupation characteristics
-│
-├── tests/                      # Test suite (90%+ coverage)
-│   ├── test_character_conditions_axis.py
-│   ├── test_entity_api.py
-│   ├── test_occupation_axis_axis.py
-│   ├── test_examples.py
-│   └── test_version_sync.py
-│
-├── examples/                   # Usage examples (see examples/README.md)
-│   ├── README.md               # Comprehensive examples guide
-│   ├── basic_usage.py          # Simple generation & serialization
-│   ├── advanced_usage.py       # Weights, exclusions & analysis
-│   ├── integration_example.py  # Combining character & occupation systems
-│   ├── batch_generation.py     # Bulk generation & exports
-│   ├── custom_axes.py          # Creating custom axis systems
-│   └── image_prompt_generation.py  # AI image generation integration
-│
-├── docs/                       # Sphinx documentation (autodoc)
-│   ├── index.rst               # Documentation root
-│   ├── conf.py                 # Sphinx configuration
-│   ├── api/                    # API reference source
-│   ├── _static/                # Sphinx static assets
-│   ├── _templates/             # Sphinx templates
-│   ├── http_api.rst            # HTTP adapter contract
-│   └── release_notes.rst       # Release notes index
-│
-└── .github/workflows/          # CI/CD
-    └── ci.yml                  # Test, lint, security, docs, and build workflow
-```
-
----
-
-## Design Principles
-
-### Interpretation Over Prescription
-
-Conditions **bias** interpretation rather than dictate outcomes:
-
-- "weary" suggests fragility, hesitation, or cost—it doesn't prevent action
-- "wealthy" biases confidence and access—it doesn't guarantee success
-
-### Bias Over Randomness
-
-Weighted distributions reflect population realism:
-
-- Most characters are poor or modest
-- Ancient characters are rare
-- Sickly and frail conditions cluster at population margins
-
-### Structure With Room for Failure
-
-Exclusion rules prevent nonsense, but edge cases are allowed:
-
-- A "decadent" character might be "scarred" (past injury despite current wealth)
-- An "ancient" character can be "limping" (age brings wear)
-
-The system aims for **coherence**, not perfection.
-
-### Explainable State, Inexplicable Detail
-
-Generated state is fully traceable (seed, weights, exclusions), but the **why** remains interpretive:
-
-- Why is this character suspicious? The axis doesn't say—narrative fills the gap.
-- Why is this occupation burdensome? The pressure exists, the story provides context.
-
----
-
-## What This Repository Is Not
-
-This repository does **not**:
-
-- Render text or images
-- Simulate behavior over time
-- Implement progression systems
-- Resolve narrative outcomes
-- Balance gameplay
-- Define UI or player interaction
-
-Those concerns belong downstream. This library produces **generation-time primitives** for consumption by rendering, simulation, and narrative systems.
-
----
-
-## Advanced Usage
-
-### Combining Multiple Axis Systems
-
-```python
-# Generate complete character (may include facial signals)
-character = generate_condition(seed=123)
-occupation = generate_occupation_condition(seed=123)
-
-# Serialize for image prompt
-image_prompt = (
-    f"illustration of a pale blue-green goblin, "
-    f"{condition_to_prompt(character)}, "
-    f"whose work operates under the following conditions: "
-    f"{occupation_condition_to_prompt(occupation)}"
-)
-# Example output:
-# "illustration of a pale blue-green goblin, skinny, poor, limping, alert,
-#  whose work operates under the following conditions: tolerated, discrete, burdened"
-```
-
-### Inspecting Available Axes and Values
-
-```python
-from condition_axis import (
-    get_available_axes,
-    get_axis_values,
-    CONDITION_AXES,
-    WEIGHTS,
-)
-
-# List all character condition axes
-print(get_available_axes())
-# ['physique', 'wealth', 'health', 'demeanor', 'age', 'facial_signal']
-
-# Get possible values for an axis
-print(get_axis_values('wealth'))
-# ['poor', 'modest', 'well-kept', 'wealthy', 'decadent']
-
-# Access raw data structures
-print(CONDITION_AXES['physique'])
-# ['frail', 'hunched', 'skinny', 'wiry', 'broad', 'stocky']
-
-print(WEIGHTS['wealth'])
-# {'poor': 4.0, 'modest': 3.0, 'well-kept': 2.0, 'wealthy': 1.0, 'decadent': 0.5}
-```
-
-### Cross-System Validation
-
-Cross-system exclusion rules are implemented between character and facial axes:
-
-- `age="young"` + `facial_signal="weathered"` → Excluded (contradiction)
-- `wealth="decadent"` + `facial_signal="weathered"` → Excluded (wealth preserves appearance)
-- `health="hale"` + `facial_signal="weathered"` → Excluded (health affects appearance)
-
-Future work:
-
-- Cross-validation with occupation axes (e.g., `demeanor="timid"` + `visibility="conspicuous"`)
-- Weighted cross-system preferences (soft constraints vs. hard exclusions)
-
-See [CLAUDE.md](./CLAUDE.md) for extension guidelines.
-
----
-
-## Development
-
-### Setup
+Run the main checks from the repo root:
 
 ```bash
-# Clone repository
-git clone https://github.com/pipe-works/pipeworks_entity_state_generation.git
-cd pipeworks_entity_state_generation
-
-# Create virtual environment (generic local workflow)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install with development dependencies
-pip install -e ".[dev]"
-
-# Install pre-commit hooks
-pre-commit install
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/pytest
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/ruff check src tests examples
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/black --check src tests examples
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/mypy src
 ```
 
-### Testing
+If you need the docs toolchain:
 
 ```bash
-# Run all tests
-pytest
-
-# Run with coverage report
-pytest --cov=condition_axis --cov-report=term-missing
-
-# Run specific test file
-pytest tests/test_character_conditions_axis.py -v
+/srv/work/pipeworks/venvs/pw-entity-state-generation/bin/pip install -e ".[docs]"
+make -C docs html
 ```
-
-### Code Quality
-
-```bash
-# Format code (line length: 100)
-black src/ tests/ --line-length=100
-
-# Lint with auto-fix
-ruff check src/ tests/ --line-length=100 --fix
-
-# Type check
-mypy src/ --python-version=3.12 --ignore-missing-imports
-
-# Run all pre-commit hooks
-pre-commit run --all-files
-```
-
-### Building Documentation
-
-This project uses **Sphinx with autodoc** for the API reference together with
-checked-in `.rst` pages for the HTTP adapter and top-level narrative docs.
-This approach provides:
-
-- ✅ **Lower maintenance for API docs** - Core API reference stays close to the code
-- ✅ **Explicit manual pages where needed** - HTTP adapter and top-level docs live in version control
-- ✅ **Professional output** - Clean HTML with search, indexing, and cross-references
-
-The documentation is split between:
-
-- auto-generated API reference material from Python docstrings
-- maintained `.rst` pages such as `docs/http_api.rst` and `docs/index.rst`
-- top-level project guidance in this README and `CLAUDE.md`
-
-#### What is Sphinx?
-
-Sphinx is Python's standard documentation generator that extracts documentation from your code's docstrings and renders it as beautiful, searchable HTML. The `autodoc` extension automatically pulls docstrings from the source code, eliminating manual documentation maintenance.
-
-#### Building Documentation Locally
-
-To build and preview the documentation on your computer:
-
-```bash
-# Install documentation dependencies
-pip install -e ".[dev,docs]"
-
-# Build HTML documentation
-cd docs
-sphinx-build -b html . _build/html
-
-# View the built documentation
-# Open docs/_build/html/index.html in your web browser
-# On macOS:
-open _build/html/index.html
-# On Linux:
-xdg-open _build/html/index.html
-# On Windows:
-start _build/html/index.html
-```
-
-#### Contributing to Documentation
-
-To update the documentation:
-
-1. Edit docstrings in `src/condition_axis/*.py` files for API reference changes.
-2. Edit checked-in `.rst` files in `docs/` for HTTP adapter, index, or release-note changes.
-3. Build locally to preview changes: `sphinx-build -b html docs docs/_build/html`
-
-The documentation is not 100% autogenerated from code. Keep the manual pages in
-`docs/` in sync with the code and adapter contract.
-
-For Sphinx and autodoc syntax, see:
-
-- [Sphinx documentation](https://www.sphinx-doc.org/)
-- [Sphinx autodoc guide](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html)
-- [Google-style docstring format](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html)
-
----
-
-## Future Work
-
-### Current Features ✅
-
-- **Cross-system exclusion rules**: Character and facial axis exclusions implemented (young + weathered, wealth + weathered, etc.)
-- **Facial signal integration**: Integrated into character_conditions with full coherence rules
-
-### Planned Enhancements
-
-- **Extended cross-system exclusions**: Validate compatibility between character and occupation axes (e.g., `demeanor="timid"` + `visibility="conspicuous"`)
-- **Unified generator**: Single function to generate complete entity state with cross-system coherence
-- **Quirks system**: Persistent, localized irregularities that introduce structured deviation (see "Quirks" below)
-- **Serialization/deserialization**: JSON and YAML support for storing and reloading states
-- **Condition history tracking**: Ledger-based system for tracking state evolution over time
-
-### The Quirks System (Planned)
-
-Future versions will introduce **quirks**—small, persistent deviations that:
-
-- Remain local to an entity
-- Do not resolve into system-wide rules
-- Bias attention and interpretation
-- Repeat without fully explaining themselves
-
-Quirks will answer:
-
-> **"Where does this entity fail to behave like a clean model?"**
-
-They will complicate situations but must never resolve them. Quirks will be intentionally **orthogonal** to conditional axes:
-
-- Axes resolve state; quirks annotate state
-- Axes bias probability; quirks bias attention
-- Quirks must not influence axis resolution or weighting
-
-This separation ensures axes push toward coherence while quirks prevent the system from becoming too clean.
-
----
-
-## Integration with Pipeworks Ecosystem
-
-This library is part of the broader [Pipeworks](https://github.com/pipe-works) project:
-
-| Repository | Role | Relationship to This Library |
-|-----------|------|------------------------------|
-| **pipeworks-artefact** | Canonical registry and memory layer | Stores generated states and provides persistent identity |
-| **pipeworks_entity_state_generation** | Generation engine (this repo) | Produces entity state snapshots |
-| **pipeworks_mud_server** | Interactive runtime and game logic | Consumes entity states during play |
-| **pipeworks_image_generator** | Visualization and image synthesis | Interprets entity states for visual representation |
-| **the_daily_undertaking_ui** | Narrative and user-facing interface | Surfaces entity states to players |
-
-This library serves as the **pure, stateless generation layer** that produces coherent state descriptions consumed by the other components.
-
----
-
-## License
-
-GPL-3.0
-
-This repository is part of the broader Pipeworks project.
-
----
 
 ## Documentation
 
-### Main Documentation
+Additional documentation lives in `docs/`.
 
-- **[README.md](./README.md)** - This file (project overview, quick start, usage examples)
-- **[CLAUDE.md](./CLAUDE.md)** - Development guide for AI assistants and contributors
-- **[examples/README.md](./examples/README.md)** - Comprehensive guide to usage examples
-- **`docs/`** - Sphinx source, including API reference and HTTP adapter docs
+The runnable example set is summarized in [examples/README.md](examples/README.md).
 
-### Local API Documentation
+## License
 
-Build the Sphinx documentation locally to browse the complete API reference:
-
-```bash
-pip install -e ".[dev,docs]"
-cd docs
-sphinx-build -b html . _build/html
-open _build/html/index.html  # or xdg-open / start on Linux/Windows
-```
-
-The auto-generated documentation includes:
-
-- **condition_axis._base** - Core utilities (weighted_choice, apply_exclusion_rules, values_to_prompt)
-- **condition_axis.character_conditions** - Physical & social character state generation (includes facial signals)
-- **condition_axis.occupation_axis** - Occupation characteristics generation
-
----
-
-## Contributing
-
-Contributions are welcome! Please see [CLAUDE.md](./CLAUDE.md) for:
-
-- Code architecture and patterns
-- Testing philosophy
-- Code style guidelines (Black, Ruff, MyPy)
-- How to add new axes or condition systems
-
-Before submitting a PR:
-
-1. Ensure all tests pass: `pytest`
-2. Verify code quality: `pre-commit run --all-files`
-3. Add tests for new functionality
-4. Update documentation as needed
-
----
-
-## Status
-
-This library is in active development (v0.10.0 beta).
-
-Core generation systems (character with integrated facial signals, occupation) are **stable and well-tested**.
-
-Interfaces, schemas, and axis definitions may evolve, but the core separation between state resolution (axes) and state interpretation (downstream systems) is considered foundational.
+[GPL-3.0-or-later](LICENSE)
