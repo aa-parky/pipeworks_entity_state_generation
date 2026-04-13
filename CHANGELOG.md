@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.11.5](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.4...pipeworks-conditional-axis-v0.11.5) (2026-04-13)
+
+
+### Bug Fixes
+
+* **release:** require releasable squash merge titles ([#22](https://github.com/pipe-works/pipeworks_entity_state_generation/issues/22)) ([7c22ae8](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/7c22ae8ab2bd1af8f8a5bf844b3172c8b79d0725))
+
+
+### Documentation
+
+* **nginx:** align entity state vhost example name ([810370f](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/810370fca091bf9ffd221c3d9b067df9d6b6a9d6))
+* **repo:** align entity state docs with current service shape ([7ec56e7](https://github.com/pipe-works/pipeworks_entity_state_generation/commit/7ec56e7896a1f3698e453dca6f29d3b1a778b950))
+
 ## [0.11.4](https://github.com/pipe-works/pipeworks_entity_state_generation/compare/pipeworks-conditional-axis-v0.11.3...pipeworks-conditional-axis-v0.11.4) (2026-03-08)
 
 
